@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap');
+
+* {
+    font-family: 'Cairo', sans-serif;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #020617;
+    color: #f8fafc;
+    overflow-x: hidden;
+}
+
+/* تأثير الزجاج المتطور Glassmorphism */
+.glass-panel {
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-card {
+    background: rgba(30, 41, 59, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(56, 189, 248, 0.15);
+    transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+    border-color: rgba(56, 189, 248, 0.4);
+    box-shadow: 0 0 25px rgba(14, 165, 233, 0.2);
+    transform: translateY(-3px);
+}
+
+/* تأثيرات التوهج */
+.glow-text {
+    text-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
+}
+
+/* شاشة الدخول السينمائية */
+#splash-screen {
+    transition: opacity 0.8s ease-in-out, visibility 0.8s;
+}
+
+.splash-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* تخصيص شريط التمرير */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #020617;
+}
+::-webkit-scrollbar-thumb {
+    background: #0ea5e9;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #38bdf8;
+}
