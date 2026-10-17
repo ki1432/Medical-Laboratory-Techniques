@@ -204,7 +204,6 @@ function verifyAdmin() {
     }
 }
 
-// إضافة طالب
 async function adminAddStudent(e) {
     e.preventDefault();
     const name = document.getElementById('adm-name').value;
@@ -221,7 +220,6 @@ async function adminAddStudent(e) {
     } catch (err) { alert('خطأ الإضافة: ' + err.message); }
 }
 
-// تعديل طالب
 async function editStudent(id, oldName, oldStage) {
     const newName = prompt("تعديل اسم الطالب:", oldName);
     if (!newName) return;
@@ -236,7 +234,6 @@ async function editStudent(id, oldName, oldStage) {
     } catch (err) { alert('خطأ التعديل: ' + err.message); }
 }
 
-// حذف طالب
 async function deleteStudent(id) {
     if (!confirm('هل أنت متأكد من الحذف؟')) return;
     try {
@@ -247,7 +244,6 @@ async function deleteStudent(id) {
     } catch (err) { alert('خطأ الحذف: ' + err.message); }
 }
 
-// إضافة قسم/مختبر جديد
 async function adminAddLab(e) {
     e.preventDefault();
     const title = document.getElementById('adm-lab-title').value;
@@ -263,7 +259,6 @@ async function adminAddLab(e) {
     } catch (err) { alert('خطأ إضافة القسم: ' + err.message); }
 }
 
-// حذف قسم/مختبر
 async function deleteLab(id) {
     if (!confirm('هل أنت متأكد من حذف هذا القسم؟')) return;
     try {
@@ -274,7 +269,6 @@ async function deleteLab(id) {
     } catch (err) { alert('خطأ الحذف: ' + err.message); }
 }
 
-// إضافة إعلان جديد
 async function adminAddAnnouncement(e) {
     e.preventDefault();
     const title = document.getElementById('adm-ann-title').value;
@@ -290,7 +284,6 @@ async function adminAddAnnouncement(e) {
     } catch (err) { alert('خطأ نشر الإعلان: ' + err.message); }
 }
 
-// حذف إعلان
 async function deleteAnnouncement(id) {
     if (!confirm('هل أنت متأكد من حذف الإعلان؟')) return;
     try {
@@ -301,7 +294,6 @@ async function deleteAnnouncement(id) {
     } catch (err) { alert('خطأ الحذف: ' + err.message); }
 }
 
-// الفلترة والبحث
 document.addEventListener('DOMContentLoaded', () => {
     const bFilter = document.getElementById('batch-filter');
     const sSearch = document.getElementById('student-search');

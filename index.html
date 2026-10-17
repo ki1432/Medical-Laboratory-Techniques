@@ -17,12 +17,12 @@
     <!-- Google Cairo Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Custom CSS (في نفس المجلد الرئيسي) -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body class="min-h-screen flex flex-col selection:bg-sky-500 selection:text-slate-950">
 
-    <!-- ==================== 1. Splash Screen السينمائية الفائقة ==================== -->
+    <!-- Splash Screen -->
     <div id="splash-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-950 px-4 overflow-hidden">
         <div class="absolute w-[600px] h-[600px] bg-sky-600/20 rounded-full blur-[120px] -z-10 pulse-orb"></div>
         <div class="absolute w-[450px] h-[450px] bg-teal-500/15 rounded-full blur-[100px] -z-10 pulse-orb" style="animation-delay: 2s;"></div>
@@ -57,10 +57,8 @@
         </div>
     </div>
 
-    <!-- ==================== 2. البوابة الرئيسية (Main System Portal) ==================== -->
+    <!-- Main Portal -->
     <div id="main-portal" class="hidden min-h-screen flex flex-col">
-        
-        <!-- الشريط العلوي الاحترافي -->
         <header class="glass-panel sticky top-0 z-40 border-b border-slate-800/80">
             <div class="max-w-7xl mx-auto px-4 py-3.5 flex items-center justify-between">
                 <div class="flex items-center gap-3">
@@ -88,10 +86,7 @@
             </div>
         </header>
 
-        <!-- المحتوى الرئيسي للمشروع -->
         <main class="flex-grow max-w-7xl mx-auto px-4 py-10 w-full space-y-16">
-            
-            <!-- قسم الواجهة والرؤية -->
             <section id="about" class="grid lg:grid-cols-12 gap-8 items-center">
                 <div class="lg:col-span-7 space-y-6">
                     <span class="px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-sky-500/10 text-sky-400 border border-sky-500/30 inline-flex items-center gap-2">
@@ -123,7 +118,6 @@
                 </div>
             </section>
 
-            <!-- قسم الإعلانات والأخبار الفورية -->
             <section id="announcements-sec" class="glass-panel p-6 rounded-3xl border border-amber-500/30 space-y-4">
                 <div class="flex items-center justify-between border-b border-slate-800 pb-3">
                     <h3 class="text-lg font-bold text-amber-400 flex items-center gap-2">
@@ -131,24 +125,18 @@
                     </h3>
                     <span class="text-[10px] text-slate-400">محدث سحابياً</span>
                 </div>
-                <div id="announcements-container" class="grid md:grid-cols-2 gap-4">
-                    <!-- يتم جلب ونشر الإعلانات ديناميكياً -->
-                </div>
+                <div id="announcements-container" class="grid md:grid-cols-2 gap-4"></div>
             </section>
 
-            <!-- قسم المختبرات والأقسام الدراسية (ديناميكي بالكامل) -->
             <section id="labs" class="space-y-6">
                 <div>
                     <span class="text-sky-400 font-bold text-xs tracking-widest uppercase">Infrastructure</span>
                     <h3 class="text-2xl md:text-3xl font-black text-white">المختبرات والأقسام التشخيصية</h3>
                     <p class="text-xs text-slate-400 mt-1">يتم إدارة وعرض كافة الأقسام تلقائياً من قاعدة البيانات السحابية</p>
                 </div>
-                <div id="labs-container" class="grid md:grid-cols-3 gap-6">
-                    <!-- يتم تحميل الأقسام والمختبرات ديناميكياً من Supabase -->
-                </div>
+                <div id="labs-container" class="grid md:grid-cols-3 gap-6"></div>
             </section>
 
-            <!-- أرشيف وسجل الطلبة والدفعات (من Supabase) -->
             <section id="students" class="glass-panel p-6 md:p-8 rounded-3xl border border-sky-500/30 space-y-6">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
@@ -178,14 +166,11 @@
                                 <th class="p-4">إدارة المشرف</th>
                             </tr>
                         </thead>
-                        <tbody id="students-table-body" class="divide-y divide-slate-800/60 bg-slate-950/40">
-                            <!-- التعبئة البرمجية ديناميكياً -->
-                        </tbody>
+                        <tbody id="students-table-body" class="divide-y divide-slate-800/60 bg-slate-950/40"></tbody>
                     </table>
                 </div>
             </section>
 
-            <!-- ==================== 6. لوحة التحكم الإدارية المطلقة (Admin Panel CMS) ==================== -->
             <section id="admin-panel-section" class="glass-panel p-6 md:p-8 rounded-3xl border border-rose-500/30 space-y-6">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
                     <div>
@@ -195,17 +180,13 @@
                         <h3 class="text-2xl font-black text-white mt-2">لوحة تحكم المطور والمشرف (CMS)</h3>
                         <p class="text-xs text-slate-400">إدارة شاملة لكافة محتويات الموقع (إضافة، تعديل، حذف)</p>
                     </div>
-                    <!-- نموذج تسجيل دخول المشرف -->
                     <div id="admin-login-box" class="flex items-center gap-2">
                         <input type="password" id="admin-pass-input" placeholder="كلمة مرور المشرف..." class="bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded-xl px-4 py-2.5 outline-none focus:border-rose-500">
                         <button onclick="verifyAdmin()" class="px-5 py-2.5 bg-rose-500 hover:bg-rose-400 text-slate-950 font-bold text-xs rounded-xl shadow-lg transition">دخول المشرف</button>
                     </div>
                 </div>
 
-                <!-- محتوى لوحة التحكم الشاملة (مخفي لحين تسجيل الدخول ki2026) -->
                 <div id="admin-dashboard-content" class="hidden space-y-8">
-                    
-                    <!-- 1. نموذج إضافة طالب إلى الأرشيف -->
                     <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-4">
                         <h4 class="font-bold text-white text-sm flex items-center gap-2">
                             <i class="fa-solid fa-user-plus text-sky-400"></i> إضافة طالب جديد إلى الأرشيف
@@ -226,7 +207,6 @@
                         </form>
                     </div>
 
-                    <!-- 2. نموذج إضافة قسم أو مختبر جديد -->
                     <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-4">
                         <h4 class="font-bold text-white text-sm flex items-center gap-2">
                             <i class="fa-solid fa-vials text-teal-400"></i> إضافة قسم أو مختبر جديد للموقع
@@ -239,7 +219,6 @@
                         </form>
                     </div>
 
-                    <!-- 3. نموذج إضافة إعلان جديد -->
                     <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-4">
                         <h4 class="font-bold text-white text-sm flex items-center gap-2">
                             <i class="fa-solid fa-bullhorn text-amber-400"></i> نشر إعلان أو خبر رسمي جديد
@@ -255,12 +234,10 @@
                             <button type="submit" class="md:col-span-3 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl shadow-lg transition">نشر الإعلان الفوري</button>
                         </form>
                     </div>
-
                 </div>
             </section>
         </main>
 
-        <!-- الفوتر -->
         <footer class="glass-panel border-t border-slate-800/80 py-6 mt-auto">
             <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between text-xs text-slate-400 gap-4">
                 <p>جميع حقوق الطبع والنشر محفوظة لقسم تقنيات المختبرات الطبية © 2026</p>
@@ -272,7 +249,7 @@
         </footer>
     </div>
 
-    <!-- JavaScript الخارجي -->
-    <script src="assets/js/app.js"></script>
+    <!-- JavaScript (في المجلد الرئيسي مباشرة) -->
+    <script src="app.js"></script>
 </body>
 </html>
