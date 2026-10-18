@@ -170,3 +170,56 @@ function renderAnnouncements(data) {
         `;
     });
 }
+// وظائف حاسبة المعدل الأكاديمي
+function addGpaRow() {
+    const tbody = document.getElementById('gpa-rows');
+    if (!tbody) return;
+    const row = document.createElement('tr');
+    row.innerHTML = `
+        <td class="p-3"><input type="text" placeholder="اسم المادة" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-sky-500 course-name"></td>
+        <td class="p-3"><input type="number" min="1" max="6" value="3" class="w-24 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-sky-500 course-units"></td>
+        <td class="p-3"><input type="number" min="0" max="100" placeholder="الدرجة" class="w-24 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-sky-500 course-grade"></td>
+        <td class="p-3 text-center"><button onclick="removeGpaRow(this)" class="text-rose-400 hover:text-rose-300 p-1"><i class="fa-solid fa-trash-can"></i></button></td>
+    `;
+    tbody.appendChild(row);
+}
+
+function removeGpaRow(btn) {
+    const row = btn.closest('tr');
+    if (document.querySelectorAll('#gpa-rows tr').length > 1) {
+        row.remove();
+    } else {
+        alert('يجب أن تبقى مادة واحدة على الأقل في الحاسبة.');
+    }
+}
+
+function calculateGPA() {
+    const rows = document.querySelectorAll('#gpa-rows tr');
+    let totalPoints = 0;
+    let totalUnits = 0;
+    let isValid = true;
+
+    rows.forEach(row => {
+        const unitsInput = row.querySelector('.course-units');
+        const gradeInput = row.querySelector('.course-grade');
+        
+        const units = parseFloat(unitsInput.value);
+        const grade = parseFloat(gradeInput.value);
+
+        if (isNaN(units) || isNaN(grade) || grade < 0 || grade > 100) {
+            isValid = false;
+        } else {
+            // احتساب النقاط بناءً على الدرجة ووزن الوحدات
+            totalPoints += (grade * units);
+            totalUnits += units;
+        }
+    });
+
+    if (!isValid || totalUnits === 0) {
+        alert('يرجى التأكد من إدخال درجات صحيحة (من 0 إلى 100) ووحدات صحيحة لكل المواد.');
+        return;
+    }
+
+    const gpa = totalPoints / totalUnits;
+    document.getElementById('gpa-result').innerText = gpa.toFixed(2);
+}
