@@ -6,43 +6,55 @@
     <title>قسم تقنيات المختبرات الطبية | المنظومة الرقمية الرسمية</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="min-h-screen flex flex-col selection:bg-sky-500 selection:text-slate-950 bg-slate-950 text-slate-100">
+<body class="min-h-screen flex flex-col selection:bg-sky-500 selection:text-slate-950 bg-slate-950 text-slate-100 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
 
     <div id="public-view" class="flex flex-col min-h-screen">
-        <header class="glass-panel sticky top-0 z-40 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md">
-            <div class="max-w-7xl mx-auto px-4 py-3.5 flex items-center justify-between">
+        <!-- Header -->
+        <header class="sticky top-0 z-40 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md dark:border-slate-800 dark:bg-slate-950/80">
+            <div class="max-w-7xl mx-auto px-4 py-3.5 flex items-center justify-between gap-2">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 bg-gradient-to-tr from-sky-500 to-teal-400 rounded-xl flex items-center justify-center text-slate-950 font-bold shadow-md shadow-sky-500/30">
                         <i class="fa-solid fa-microscope text-lg"></i>
                     </div>
                     <div>
-                        <h2 class="font-bold text-sm md:text-base text-slate-100">تقنيات المختبرات الطبية</h2>
+                        <h2 class="font-bold text-sm md:text-base">تقنيات المختبرات الطبية</h2>
                         <span class="text-[10px] text-sky-400 tracking-wider font-mono">MEDICAL LABS DEPARTMENT</span>
                     </div>
                 </div>
 
-                <nav class="hidden lg:flex items-center gap-5 text-xs font-bold text-slate-300">
+                <nav class="hidden lg:flex items-center gap-5 text-xs font-bold">
                     <a href="#about" class="hover:text-sky-400 transition">الرئيسية</a>
+                    <a href="#announcements" class="hover:text-amber-400 transition">الإعلانات</a>
                     <a href="#schedules" class="hover:text-teal-400 transition">الجداول الرسمية</a>
-                    <a href="#materials" class="hover:text-indigo-400 transition">المواد الدراسية</a>
-                    <a href="#labs-guide" class="hover:text-amber-400 transition">دليل القاعات والمختبرات</a>
-                    <a href="#registration" class="hover:text-emerald-400 transition">تسجيل الأولى</a>
-                    <a href="#students" class="hover:text-sky-400 transition">الأرشيف</a>
+                    <a href="#resources" class="hover:text-indigo-400 transition">المكتبة الأكاديمية</a>
+                    <a href="#gpa-calculator" class="hover:text-emerald-400 transition">حاسبة المعدل</a>
                 </nav>
 
-                <button onclick="openAdminModal()" class="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-rose-500/50 text-slate-400 hover:text-rose-400 text-xs transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-lock text-[10px]"></i>
-                    <span>الإدارة</span>
-                </button>
+                <div class="flex items-center gap-2">
+                    <!-- Theme Toggle Button -->
+                    <button onclick="toggleTheme()" class="p-2 rounded-xl bg-slate-900 border border-slate-800 text-amber-400 hover:text-amber-300 text-xs transition">
+                        <i id="theme-icon" class="fa-solid fa-moon"></i>
+                    </button>
+
+                    <!-- Admin Button -->
+                    <button onclick="openAdminModal()" class="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-rose-500/50 text-slate-400 hover:text-rose-400 text-xs transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-lock text-[10px]"></i>
+                        <span>الإدارة</span>
+                    </button>
+                </div>
             </div>
         </header>
 
-        
-        <!-- ==================== شريط الإعلانات الفورية ==================== -->
+        <!-- Live Announcement Banner -->
         <div id="announcement-banner" class="bg-gradient-to-r from-amber-500/10 via-sky-500/10 to-teal-500/10 border-b border-amber-500/30 py-2.5 px-4 backdrop-blur-md">
             <div class="max-w-7xl mx-auto flex items-center justify-between gap-4 text-xs font-semibold">
                 <div class="flex items-center gap-2 text-amber-400 shrink-0 font-bold">
@@ -54,42 +66,39 @@
                     <span>تنويه هام:</span>
                 </div>
                 <div class="overflow-hidden whitespace-nowrap w-full">
-                    <div id="announcement-text" class="inline-block animate-marquee text-slate-200">
+                    <div id="announcement-text" class="inline-block animate-marquee">
                         تنويه: يرجى التزام طلبة جميع المراحل الدراسية بالزي الموحد والجداول المعتمدة للفصل الدراسي الأول 2026/2027.
                     </div>
                 </div>
-                <button onclick="document.getElementById('announcement-banner').style.display='none'" class="text-slate-400 hover:text-white transition shrink-0 p-1">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
             </div>
         </div>
 
-        <main class="flex-grow max-w-7xl mx-auto px-4 py-10 w-full space-y-16">
-            <section id="about" class="grid lg:grid-cols-12 gap-8 items-center glass-panel p-8 rounded-3xl border border-sky-500/20 bg-slate-900/50">
-                <div class="lg:col-span-8 space-y-6">
+        <main class="flex-grow max-w-7xl mx-auto px-4 py-8 w-full space-y-12">
+
+            <!-- Hero & Smart Universal Search -->
+            <section id="about" class="p-6 md:p-8 rounded-3xl border border-sky-500/20 bg-slate-900/50 space-y-6">
+                <div class="space-y-4">
                     <span class="px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-sky-500/10 text-sky-400 border border-sky-500/30 inline-flex items-center gap-2">
-                        <i class="fa-solid fa-award text-teal-400"></i> كلية التقنيات الصحية والطبية - الفصل الدراسي الأول (2027/2026)
+                        <i class="fa-solid fa-award text-teal-400"></i> كلية التقنيات الصحية والطبية - العام الدراسي (2027/2026)
                     </span>
-                    <h3 class="text-3xl md:text-5xl font-black text-white leading-tight">
+                    <h3 class="text-3xl md:text-5xl font-black leading-tight">
                         البوابة الرسمية لقسم <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-teal-300">تقنيات المختبرات الطبية</span>
                     </h3>
-                    <p class="text-slate-400 leading-relaxed text-sm">
-                        النظام الأكاديمي المتكامل لإدارة الجداول الدراسية الأسبوعية بدقة مطابقة للوثائق الرسمية لجميع المراحل الدراسية (صباحي ومسائي)، ودليل القاعات والمختبرات والمواد الدراسية التفصيلية.
-                    </p>
                 </div>
-                <div class="lg:col-span-4 text-center">
-                    <div class="w-32 h-32 mx-auto bg-gradient-to-tr from-sky-500/20 to-teal-500/20 rounded-3xl border border-sky-500/40 flex items-center justify-center text-sky-400 text-5xl shadow-2xl animate-pulse">
-                        <i class="fa-solid fa-flask-vial"></i>
-                    </div>
+
+                <!-- Smart Search Input -->
+                <div class="relative max-w-2xl">
+                    <i class="fa-solid fa-magnifying-glass absolute right-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" id="global-search" onkeyup="filterContent(this.value)" placeholder="ابحث عن أستاذ، مادة دراسية، قاعة، أو مختبر..." class="w-full bg-slate-950 border border-slate-700/80 rounded-2xl pr-11 pl-4 py-3.5 text-xs outline-none focus:border-sky-400 shadow-xl">
                 </div>
             </section>
 
-            <section id="schedules" class="glass-panel p-6 md:p-8 rounded-3xl border border-teal-500/30 space-y-6 bg-slate-900/40">
+            <!-- Timetables Section -->
+            <section id="schedules" class="p-6 md:p-8 rounded-3xl border border-teal-500/30 space-y-6 bg-slate-900/40">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
                     <div>
-                        <span class="text-teal-400 text-xs font-bold uppercase tracking-wider">Official Timetables & Export</span>
-                        <h3 class="text-2xl font-black text-white mt-1">الجداول الدراسية الأسبوعية المعتمدة</h3>
-                        <p class="text-xs text-slate-400 mt-1">اختر المرحلة الدراسية والدراسة، ويمكنك طباعة أو حفظ الجدول بصيغة PDF فوراً:</p>
+                        <span class="text-teal-400 text-xs font-bold uppercase tracking-wider">Official Timetables</span>
+                        <h3 class="text-2xl font-black mt-1">الجداول الدراسية الأسبوعية</h3>
                     </div>
                     
                     <div class="flex items-center gap-3 w-full md:w-auto">
@@ -102,7 +111,7 @@
                             <option value="stage4-evening">المرحلة الرابعة (مسائي)</option>
                         </select>
 
-                        <button onclick="window.print()" class="px-4 py-3 bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold text-xs rounded-xl shadow-lg transition flex items-center gap-2 shrink-0" title="طباعة أو حفظ كملف PDF">
+                        <button onclick="window.print()" class="px-4 py-3 bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold text-xs rounded-xl shadow-lg transition flex items-center gap-2 shrink-0">
                             <i class="fa-solid fa-print"></i>
                             <span class="hidden md:inline">طباعة / PDF</span>
                         </button>
@@ -110,96 +119,101 @@
                 </div>
 
                 <div id="sched-stage2-morning" class="schedule-content space-y-3">
-                    <h4 class="text-sm font-bold text-sky-400"><i class="fa-solid fa-clock ml-2"></i> جدول المرحلة الثانية (صباحي) - الفصل الدراسي الأول (2027/2026)</h4>
                     <div class="overflow-x-auto rounded-xl border border-slate-800">
-                        <table class="w-full text-right text-xs text-slate-300">
+                        <table class="w-full text-right text-xs">
                             <thead class="bg-slate-950 text-teal-400 border-b border-slate-800 font-bold">
                                 <tr><th class="p-3">اليوم</th><th class="p-3">9:00 - 11:00</th><th class="p-3">11:00 - 1:00</th><th class="p-3">1:00 - 3:00</th></tr>
                             </thead>
-                            <tbody class="divide-y divide-slate-800/60 bg-slate-950/30">
-                                <tr><td class="p-3 font-bold text-white">الأحد</td><td class="p-3">Biochemistry <span class="text-teal-400 block text-[10px]">Lab No. 4 (ط2) - Group 1</span></td><td class="p-3">Physiology <span class="text-teal-400 block text-[10px]">Lab No. 5 (ط2) - Group 1</span></td><td class="p-3">Histology <span class="text-teal-400 block text-[10px]">Histology Lab (ط3) - Group 1</span></td></tr>
-                                <tr><td class="p-3 font-bold text-white">الإثنين</td><td class="p-3">Parasitology <span class="text-teal-400 block text-[10px]">Lab No. 3 (ط1) - Group 1</span></td><td class="p-3">Medical Bacteriology <span class="text-teal-400 block text-[10px]">Lab No. 2 (ط1) - Group 1</span></td><td class="p-3">Computer <span class="text-teal-400 block text-[10px]">Computer Lab - Group 1</span></td></tr>
-                                <tr><td class="p-3 font-bold text-white">الثلاثاء</td><td class="p-3">Medical Bacteriology <span class="text-slate-400 block text-[10px]">Hall No. 13 (ط1)</span></td><td class="p-3">Parasitology & Biochemistry <span class="text-slate-400 block text-[10px]">Hall No. 13 (ط1)</span></td><td class="p-3">Baath Crimes / Arabic / Computer <span class="text-slate-400 block text-[10px]">Hall No. 13 (ط1)</span></td></tr>
-                                <tr><td class="p-3 font-bold text-white">الخميس</td><td class="p-3">Physiology <span class="text-slate-400 block text-[10px]">Hall No. 13 (ط1)</span></td><td class="p-3">Biostatistics <span class="text-slate-400 block text-[10px]">Hall No. 13 (ط1)</span></td><td class="p-3">Biostatistics (Groups 1, 2 & 3) <span class="text-slate-400 block text-[10px]">Hall No. 13 (ط1)</span></td></tr>
+                            <tbody class="divide-y divide-slate-800/60 bg-slate-950/30 searchable-table">
+                                <tr><td class="p-3 font-bold">الأحد</td><td class="p-3">Biochemistry <span class="text-teal-400 block text-[10px]">Lab No. 4 (ط2)</span></td><td class="p-3">Physiology <span class="text-teal-400 block text-[10px]">Lab No. 5 (ط2)</span></td><td class="p-3">Histology <span class="text-teal-400 block text-[10px]">Histology Lab (ط3)</span></td></tr>
+                                <tr><td class="p-3 font-bold">الإثنين</td><td class="p-3">Parasitology <span class="text-teal-400 block text-[10px]">Lab No. 3 (ط1)</span></td><td class="p-3">Medical Bacteriology <span class="text-teal-400 block text-[10px]">Lab No. 2 (ط1)</span></td><td class="p-3">Computer <span class="text-teal-400 block text-[10px]">Computer Lab</span></td></tr>
+                                <tr><td class="p-3 font-bold">الثلاثاء</td><td class="p-3">Medical Bacteriology <span class="text-slate-400 block text-[10px]">Hall No. 13 (ط1)</span></td><td class="p-3">Parasitology & Biochemistry <span class="text-slate-400 block text-[10px]">Hall No. 13 (ط1)</span></td><td class="p-3">Baath Crimes / Computer <span class="text-slate-400 block text-[10px]">Hall No. 13 (ط1)</span></td></tr>
+                                <tr><td class="p-3 font-bold">الخميس</td><td class="p-3">Physiology <span class="text-slate-400 block text-[10px]">Hall No. 13 (ط1)</span></td><td class="p-3">Biostatistics <span class="text-slate-400 block text-[10px]">Hall No. 13 (ط1)</span></td><td class="p-3">Biostatistics <span class="text-slate-400 block text-[10px]">Hall No. 13 (ط1)</span></td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
+            </section>
 
-                <div id="sched-stage2-evening" class="schedule-content space-y-3 hidden">
-                    <h4 class="text-sm font-bold text-sky-400"><i class="fa-solid fa-clock ml-2"></i> جدول المرحلة الثانية (مسائي) - الفصل الدراسي الأول (2027/2026)</h4>
-                    <div class="overflow-x-auto rounded-xl border border-slate-800">
-                        <table class="w-full text-right text-xs text-slate-300">
-                            <thead class="bg-slate-950 text-teal-400 border-b border-slate-800 font-bold">
-                                <tr><th class="p-3">اليوم</th><th class="p-3">3:00 - 5:00</th><th class="p-3">5:00 - 7:00</th><th class="p-3">7:00 - 9:00</th></tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-800/60 bg-slate-950/30">
-                                <tr><td class="p-3 font-bold text-white">الأحد</td><td class="p-3">Medical Bacteriology <span class="text-slate-400 block text-[10px]">Hall No. 14 (ط2)</span></td><td class="p-3">Medical Bacteriology <span class="text-teal-400 block text-[10px]">Lab No. 2 (ط1)</span></td><td class="p-3">Baath Crimes / Arabic Language <span class="text-slate-400 block text-[10px]">Hall No. 14 (ط2)</span></td></tr>
-                                <tr><td class="p-3 font-bold text-white">الإثنين</td><td class="p-3">Histology <span class="text-slate-400 block text-[10px]">Hall No. 14 (ط2)</span></td><td class="p-3">Histology <span class="text-teal-400 block text-[10px]">Histology Lab (ط3)</span></td><td class="p-3">Computer <span class="text-slate-400 block text-[10px]">Hall No. 14 (ط2)</span></td></tr>
-                                <tr><td class="p-3 font-bold text-white">الثلاثاء</td><td class="p-3">Physiology <span class="text-slate-400 block text-[10px]">Hall No. 14 (ط2)</span></td><td class="p-3">Physiology <span class="text-teal-400 block text-[10px]">Lab No. 5 (ط2)</span></td><td class="p-3">Parasitology <span class="text-slate-400 block text-[10px]">Hall No. 14 (ط2)</span></td></tr>
-                            </tbody>
-                        </table>
-                    </div>
+            <!-- PDF Resource Hub Section -->
+            <section id="resources" class="p-6 md:p-8 rounded-3xl border border-indigo-500/30 space-y-6 bg-slate-900/40">
+                <div class="border-b border-slate-800 pb-4">
+                    <span class="text-indigo-400 text-xs font-bold uppercase tracking-wider">Academic Resources</span>
+                    <h3 class="text-2xl font-black mt-1">المكتبة الأكاديمية والملازم الرسمية (PDF)</h3>
+                    <p class="text-xs text-slate-400 mt-1">تحميل المحاضرات والملازم الدراسية المعتمدة لجميع المراحل:</p>
                 </div>
 
-                <div id="sched-stage3-morning" class="schedule-content space-y-3 hidden">
-                    <h4 class="text-sm font-bold text-sky-400"><i class="fa-solid fa-clock ml-2"></i> جدول المرحلة الثالثة (صباحي) - الفصل الدراسي الأول (2027/2026)</h4>
-                    <div class="overflow-x-auto rounded-xl border border-slate-800">
-                        <table class="w-full text-right text-xs text-slate-300">
-                            <thead class="bg-slate-950 text-teal-400 border-b border-slate-800 font-bold">
-                                <tr><th class="p-3">اليوم</th><th class="p-3">9:00 - 11:00</th><th class="p-3">11:00 - 1:00</th><th class="p-3">1:00 - 3:00</th></tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-800/60 bg-slate-950/30">
-                                <tr><td class="p-3 font-bold text-white">الأحد</td><td class="p-3">Immunology / Virology <span class="text-teal-400 block text-[10px]">Lab 1 & 2 (ط1)</span></td><td class="p-3">Advanced Lab Techniques <span class="text-teal-400 block text-[10px]">Lab No. 3 (ط1)</span></td><td class="p-3">Endocrinology <span class="text-teal-400 block text-[10px]">Lab No. 4 (ط2)</span></td></tr>
-                                <tr><td class="p-3 font-bold text-white">الإثنين</td><td class="p-3">Genetics <span class="text-teal-400 block text-[10px]">Lab No. 1 (ط1)</span></td><td class="p-3">Advanced Lab / Virology <span class="text-teal-400 block text-[10px]">Lab No. 3 & 2</span></td><td class="p-3">Hematology <span class="text-teal-400 block text-[10px]">Lab No. 5 (ط2)</span></td></tr>
-                                <tr><td class="p-3 font-bold text-white">الثلاثاء</td><td class="p-3">Endocrinology / Histopathology <span class="text-teal-400 block text-[10px]">Lab 4 & Histo. Lab</span></td><td class="p-3">Hematology / Genetics <span class="text-teal-400 block text-[10px]">Lab 5 & 1</span></td><td class="p-3">Histopathology / Computer <span class="text-slate-400 block text-[10px]">Hall No. 14 (ط2)</span></td></tr>
-                            </tbody>
-                        </table>
+                <div class="grid md:grid-cols-3 gap-4" id="pdf-library">
+                    <div class="p-4 bg-slate-950/60 rounded-2xl border border-slate-800 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <i class="fa-solid fa-file-pdf text-2xl text-rose-500"></i>
+                            <span class="text-[10px] bg-sky-500/20 text-sky-400 px-2 py-0.5 rounded-full font-bold">المرحلة الثانية</span>
+                        </div>
+                        <h4 class="font-bold text-sm">الكيمياء الحياتية Biochemistry</h4>
+                        <p class="text-xs text-slate-400">المحاضرة الأولى والثانية - المنهج النظري المعتمد.</p>
+                        <a href="#" class="inline-flex items-center gap-2 text-xs font-bold text-indigo-400 hover:text-indigo-300"><i class="fa-solid fa-download"></i> تحميل PDF</a>
+                    </div>
+
+                    <div class="p-4 bg-slate-950/60 rounded-2xl border border-slate-800 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <i class="fa-solid fa-file-pdf text-2xl text-rose-500"></i>
+                            <span class="text-[10px] bg-teal-500/20 text-teal-400 px-2 py-0.5 rounded-full font-bold">المرحلة الثالثة</span>
+                        </div>
+                        <h4 class="font-bold text-sm">علم المناعة Immunology</h4>
+                        <p class="text-xs text-slate-400">ملخص الاختبارات السريرية والمختبرية.</p>
+                        <a href="#" class="inline-flex items-center gap-2 text-xs font-bold text-indigo-400 hover:text-indigo-300"><i class="fa-solid fa-download"></i> تحميل PDF</a>
+                    </div>
+
+                    <div class="p-4 bg-slate-950/60 rounded-2xl border border-slate-800 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <i class="fa-solid fa-file-pdf text-2xl text-rose-500"></i>
+                            <span class="text-[10px] bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full font-bold">المرحلة الرابعة</span>
+                        </div>
+                        <h4 class="font-bold text-sm">البكتريا التشخيصية Diagnostic Bact.</h4>
+                        <p class="text-xs text-slate-400">دليل التشخيص العملي والقاعات الرسمية.</p>
+                        <a href="#" class="inline-flex items-center gap-2 text-xs font-bold text-indigo-400 hover:text-indigo-300"><i class="fa-solid fa-download"></i> تحميل PDF</a>
                     </div>
                 </div>
+            </section>
 
-                <div id="sched-stage3-evening" class="schedule-content space-y-3 hidden">
-                    <h4 class="text-sm font-bold text-sky-400"><i class="fa-solid fa-clock ml-2"></i> جدول المرحلة الثالثة (مسائي) - الفصل الدراسي الأول (2027/2026)</h4>
-                    <div class="overflow-x-auto rounded-xl border border-slate-800">
-                        <table class="w-full text-right text-xs text-slate-300">
-                            <thead class="bg-slate-950 text-teal-400 border-b border-slate-800 font-bold">
-                                <tr><th class="p-3">اليوم</th><th class="p-3">3:00 - 5:00</th><th class="p-3">5:00 - 7:00</th><th class="p-3">7:00 - 9:00</th></tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-800/60 bg-slate-950/30">
-                                <tr><td class="p-3 font-bold text-white">الأحد</td><td class="p-3">Genetics <span class="text-slate-400 block text-[10px]">Hall No. 11 (ط2)</span></td><td class="p-3">Endocrinology <span class="text-slate-400 block text-[10px]">Hall No. 11 (ط2)</span></td><td class="p-3">Endocrinology <span class="text-teal-400 block text-[10px]">Lab No. 4 (ط2)</span></td></tr>
-                                <tr><td class="p-3 font-bold text-white">الإثنين</td><td class="p-3">Virology <span class="text-slate-400 block text-[10px]">Hall No. 11 (ط2)</span></td><td class="p-3">Virology <span class="text-teal-400 block text-[10px]">Lab No. 2 (ط1)</span></td><td class="p-3">Genetics <span class="text-teal-400 block text-[10px]">Lab No. 3 (ط1)</span></td></tr>
-                            </tbody>
-                        </table>
+            <!-- GPA Calculator Section -->
+            <section id="gpa-calculator" class="p-6 md:p-8 rounded-3xl border border-sky-500/30 space-y-6 bg-slate-900/40">
+                <div class="border-b border-slate-800 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <span class="text-sky-400 text-xs font-bold uppercase tracking-wider">Student Utility</span>
+                        <h3 class="text-2xl font-black mt-1">حاسبة المعدل الأكاديمي الفصلي</h3>
                     </div>
+                    <button onclick="addGpaRow()" class="px-4 py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs rounded-xl shadow-lg transition flex items-center gap-2 self-start md:self-auto">
+                        <i class="fa-solid fa-plus"></i> إضافة مادة
+                    </button>
                 </div>
 
-                <div id="sched-stage4-morning" class="schedule-content space-y-3 hidden">
-                    <h4 class="text-sm font-bold text-sky-400"><i class="fa-solid fa-clock ml-2"></i> جدول المرحلة الرابعة (صباحي) - الفصل الدراسي الأول (2027/2026)</h4>
-                    <div class="overflow-x-auto rounded-xl border border-slate-800">
-                        <table class="w-full text-right text-xs text-slate-300">
-                            <thead class="bg-slate-950 text-teal-400 border-b border-slate-800 font-bold">
-                                <tr><th class="p-3">اليوم</th><th class="p-3">9:00 - 11:00</th><th class="p-3">11:00 - 1:00</th><th class="p-3">1:00 - 3:00</th></tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-800/60 bg-slate-950/30">
-                                <tr><td class="p-3 font-bold text-white">الأحد</td><td class="p-3">Diagnostic Bacteriology <span class="text-slate-400 block text-[10px]">Hall No. 12 (ط1)</span></td><td class="p-3">Diagnostic Parasitology <span class="text-slate-400 block text-[10px]">Hall No. 12 (ط1)</span></td><td class="p-3">Research Methods <span class="text-slate-400 block text-[10px]">Hall No. 12 (ط1)</span></td></tr>
-                                <tr><td class="p-3 font-bold text-white">الإثنين</td><td class="p-3">Pathology <span class="text-slate-400 block text-[10px]">Hall No. 12 (ط1)</span></td><td class="p-3">Clinical Immunology <span class="text-slate-400 block text-[10px]">Hall No. 12 (ط1)</span></td><td class="p-3">Professional Ethics <span class="text-slate-400 block text-[10px]">Hall No. 12 (ط1)</span></td></tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="overflow-x-auto rounded-xl border border-slate-800">
+                    <table class="w-full text-right text-xs">
+                        <thead class="bg-slate-950 text-sky-400 border-b border-slate-800 font-bold">
+                            <tr>
+                                <th class="p-3">اسم المادة الدراسية</th>
+                                <th class="p-3">عدد الوحدات</th>
+                                <th class="p-3">الدرجة من 100</th>
+                                <th class="p-3 text-center">إجراء</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gpa-rows" class="divide-y divide-slate-800/60 bg-slate-950/30">
+                            <tr>
+                                <td class="p-3"><input type="text" placeholder="اسم المادة" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs outline-none focus:border-sky-500 course-name"></td>
+                                <td class="p-3"><input type="number" min="1" max="6" value="3" class="w-24 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs outline-none focus:border-sky-500 course-units"></td>
+                                <td class="p-3"><input type="number" min="0" max="100" placeholder="الدرجة" class="w-24 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs outline-none focus:border-sky-500 course-grade"></td>
+                                <td class="p-3 text-center"><button onclick="removeGpaRow(this)" class="text-rose-400 hover:text-rose-300 p-1"><i class="fa-solid fa-trash-can"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
-                <div id="sched-stage4-evening" class="schedule-content space-y-3 hidden">
-                    <h4 class="text-sm font-bold text-sky-400"><i class="fa-solid fa-clock ml-2"></i> جدول المرحلة الرابعة (مسائي) - الفصل الدراسي الأول (2027/2026)</h4>
-                    <div class="overflow-x-auto rounded-xl border border-slate-800">
-                        <table class="w-full text-right text-xs text-slate-300">
-                            <thead class="bg-slate-950 text-teal-400 border-b border-slate-800 font-bold">
-                                <tr><th class="p-3">اليوم</th><th class="p-3">3:00 - 5:00</th><th class="p-3">5:00 - 7:00</th><th class="p-3">7:00 - 9:00</th></tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-800/60 bg-slate-950/30">
-                                <tr><td class="p-3 font-bold text-white">الأحد</td><td class="p-3">Clinical Immunology <span class="text-slate-400 block text-[10px]">Hall No. 13 (ط1)</span></td><td class="p-3">Blood Transfusion <span class="text-slate-400 block text-[10px]">Hall No. 13 (ط1)</span></td><td class="p-3">Clinical Immunology <span class="text-teal-400 block text-[10px]">Lab No. 1 (ط1)</span></td></tr>
-                                <tr><td class="p-3 font-bold text-white">الإثنين</td><td class="p-3">Diagnostic Bacteriology <span class="text-slate-400 block text-[10px]">Hall No. 13 (ط1)</span></td><td class="p-3">Blood Transfusion <span class="text-teal-400 block text-[10px]">Lab No. 5 (ط2)</span></td><td class="p-3">Diagnostic Bacteriology <span class="text-teal-400 block text-[10px]">Lab No. 2 (ط1)</span></td></tr>
-                            </tbody>
-                        </table>
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-slate-950/60 rounded-2xl border border-slate-800">
+                    <button onclick="calculateGPA()" class="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-sky-500 to-teal-400 text-slate-950 font-black text-xs rounded-xl shadow-lg hover:opacity-95 transition">احسب المعدل الآن</button>
+                    <div class="text-center sm:text-left">
+                        <span class="text-xs">المعدل الفصلـي التقديري:</span>
+                        <span id="gpa-result" class="text-2xl font-black text-teal-400 mr-2">0.00</span>
                     </div>
                 </div>
             </section>
@@ -208,4 +222,3 @@
     <script src="app.js"></script>
 </body>
 </html>
-
