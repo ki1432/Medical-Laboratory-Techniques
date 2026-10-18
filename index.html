@@ -97,6 +97,7 @@
                         <!-- ==================== الجداول الدراسية الأسبوعية الرسمية ==================== -->
                         <!-- ==================== الجداول الدراسية الأسبوعية الرسمية ==================== -->
                         <!-- ==================== الجداول الدراسية الأسبوعية الرسمية ==================== -->
+                        <!-- ==================== الجداول الدراسية الأسبوعية الرسمية ==================== -->
             <section id="schedules" class="glass-panel p-6 md:p-8 rounded-3xl border border-teal-500/30 space-y-6 bg-slate-900/40">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
                     <div>
@@ -126,12 +127,12 @@
                 <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800 text-[11px] text-slate-400 flex flex-wrap gap-4 items-center justify-between">
                     <span><i class="fa-solid fa-circle text-teal-400 ml-1"></i> العملي: (لون فاتح)</span>
                     <span><i class="fa-solid fa-circle text-sky-500 ml-1"></i> النظري: (لون داكن)</span>
-                    <span><i class="fa-solid fa-building-columns ml-1"></i> الطابق الأول: Hall 12, 13 & Lab 1, 2, 3[cite: 3, 5, 7]</span>
-                    <span><i class="fa-solid fa-building-columns ml-1"></i> الطابق الثاني: Hall 14 & Lab 4, 5[cite: 3, 4, 5, 6]</span>
-                    <span><i class="fa-solid fa-building-columns ml-1"></i> الطابق الثالث: مختبر الأنسجة والباثولوجي[cite: 3, 5, 7]</span>
+                    <span><i class="fa-solid fa-building-columns ml-1"></i> الطابق الأول: Hall 12, 13 | Lab 1, 2, 3</span>
+                    <span><i class="fa-solid fa-building-columns ml-1"></i> الطابق الثاني: Hall 10, 11, 14 | Lab 4, 5</span>
+                    <span><i class="fa-solid fa-building-columns ml-1"></i> الطابق الثالث: مختبر الأنسجة والباثولوجي</span>
                 </div>
 
-                <!-- 1. المرحلة الثانية (صباحي) - المحدثة بدقة حسب المستند -->
+                <!-- 1. المرحلة الثانية (صباحي) -->
                 <div id="sched-stage2-morning" class="schedule-content space-y-3">
                     <h4 class="text-sm font-bold text-teal-400"><i class="fa-solid fa-clock ml-2"></i> جدول المرحلة الثانية (صباحي) - الفصل الدراسي الأول</h4>
                     <div class="overflow-x-auto rounded-xl border border-slate-800">
@@ -141,41 +142,251 @@
                             </thead>
                             <tbody class="divide-y divide-slate-800/60 bg-slate-950/30">
                                 <tr>
-                                    <td class="p-3 font-bold">الأحد[cite: 3]</td>
-                                    <td class="p-3">Biochemistry <span class="text-teal-400 block text-[10px]">Lab No. 4 (ط2) - Group 1</span><span class="text-sky-400 block text-[10px]">Grp 2: Phy. Lab 5 | Grp 3: Bio. Lab 4</span></td>
-                                    <td class="p-3">Physiology <span class="text-teal-400 block text-[10px]">Lab No. 5 (ط2) - Group 1</span><span class="text-sky-400 block text-[10px]">Grp 2: Bio. Lab 4 | Grp 3: Histo. Lab</span></td>
-                                    <td class="p-3">Histology <span class="text-teal-400 block text-[10px]">Histology Lab (ط3) - Group 1</span><span class="text-sky-400 block text-[10px]">Grp 2: Histo | Grp 3: Phy. Lab 5</span></td>
+                                    <td class="p-3 font-bold">الأحد</td>
+                                    <td class="p-3">Biochemistry <span class="text-teal-400 block text-[10px]">Group 1 - (2b) Lab No. 4</span></td>
+                                    <td class="p-3">Physiology <span class="text-teal-400 block text-[10px]">Group 1 - (2b) Lab No. 5</span></td>
+                                    <td class="p-3">Histology <span class="text-teal-400 block text-[10px]">Group 1 - (3b) Histology Lab</span></td>
                                 </tr>
                                 <tr>
-                                    <td class="p-3 font-bold">الإثنين[cite: 3]</td>
-                                    <td class="p-3">Parasitology <span class="text-teal-400 block text-[10px]">Lab No. 3 (ط1) - Group 1</span><span class="text-sky-400 block text-[10px]">Grp 2: Bact. Lab 2 | Grp 3: Bact. Lab 2</span></td>
-                                    <td class="p-3">Medical Bacteriology <span class="text-teal-400 block text-[10px]">Lab No. 2 (ط1) - Group 1</span><span class="text-sky-400 block text-[10px]">Grp 2: Computer Lab | Grp 3: Computer Lab</span></td>
-                                    <td class="p-3">Computer <span class="text-teal-400 block text-[10px]">Computer Lab - Group 1</span><span class="text-sky-400 block text-[10px]">Grp 2: Parasitology Lab 3 | Grp 3: Parasitology</span></td>
+                                    <td class="p-3 font-bold">الإثنين</td>
+                                    <td class="p-3">Parasitology <span class="text-teal-400 block text-[10px]">Group 1 - (1b) Lab No. 3</span></td>
+                                    <td class="p-3">Medical Bacteriology <span class="text-teal-400 block text-[10px]">Group 1 - (1b) Lab No. 2</span></td>
+                                    <td class="p-3">Computer <span class="text-teal-400 block text-[10px]">Computer Lab - Group 1</span></td>
                                 </tr>
                                 <tr>
-                                    <td class="p-3 font-bold">الثلاثاء[cite: 3]</td>
-                                    <td class="p-3">Medical Bacteriology <span class="text-sky-400 block text-[10px]">Hall No. 13 (ط1)</span></td>
-                                    <td class="p-3">Parasitology & Biochemistry <span class="text-sky-400 block text-[10px]">Hall No. 13 (ط1)</span></td>
-                                    <td class="p-3">Baath Party Crimes <span class="text-sky-400 block text-[10px]">Hall No. 13 (ط1)</span></td>
+                                    <td class="p-3 font-bold">الثلاثاء</td>
+                                    <td class="p-3">Medical Bacteriology <span class="text-sky-400 block text-[10px]">(1b) Hall No. 13</span></td>
+                                    <td class="p-3">Parasitology & Biochemistry <span class="text-sky-400 block text-[10px]">(1b) Hall No. 13</span></td>
+                                    <td class="p-3">Baath Party Crimes <span class="text-sky-400 block text-[10px]">(1b) Hall No. 13</span></td>
                                 </tr>
                                 <tr>
-                                    <td class="p-3 font-bold">الأربعاء[cite: 3]</td>
-                                    <td class="p-3">Histology <span class="text-sky-400 block text-[10px]">Hall No. 13 (ط1)</span></td>
-                                    <td class="p-3">Biochemistry <span class="text-sky-400 block text-[10px]">Hall No. 13 (ط1)</span></td>
-                                    <td class="p-3">Arabic Language & Computer <span class="text-sky-400 block text-[10px]">Hall No. 13 (ط1)</span></td>
+                                    <td class="p-3 font-bold">الأربعاء</td>
+                                    <td class="p-3">Histology <span class="text-sky-400 block text-[10px]">(1b) Hall No. 13</span></td>
+                                    <td class="p-3">Biochemistry <span class="text-sky-400 block text-[10px]">(1b) Hall No. 13</span></td>
+                                    <td class="p-3">Arabic Language & Computer <span class="text-sky-400 block text-[10px]">(1b) Hall No. 13</span></td>
                                 </tr>
                                 <tr>
-                                    <td class="p-3 font-bold">الخميس[cite: 3]</td>
-                                    <td class="p-3">Physiology <span class="text-sky-400 block text-[10px]">Hall No. 13 (ط1)</span></td>
-                                    <td class="p-3">Biostatistics <span class="text-sky-400 block text-[10px]">Hall No. 13 (ط1)</span></td>
-                                    <td class="p-3">Biostatistics (Groups 1, 2 & 3) <span class="text-sky-400 block text-[10px]">Hall No. 13 (ط1)</span></td>
+                                    <td class="p-3 font-bold">الخميس</td>
+                                    <td class="p-3">Physiology <span class="text-sky-400 block text-[10px]">(1b) Hall No. 13</span></td>
+                                    <td class="p-3">Biostatistics <span class="text-sky-400 block text-[10px]">(1b) Hall No. 13</span></td>
+                                    <td class="p-3">Biostatistics (Groups 1, 2 & 3) <span class="text-sky-400 block text-[10px]">(1b) Hall No. 13</span></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- باقي المراحل (الثانية مسائي، الثالثة والرابعة) تبقى كما هي أو مضافة مسبقاً -->
+                <!-- 2. المرحلة الثانية (مسائي) -->
+                <div id="sched-stage2-evening" class="schedule-content space-y-3 hidden">
+                    <h4 class="text-sm font-bold text-teal-400"><i class="fa-solid fa-clock ml-2"></i> جدول المرحلة الثانية (مسائي) - الفصل الدراسي الأول</h4>
+                    <div class="overflow-x-auto rounded-xl border border-slate-800">
+                        <table class="w-full text-right text-xs searchable-table">
+                            <thead class="bg-slate-950 text-teal-400 border-b border-slate-800 font-bold">
+                                <tr><th class="p-3">اليوم</th><th class="p-3">3:00 - 5:00</th><th class="p-3">5:00 - 7:00</th><th class="p-3">7:00 - 9:00</th></tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800/60 bg-slate-950/30">
+                                <tr>
+                                    <td class="p-3 font-bold">الأحد</td>
+                                    <td class="p-3">Medical Bacteriology <span class="text-sky-400 block text-[10px]">Hall No. 14 (ط2)</span></td>
+                                    <td class="p-3">Medical Bacteriology <span class="text-teal-400 block text-[10px]">Lab No. 2 (ط1)</span></td>
+                                    <td class="p-3">Arabic Language / Baath Crimes <span class="text-sky-400 block text-[10px]">Hall No. 14 (ط2)</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold">الإثنين</td>
+                                    <td class="p-3">Histology <span class="text-sky-400 block text-[10px]">Hall No. 14 (ط2)</span></td>
+                                    <td class="p-3">Histology <span class="text-teal-400 block text-[10px]">Histology Lab (ط3)</span></td>
+                                    <td class="p-3">Computer <span class="text-sky-400 block text-[10px]">Hall No. 14 (ط2)</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold">الثلاثاء</td>
+                                    <td class="p-3">Physiology <span class="text-sky-400 block text-[10px]">Hall No. 14 (ط2)</span></td>
+                                    <td class="p-3">Physiology <span class="text-teal-400 block text-[10px]">Lab No. 5 (ط2)</span></td>
+                                    <td class="p-3">Parasitology <span class="text-sky-400 block text-[10px]">Hall No. 14 (ط2)</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold">الأربعاء</td>
+                                    <td class="p-3">Biostatistics <span class="text-sky-400 block text-[10px]">Hall No. 14 (ط2)</span></td>
+                                    <td class="p-3">Computer <span class="text-teal-400 block text-[10px]">Computer Lab</span></td>
+                                    <td class="p-3">Parasitology <span class="text-teal-400 block text-[10px]">Lab No. 3 (ط1)</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold">الخميس</td>
+                                    <td class="p-3">Biochemistry <span class="text-sky-400 block text-[10px]">Hall No. 14 (ط2)</span></td>
+                                    <td class="p-3">Biochemistry <span class="text-teal-400 block text-[10px]">Lab No. 4 (ط2)</span></td>
+                                    <td class="p-3 text-slate-500">استراحة</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 3. المرحلة الثالثة (صباحي) -->
+                <div id="sched-stage3-morning" class="schedule-content space-y-3 hidden">
+                    <h4 class="text-sm font-bold text-teal-400"><i class="fa-solid fa-clock ml-2"></i> جدول المرحلة الثالثة (صباحي) - الفصل الدراسي الأول</h4>
+                    <div class="overflow-x-auto rounded-xl border border-slate-800">
+                        <table class="w-full text-right text-xs searchable-table">
+                            <thead class="bg-slate-950 text-teal-400 border-b border-slate-800 font-bold">
+                                <tr><th class="p-3">اليوم</th><th class="p-3">9:00 - 11:00</th><th class="p-3">11:00 - 1:00</th><th class="p-3">1:00 - 3:00</th></tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800/60 bg-slate-950/30">
+                                <tr>
+                                    <td class="p-3 font-bold">الأحد</td>
+                                    <td class="p-3">Immunology / Virology <span class="text-teal-400 block text-[10px]">Lab 1 & 2 (ط1)</span></td>
+                                    <td class="p-3">Advanced Lab Techniques <span class="text-teal-400 block text-[10px]">Lab No. 3 (ط1)</span></td>
+                                    <td class="p-3">Endocrinology <span class="text-teal-400 block text-[10px]">Lab No. 4 (ط2)</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold">الإثنين</td>
+                                    <td class="p-3">Genetics <span class="text-teal-400 block text-[10px]">Lab No. 1 (ط1)</span></td>
+                                    <td class="p-3">Advanced Lab / Virology <span class="text-teal-400 block text-[10px]">Lab 3 & 2</span></td>
+                                    <td class="p-3">Hematology <span class="text-teal-400 block text-[10px]">Lab No. 5 (ط2)</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold">الثلاثاء</td>
+                                    <td class="p-3">Endocrinology / Histopathology <span class="text-teal-400 block text-[10px]">Lab 4 & Histo. Lab</span></td>
+                                    <td class="p-3">Hematology / Genetics <span class="text-teal-400 block text-[10px]">Lab 5 & 1</span></td>
+                                    <td class="p-3">Histopathology / Computer <span class="text-sky-400 block text-[10px]">Hall No. 14 (ط2)</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold">الأربعاء</td>
+                                    <td class="p-3">Computer (Theory + Practical) <span class="text-sky-400 block text-[10px]">Hall No. 14</span></td>
+                                    <td class="p-3">Histopathology <span class="text-teal-400 block text-[10px]">Histo. Lab (ط3)</span></td>
+                                    <td class="p-3">Virology & Hematology <span class="text-sky-400 block text-[10px]">Hall No. 14 (ط2)</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold">الخميس</td>
+                                    <td class="p-3">Immunology <span class="text-sky-400 block text-[10px]">Hall No. 14 (ط2)</span></td>
+                                    <td class="p-3">Genetics & Endocrinology <span class="text-sky-400 block text-[10px]">Hall No. 14 (ط2)</span></td>
+                                    <td class="p-3 text-slate-500">استراحة</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 4. المرحلة الثالثة (مسائي) -->
+                <div id="sched-stage3-evening" class="schedule-content space-y-3 hidden">
+                    <h4 class="text-sm font-bold text-teal-400"><i class="fa-solid fa-clock ml-2"></i> جدول المرحلة الثالثة (مسائي) - الفصل الدراسي الأول</h4>
+                    <div class="overflow-x-auto rounded-xl border border-slate-800">
+                        <table class="w-full text-right text-xs searchable-table">
+                            <thead class="bg-slate-950 text-teal-400 border-b border-slate-800 font-bold">
+                                <tr><th class="p-3">اليوم</th><th class="p-3">3:00 - 5:00</th><th class="p-3">5:00 - 7:00</th><th class="p-3">7:00 - 9:00</th></tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800/60 bg-slate-950/30">
+                                <tr>
+                                    <td class="p-3 font-bold">الأحد</td>
+                                    <td class="p-3">Genetics <span class="text-sky-400 block text-[10px]">Hall No. 11</span></td>
+                                    <td class="p-3">Endocrinology <span class="text-sky-400 block text-[10px]">Hall No. 11</span></td>
+                                    <td class="p-3">Endocrinology <span class="text-teal-400 block text-[10px]">Lab No. 4 (ط2)</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold">الإثنين</td>
+                                    <td class="p-3">Virology <span class="text-sky-400 block text-[10px]">Hall No. 11</span></td>
+                                    <td class="p-3">Virology <span class="text-teal-400 block text-[10px]">Lab No. 2 (ط1)</span></td>
+                                    <td class="p-3">Genetics <span class="text-teal-400 block text-[10px]">Lab No. 3 (ط1)</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold">الثلاثاء</td>
+                                    <td class="p-3">Histopathology <span class="text-sky-400 block text-[10px]">Hall No. 11</span></td>
+                                    <td class="p-3">Advanced Lab Techniques <span class="text-sky-400 block text-[10px]">Hall No. 11</span></td>
+                                    <td class="p-3">Advanced Lab Techniques <span class="text-teal-400 block text-[10px]">Lab No. 3 (ط1)</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold">الأربعاء</td>
+                                    <td class="p-3">Hematology <span class="text-sky-400 block text-[10px]">Hall No. 11</span></td>
+                                    <td class="p-3">Hematology <span class="text-teal-400 block text-[10px]">Lab No. 2 (ط1)</span></td>
+                                    <td class="p-3">Histopathology <span class="text-teal-400 block text-[10px]">Histo. Lab (ط3)</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold">الخميس</td>
+                                    <td class="p-3">Immunology <span class="text-sky-400 block text-[10px]">Hall No. 11</span></td>
+                                    <td class="p-3">Immunology <span class="text-teal-400 block text-[10px]">Lab No. 1 (ط1)</span></td>
+                                    <td class="p-3">Computer / Histo Lab <span class="text-teal-400 block text-[10px]">Hall No. 11</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 5. المرحلة الرابعة (صباحي) -->
+                <div id="sched-stage4-morning" class="schedule-content space-y-3 hidden">
+                    <h4 class="text-sm font-bold text-teal-400"><i class="fa-solid fa-clock ml-2"></i> جدول المرحلة الرابعة (صباحي) - الفصل الدراسي الأول</h4>
+                    <div class="overflow-x-auto rounded-xl border border-slate-800">
+                        <table class="w-full text-right text-xs searchable-table">
+                            <thead class="bg-slate-950 text-teal-400 border-b border-slate-800 font-bold">
+                                <tr><th class="p-3">اليوم</th><th class="p-3">9:00 - 11:00</th><th class="p-3">11:00 - 1:00</th><th class="p-3">1:00 - 3:00</th></tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800/60 bg-slate-950/30">
+                                <tr>
+                                    <td class="p-3 font-bold">الأحد</td>
+                                    <td class="p-3">Diagnostic Bacteriology <span class="text-sky-400 block text-[10px]">Hall No. 12 (ط1)</span></td>
+                                    <td class="p-3">Diagnostic Parasitology <span class="text-sky-400 block text-[10px]">Hall No. 12 (ط1)</span></td>
+                                    <td class="p-3">Research Methods <span class="text-sky-400 block text-[10px]">Hall No. 12 (ط1)</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold">الإثنين</td>
+                                    <td class="p-3">Pathology <span class="text-sky-400 block text-[10px]">Hall No. 12 (ط1)</span></td>
+                                    <td class="p-3">Clinical Immunology <span class="text-sky-400 block text-[10px]">Hall No. 12 (ط1)</span></td>
+                                    <td class="p-3">Professional Ethics <span class="text-sky-400 block text-[10px]">Hall No. 12 (ط1)</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold">الثلاثاء</td>
+                                    <td class="p-3">Blood Transfusion <span class="text-sky-400 block text-[10px]">Hall No. 12 (ط1)</span></td>
+                                    <td class="p-3">Pathology <span class="text-sky-400 block text-[10px]">Hall No. 13 (ط1)</span></td>
+                                    <td class="p-3">Clinical Immunology <span class="text-sky-400 block text-[10px]">Hall No. 13 (ط1)</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold">الأربعاء والخميس</td>
+                                    <td class="p-3" colspan="3">المختبرات العملية (المجموعات 1 إلى 6): Clinical Immun. Lab 1 | Diag. Bact. Lab 2 | Parasitology Lab 3 | Enzymology Lab 4 | Blood Transfusion Lab 5 | Pathology Histo. Lab</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 6. المرحلة الرابعة (مسائي) -->
+                <div id="sched-stage4-evening" class="schedule-content space-y-3 hidden">
+                    <h4 class="text-sm font-bold text-teal-400"><i class="fa-solid fa-clock ml-2"></i> جدول المرحلة الرابعة (مسائي) - الفصل الدراسي الأول</h4>
+                    <div class="overflow-x-auto rounded-xl border border-slate-800">
+                        <table class="w-full text-right text-xs searchable-table">
+                            <thead class="bg-slate-950 text-teal-400 border-b border-slate-800 font-bold">
+                                <tr><th class="p-3">اليوم</th><th class="p-3">3:00 - 5:00</th><th class="p-3">5:00 - 7:00</th><th class="p-3">7:00 - 9:00</th></tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800/60 bg-slate-950/30">
+                                <tr>
+                                    <td class="p-3 font-bold">الأحد</td>
+                                    <td class="p-3">Clinical Immunology <span class="text-sky-400 block text-[10px]">Hall No. 13</span></td>
+                                    <td class="p-3">Blood Transfusion <span class="text-sky-400 block text-[10px]">Hall No. 13</span></td>
+                                    <td class="p-3">Clinical Immunology <span class="text-teal-400 block text-[10px]">Lab No. 1 (ط1)</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold">الإثنين</td>
+                                    <td class="p-3">Diagnostic Bacteriology <span class="text-sky-400 block text-[10px]">Hall No. 13</span></td>
+                                    <td class="p-3">Blood Transfusion <span class="text-teal-400 block text-[10px]">Lab No. 5 (ط2)</span></td>
+                                    <td class="p-3">Diagnostic Bacteriology <span class="text-teal-400 block text-[10px]">Lab No. 2 (ط1)</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold">الثلاثاء</td>
+                                    <td class="p-3">Diagnostic Parasitology <span class="text-sky-400 block text-[10px]">Hall No. 13</span></td>
+                                    <td class="p-3">Diagnostic Parasitology <span class="text-teal-400 block text-[10px]">Lab No. 3 (ط1)</span></td>
+                                    <td class="p-3 text-slate-500">استراحة</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold">الأربعاء</td>
+                                    <td class="p-3">Research Methods <span class="text-sky-400 block text-[10px]">Hall No. 13</span></td>
+                                    <td class="p-3">Enzymology <span class="text-sky-400 block text-[10px]">Hall No. 13</span></td>
+                                    <td class="p-3">Enzymology <span class="text-teal-400 block text-[10px]">Lab No. 4 (ط2)</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold">الخميس</td>
+                                    <td class="p-3">Pathology <span class="text-sky-400 block text-[10px]">Hall No. 13</span></td>
+                                    <td class="p-3">Pathology <span class="text-teal-400 block text-[10px]">Pathology Lab (ط3)</span></td>
+                                    <td class="p-3 text-slate-500">استراحة</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </section>
 
             <!-- PDF Resource Hub Section -->
@@ -265,6 +476,7 @@
     <script src="app.js"></script>
 </body>
 </html>
+
 
 
 
