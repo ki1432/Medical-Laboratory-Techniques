@@ -41,6 +41,29 @@
             </div>
         </header>
 
+        
+        <!-- ==================== شريط الإعلانات الفورية ==================== -->
+        <div id="announcement-banner" class="bg-gradient-to-r from-amber-500/10 via-sky-500/10 to-teal-500/10 border-b border-amber-500/30 py-2.5 px-4 backdrop-blur-md">
+            <div class="max-w-7xl mx-auto flex items-center justify-between gap-4 text-xs font-semibold">
+                <div class="flex items-center gap-2 text-amber-400 shrink-0 font-bold">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                    </span>
+                    <i class="fa-solid fa-bullhorn text-xs"></i>
+                    <span>تنويه هام:</span>
+                </div>
+                <div class="overflow-hidden whitespace-nowrap w-full">
+                    <div id="announcement-text" class="inline-block animate-marquee text-slate-200">
+                        تنويه: يرجى التزام طلبة جميع المراحل الدراسية بالزي الموحد والجداول المعتمدة للفصل الدراسي الأول 2026/2027.
+                    </div>
+                </div>
+                <button onclick="document.getElementById('announcement-banner').style.display='none'" class="text-slate-400 hover:text-white transition shrink-0 p-1">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+        </div>
+
         <main class="flex-grow max-w-7xl mx-auto px-4 py-10 w-full space-y-16">
             <section id="about" class="grid lg:grid-cols-12 gap-8 items-center glass-panel p-8 rounded-3xl border border-sky-500/20 bg-slate-900/50">
                 <div class="lg:col-span-8 space-y-6">
@@ -185,3 +208,4 @@
     <script src="app.js"></script>
 </body>
 </html>
+
