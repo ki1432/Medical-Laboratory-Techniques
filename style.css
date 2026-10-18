@@ -44,3 +44,37 @@ body {
 .neon-glow {
     text-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
 }
+@media print {
+    body * { visibility: hidden; }
+    #schedules, #schedules * { visibility: visible; }
+    #schedules {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background: #ffffff !important;
+        color: #000000 !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+    }
+    #schedule-selector, #schedules button, header, footer {
+        display: none !important;
+    }
+    table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+        background: white !important;
+        color: black !important;
+    }
+    th, td {
+        border: 1px solid #cbd5e1 !important;
+        padding: 8px !important;
+        text-align: right !important;
+        color: #0f172a !important;
+    }
+    thead {
+        background: #f1f5f9 !important;
+        color: #0f172a !important;
+    }
+}
