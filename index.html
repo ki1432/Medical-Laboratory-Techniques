@@ -491,11 +491,12 @@
     <script src="app.js"></script>
 
     <!-- نافذة إدارة النظام والمشرفين (مؤمّنة) -->
-    <div id="admin-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 backdrop-blur-md hidden">
-        <div class="glass-panel p-6 md:p-8 rounded-3xl border border-rose-500/30 bg-slate-900 max-w-2xl w-full mx-4 space-y-6 shadow-2xl overflow-y-auto max-h-[90vh]">
+    <!-- ==================== لوحة الإدارة الشاملة والمعزولة (خاصة بالقسم) ==================== -->
+    <div id="admin-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/90 backdrop-blur-md hidden">
+        <div class="glass-panel p-6 md:p-8 rounded-3xl border border-rose-500/30 bg-slate-900 max-w-5xl w-full mx-4 space-y-6 shadow-2xl overflow-y-auto max-h-[90vh]">
             
-            <!-- شاشة تسجيل دخول المشرف -->
-            <div id="admin-login-screen" class="space-y-4">
+            <!-- 1. شاشة تسجيل الدخول المخصصة للمشرفين -->
+            <div id="admin-login-screen" class="space-y-4 max-w-md mx-auto py-6">
                 <div class="flex items-center justify-between border-b border-slate-800 pb-4">
                     <div class="flex items-center gap-2 text-rose-400 font-bold">
                         <i class="fa-solid fa-shield-halved text-xl"></i>
@@ -513,17 +514,17 @@
                         <input type="password" id="admin-password" required class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-slate-200 outline-none focus:border-rose-500" placeholder="••••••••">
                     </div>
                     <button type="submit" class="w-full py-3 bg-gradient-to-r from-rose-500 to-amber-500 text-slate-950 font-black text-xs rounded-xl shadow-lg hover:opacity-95 transition">
-                        تأكيد الدخول
+                        تأكيد الدخول للوحة التحكم
                     </button>
                 </form>
             </div>
 
-            <!-- لوحة التحكم الحقيقية بعد تسجيل الدخول -->
+            <!-- 2. لوحة التحكم الإدارية الداخلية الكاملة -->
             <div id="admin-dashboard-screen" class="space-y-6 hidden">
                 <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-                    <div class="flex items-center gap-2 text-teal-400 font-bold">
+                    <div class="flex items-center gap-2 text-rose-400 font-bold">
                         <i class="fa-solid fa-user-shield text-xl"></i>
-                        <h3>لوحة الإدارة والحماية - <span id="current-admin-name" class="text-rose-400">المدير</span></h3>
+                        <h3>لوحة الإدارة والخصائص السرية - <span id="current-admin-name" class="text-teal-400">المدير</span></h3>
                     </div>
                     <div class="flex items-center gap-2">
                         <button onclick="logoutAdmin()" class="px-3 py-1.5 bg-slate-800 hover:bg-rose-500/20 text-rose-400 text-xs font-bold rounded-lg border border-rose-500/30">خروج</button>
@@ -531,42 +532,155 @@
                     </div>
                 </div>
 
-                <!-- تبويبات لوحة التحكم -->
-                <div class="flex border-b border-slate-800 gap-4 text-xs font-bold">
-                    <button id="tab-btn-announcement" onclick="switchAdminTab('announcement')" class="pb-2 border-b-2 border-teal-400 text-teal-400">تحديث الإعلانات</button>
-                    <button id="tab-btn-supervisors" onclick="switchAdminTab('supervisors')" class="pb-2 text-slate-400 hover:text-white">إدارة المشرفين</button>
+                <!-- شريط التبويبات الداخلية للإدارة -->
+                <div class="flex border-b border-slate-800 gap-4 text-xs font-bold overflow-x-auto pb-1">
+                    <button id="tab-btn-registration" onclick="switchAdminTab('registration')" class="pb-2 border-b-2 border-teal-400 text-teal-400">إدارة وتسجيل الطلبة</button>
+                    <button id="tab-btn-supervisors" onclick="switchAdminTab('supervisors')" class="pb-2 text-slate-400 hover:text-white">إدارة المشرفين والصلاحيات</button>
+                    <button id="tab-btn-announcement" onclick="switchAdminTab('announcement')" class="pb-2 text-slate-400 hover:text-white">الشريط الإعلاني</button>
                 </div>
 
-                <!-- تبويب الإعلانات -->
-                <div id="admin-tab-announcement" class="space-y-4">
-                    <label class="block text-xs font-bold text-slate-300">تحديث نص الإعلان العاجل (الشريط المتحرك):</label>
-                    <textarea id="admin-announcement-input" rows="3" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-slate-200 outline-none focus:border-teal-400" placeholder="اكتب التنويه أو الإعلان الجديد..."></textarea>
-                    <button onclick="updateAnnouncement()" class="w-full py-3 bg-teal-500 hover:bg-teal-400 text-slate-950 font-black text-xs rounded-xl shadow-lg transition">
-                        حفظ ونشر الإعلان فوراً
-                    </button>
+                <!-- [التبويب الأول]: تسجيل وإدارة الطلبة -->
+                <div id="admin-tab-registration" class="space-y-6">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800/60 pb-3">
+                        <div>
+                            <span class="text-rose-400 text-[10px] font-bold uppercase tracking-wider">Restricted Area</span>
+                            <h4 class="text-lg font-black text-white">إدارة طلبة المرحلة الأولى (تقنيات المختبرات الطبية 2026-2027)</h4>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="printRegistrationPDF()" class="px-3 py-2 bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs rounded-xl shadow transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-print"></i> طباعة PDF
+                            </button>
+                            <button onclick="exportToExactExcel()" class="px-3 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-xl shadow transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-file-excel"></i> تصدير Excel
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- نموذج تسجيل الطالب الداخلي -->
+                    <form id="student-reg-form" onsubmit="addStudentRecord(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 p-4 bg-slate-950/80 rounded-2xl border border-slate-800">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-300 mb-1">اسم الطالب:</label>
+                            <input type="text" id="reg-name" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-rose-500" placeholder="الاسم الثلاثي واللقب">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-300 mb-1">نوع الدراسة:</label>
+                            <select id="reg-study-type" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-rose-500">
+                                <option value="صباحي">صباحي</option>
+                                <option value="مسائي">مسائي</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-300 mb-1">الجنس:</label>
+                            <select id="reg-gender" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-rose-500">
+                                <option value="ذكر">ذكر</option>
+                                <option value="أنثى">أنثى</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-300 mb-1">قناة القبول:</label>
+                            <select id="reg-channel" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-rose-500">
+                                <option value="عامة">عامة</option>
+                                <option value="ذوي الشهداء">ذوي الشهداء</option>
+                                <option value="ذوي الإعاقة">ذوي الإعاقة</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-300 mb-1">الدراسة السابقة:</label>
+                            <input type="text" id="reg-prev-study" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-rose-500" placeholder="إحيائي / تطبيقي">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-300 mb-1">المعدل:</label>
+                            <input type="number" step="0.01" min="50" max="100" id="reg-gpa" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-rose-500" placeholder="المعدل">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-300 mb-1">فصيلة الدم:</label>
+                            <select id="reg-blood" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-rose-500">
+                                <option value="O+">O+</option><option value="O-">O-</option>
+                                <option value="A+">A+</option><option value="A-">A-</option>
+                                <option value="B+">B+</option><option value="B-">B-</option>
+                                <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-300 mb-1">الحالة المرضية:</label>
+                            <select id="reg-medical" onchange="toggleMedicalInput(this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-rose-500">
+                                <option value="سليم">سليم</option>
+                                <option value="أخرى">أخرى</option>
+                            </select>
+                            <input type="text" id="reg-medical-other" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-rose-500 mt-1.5 hidden" placeholder="اكتب الحالة المرضية...">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-300 mb-1">تاريخ التولد:</label>
+                            <input type="date" id="reg-dob" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-rose-500">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-300 mb-1">عنوان السكن:</label>
+                            <input type="text" id="reg-address" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-rose-500" placeholder="المحافظة - المنطقة">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-300 mb-1">الهاتف:</label>
+                            <input type="text" id="reg-phone" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-rose-500" placeholder="رقم هاتف الطالب">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-300 mb-1">هاتف ولي الامر:</label>
+                            <input type="text" id="reg-guardian-phone" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-rose-500" placeholder="رقم ولي الأمر">
+                        </div>
+                        <div class="sm:col-span-2 lg:col-span-4 flex items-center justify-between pt-2">
+                            <input type="text" id="reg-receipt" class="w-48 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-rose-500" placeholder="رقم الوصل">
+                            <button type="submit" class="px-6 py-2.5 bg-rose-500 hover:bg-rose-400 text-slate-950 font-black text-xs rounded-xl shadow-lg transition">
+                                حفظ الطالب في قاعدة البيانات
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- جدول سجل الطلبة السرية -->
+                    <div class="overflow-x-auto rounded-xl border border-slate-800">
+                        <table class="w-full text-right text-xs text-slate-300 printable-table">
+                            <thead class="bg-slate-950 text-rose-400 border-b border-slate-800 font-bold">
+                                <tr>
+                                    <th class="p-2.5">ت</th>
+                                    <th class="p-2.5">اسم الطالب</th>
+                                    <th class="p-2.5">نوع الدراسة</th>
+                                    <th class="p-2.5">الجنس</th>
+                                    <th class="p-2.5">قناة القبول</th>
+                                    <th class="p-2.5">الدراسة السابقة</th>
+                                    <th class="p-2.5">المعدل</th>
+                                    <th class="p-2.5">فصيلة الدم</th>
+                                    <th class="p-2.5">الحالة المرضية</th>
+                                    <th class="p-2.5">تاريخ التولد</th>
+                                    <th class="p-2.5">عنوان السكن</th>
+                                    <th class="p-2.5">الهاتف</th>
+                                    <th class="p-2.5">ولي الأمر</th>
+                                    <th class="p-2.5">الوصل</th>
+                                    <th class="p-2.5 text-center no-print">إجراء</th>
+                                </tr>
+                            </thead>
+                            <tbody id="students-reg-rows" class="divide-y divide-slate-800/60 bg-slate-950/30">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <!-- تبويب إضافة وإدارة المشرفين الجدد -->
+                <!-- [التبويب الثاني]: إدارة المشرفين والصلاحيات -->
                 <div id="admin-tab-supervisors" class="space-y-4 hidden">
                     <form onsubmit="addNewSupervisor(event)" class="p-4 bg-slate-950/60 rounded-2xl border border-slate-800 space-y-3">
-                        <h4 class="text-xs font-bold text-teal-400"><i class="fa-solid fa-user-plus ml-1"></i> إضافة مشرف جديد:</h4>
+                        <h4 class="text-xs font-bold text-teal-400"><i class="fa-solid fa-user-plus ml-1"></i> إضافة مشرف جديد وتحديد الـ PIN:</h4>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <input type="text" id="new-sup-name" required placeholder="اسم المشرف" class="bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-200 outline-none focus:border-teal-400">
                             <input type="email" id="new-sup-email" placeholder="البريد الإلكتروني (اختياري)" class="bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-200 outline-none focus:border-teal-400">
                             <input type="password" id="new-sup-pin" required placeholder="رمز الدخول (PIN)" class="bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-200 outline-none focus:border-teal-400">
                             <select id="new-sup-role" class="bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-200 outline-none focus:border-teal-400">
-                                <option value="مشرف">مشرف إعلانات وتسجيل</option>
-                                <option value="مدير نظام">مدير نظام كامل</option>
+                                <option value="مشرف إعلانات وتسجيل">مشرف إعلانات وتسجيل</option>
+                                <option value="مدير نظام كامل">مدير نظام كامل</option>
                             </select>
                         </div>
                         <button type="submit" class="w-full py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-xl shadow-lg transition">
-                            إضافة المشرف وحفظ الصلاحيات
+                            إضافة المشرف وحفظ في Supabase
                         </button>
                     </form>
 
-                    <!-- قائمة المشرفين الحاليين -->
-                    <div class="space-y-2">
-                        <h4 class="text-xs font-bold text-slate-300">قائمة المشرفين المعتمدين:</h4>
+                    <div class="space-y-2 pt-2">
+                        <h4 class="text-xs font-bold text-slate-300">قائمة المشرفين المخولين:</h4>
                         <div class="overflow-x-auto rounded-xl border border-slate-800">
                             <table class="w-full text-right text-xs text-slate-300">
                                 <thead class="bg-slate-950 text-teal-400 font-bold">
@@ -578,6 +692,19 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- [التبويب الثالث]: تحديث الشريط الإعلاني -->
+                <div id="admin-tab-announcement" class="space-y-4 hidden">
+                    <label class="block text-xs font-bold text-slate-300">تحديث نص التنويه العاجل (الشريط المتحرك للزوار):</label>
+                    <textarea id="admin-announcement-input" rows="4" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-slate-200 outline-none focus:border-teal-400" placeholder="اكتب التنويه أو الإعلان الجديد..."></textarea>
+                    <button onclick="updateAnnouncement()" class="w-full py-3 bg-teal-500 hover:bg-teal-400 text-slate-950 font-black text-xs rounded-xl shadow-lg transition">
+                        نشر الإعلان فوراً للعموم
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
             </div>
         </div>
