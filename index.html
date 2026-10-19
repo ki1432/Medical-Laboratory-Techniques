@@ -432,6 +432,131 @@
             </section>
 
             <!-- GPA Calculator Section -->
+            
+            <!-- ==================== قسم تسجيل طلبة المرحلة الأولى (تخدير 2026-2027) ==================== -->
+            <section id="first-year-registration" class="glass-panel p-6 md:p-8 rounded-3xl border border-sky-500/30 space-y-6 bg-slate-900/40">
+                <div class="border-b border-slate-800 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <span class="text-sky-400 text-xs font-bold uppercase tracking-wider">Registration Portal 2026-2027</span>
+                        <h3 class="text-2xl font-black text-white mt-1">تسجيل طلبة المرحلة الأولى (تقنيات التخدير)</h3>
+                        <p class="text-xs text-slate-400 mt-1">إدخال وتسجيل بيانات الطلبة الجدد للعام الدراسي 2026-2027 حسب النموذج الرسمي:</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="exportToExactExcel()" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-xl shadow-lg transition flex items-center gap-2">
+                            <i class="fa-solid fa-file-excel"></i> تصدير إلى Excel (مطابق للنموذج)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- نموذج إدخال بيانات الطالب -->
+                <form id="student-reg-form" onsubmit="addStudentRecord(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 bg-slate-950/60 rounded-2xl border border-slate-800">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-300 mb-1">اسم الطالب:</label>
+                        <input type="text" id="reg-name" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-sky-500" placeholder="الاسم الثلاثي واللقب">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-300 mb-1">نوع الدراسة:</label>
+                        <select id="reg-study-type" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-sky-500">
+                            <option value="صباحي">صباحي</option>
+                            <option value="مسائي">مسائي</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-300 mb-1">الجنس:</label>
+                        <select id="reg-gender" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-sky-500">
+                            <option value="ذكر">ذكر</option>
+                            <option value="أنثى">أنثى</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-300 mb-1">قناة القبول:</label>
+                        <select id="reg-channel" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-sky-500">
+                            <option value="عامة">عامة</option>
+                            <option value="ذوي الشهداء">ذوي الشهداء</option>
+                            <option value="ذوي الإعاقة">ذوي الإعاقة</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-300 mb-1">الدراسة السابقة:</label>
+                        <input type="text" id="reg-prev-study" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-sky-500" placeholder="إحيائي / تطبيقي">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-300 mb-1">المعدل:</label>
+                        <input type="number" step="0.01" min="50" max="100" id="reg-gpa" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-sky-500" placeholder="المعدل">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-300 mb-1">فصيلة الدم:</label>
+                        <select id="reg-blood" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-sky-500">
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-300 mb-1">الحالة المرضية:</label>
+                        <select id="reg-medical" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-sky-500">
+                            <option value="سليم">سليم</option>
+                            <option value="أخرى">أخرى</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-300 mb-1">تاريخ التولد:</label>
+                        <input type="date" id="reg-dob" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-sky-500">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-300 mb-1">عنوان السكن:</label>
+                        <input type="text" id="reg-address" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-sky-500" placeholder="المحافظة - المنطقة">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-300 mb-1">الهاتف:</label>
+                        <input type="text" id="reg-phone" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-sky-500" placeholder="رقم هاتف الطالب">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-300 mb-1">هاتف ولي الامر:</label>
+                        <input type="text" id="reg-guardian-phone" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-sky-500" placeholder="رقم ولي الأمر">
+                    </div>
+                    <div class="sm:col-span-2 lg:col-span-4 flex items-center justify-between pt-2">
+                        <input type="text" id="reg-receipt" class="w-48 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-sky-500" placeholder="رقم الوصل">
+                        <button type="submit" class="px-6 py-2.5 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs rounded-xl shadow-lg transition">
+                            تسجيل وحفظ الطالب
+                        </button>
+                    </div>
+                </form>
+
+                <!-- جدول عرض الطلبة المسجلين -->
+                <div class="overflow-x-auto rounded-xl border border-slate-800">
+                    <table class="w-full text-right text-xs text-slate-300">
+                        <thead class="bg-slate-950 text-sky-400 border-b border-slate-800 font-bold">
+                            <tr>
+                                <th class="p-3">ت</th>
+                                <th class="p-3">اسم الطالب</th>
+                                <th class="p-3">نوع الدراسة</th>
+                                <th class="p-3">الجنس</th>
+                                <th class="p-3">قناة القبول</th>
+                                <th class="p-3">الدراسة السابقة</th>
+                                <th class="p-3">المعدل</th>
+                                <th class="p-3">فصيلة الدم</th>
+                                <th class="p-3">الحالة المرضية</th>
+                                <th class="p-3">تاريخ التولد</th>
+                                <th class="p-3">عنوان السكن</th>
+                                <th class="p-3">الهاتف</th>
+                                <th class="p-3">هاتف ولي الامر</th>
+                                <th class="p-3">رقم الوصل</th>
+                                <th class="p-3 text-center">إجراء</th>
+                            </tr>
+                        </thead>
+                        <tbody id="students-reg-rows" class="divide-y divide-slate-800/60 bg-slate-950/30">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+    
+
             <section id="gpa-calculator" class="p-6 md:p-8 rounded-3xl border border-sky-500/30 space-y-6 bg-slate-900/40">
                 <div class="border-b border-slate-800 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
