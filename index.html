@@ -606,6 +606,100 @@
         </main>
     </div>
     <script src="app.js"></script>
+
+    <!-- نافذة إدارة النظام والمشرفين (مؤمّنة) -->
+    <div id="admin-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 backdrop-blur-md hidden">
+        <div class="glass-panel p-6 md:p-8 rounded-3xl border border-rose-500/30 bg-slate-900 max-w-2xl w-full mx-4 space-y-6 shadow-2xl overflow-y-auto max-h-[90vh]">
+            
+            <!-- شاشة تسجيل دخول المشرف -->
+            <div id="admin-login-screen" class="space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                    <div class="flex items-center gap-2 text-rose-400 font-bold">
+                        <i class="fa-solid fa-shield-halved text-xl"></i>
+                        <h3>تسجيل دخول المشرفين - قسم المختبرات الطبية</h3>
+                    </div>
+                    <button onclick="closeAdminModal()" class="text-slate-400 hover:text-white p-1"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <form onsubmit="handleAdminLogin(event)" class="space-y-4 pt-2">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">اسم المشرف / البريد الإلكتروني:</label>
+                        <input type="text" id="admin-username" required class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-slate-200 outline-none focus:border-rose-500" placeholder="أدخل اسم المشرف">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">رمز الحماية (PIN):</label>
+                        <input type="password" id="admin-password" required class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-slate-200 outline-none focus:border-rose-500" placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="w-full py-3 bg-gradient-to-r from-rose-500 to-amber-500 text-slate-950 font-black text-xs rounded-xl shadow-lg hover:opacity-95 transition">
+                        تأكيد الدخول
+                    </button>
+                </form>
+            </div>
+
+            <!-- لوحة التحكم الحقيقية بعد تسجيل الدخول -->
+            <div id="admin-dashboard-screen" class="space-y-6 hidden">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                    <div class="flex items-center gap-2 text-teal-400 font-bold">
+                        <i class="fa-solid fa-user-shield text-xl"></i>
+                        <h3>لوحة الإدارة والحماية - <span id="current-admin-name" class="text-rose-400">المدير</span></h3>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="logoutAdmin()" class="px-3 py-1.5 bg-slate-800 hover:bg-rose-500/20 text-rose-400 text-xs font-bold rounded-lg border border-rose-500/30">خروج</button>
+                        <button onclick="closeAdminModal()" class="text-slate-400 hover:text-white p-1"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                </div>
+
+                <!-- تبويبات لوحة التحكم -->
+                <div class="flex border-b border-slate-800 gap-4 text-xs font-bold">
+                    <button id="tab-btn-announcement" onclick="switchAdminTab('announcement')" class="pb-2 border-b-2 border-teal-400 text-teal-400">تحديث الإعلانات</button>
+                    <button id="tab-btn-supervisors" onclick="switchAdminTab('supervisors')" class="pb-2 text-slate-400 hover:text-white">إدارة المشرفين</button>
+                </div>
+
+                <!-- تبويب الإعلانات -->
+                <div id="admin-tab-announcement" class="space-y-4">
+                    <label class="block text-xs font-bold text-slate-300">تحديث نص الإعلان العاجل (الشريط المتحرك):</label>
+                    <textarea id="admin-announcement-input" rows="3" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-slate-200 outline-none focus:border-teal-400" placeholder="اكتب التنويه أو الإعلان الجديد..."></textarea>
+                    <button onclick="updateAnnouncement()" class="w-full py-3 bg-teal-500 hover:bg-teal-400 text-slate-950 font-black text-xs rounded-xl shadow-lg transition">
+                        حفظ ونشر الإعلان فوراً
+                    </button>
+                </div>
+
+                <!-- تبويب إضافة وإدارة المشرفين الجدد -->
+                <div id="admin-tab-supervisors" class="space-y-4 hidden">
+                    <form onsubmit="addNewSupervisor(event)" class="p-4 bg-slate-950/60 rounded-2xl border border-slate-800 space-y-3">
+                        <h4 class="text-xs font-bold text-teal-400"><i class="fa-solid fa-user-plus ml-1"></i> إضافة مشرف جديد:</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <input type="text" id="new-sup-name" required placeholder="اسم المشرف" class="bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-200 outline-none focus:border-teal-400">
+                            <input type="email" id="new-sup-email" placeholder="البريد الإلكتروني (اختياري)" class="bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-200 outline-none focus:border-teal-400">
+                            <input type="password" id="new-sup-pin" required placeholder="رمز الدخول (PIN)" class="bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-200 outline-none focus:border-teal-400">
+                            <select id="new-sup-role" class="bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-200 outline-none focus:border-teal-400">
+                                <option value="مشرف">مشرف إعلانات وتسجيل</option>
+                                <option value="مدير نظام">مدير نظام كامل</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-xl shadow-lg transition">
+                            إضافة المشرف وحفظ الصلاحيات
+                        </button>
+                    </form>
+
+                    <!-- قائمة المشرفين الحاليين -->
+                    <div class="space-y-2">
+                        <h4 class="text-xs font-bold text-slate-300">قائمة المشرفين المعتمدين:</h4>
+                        <div class="overflow-x-auto rounded-xl border border-slate-800">
+                            <table class="w-full text-right text-xs text-slate-300">
+                                <thead class="bg-slate-950 text-teal-400 font-bold">
+                                    <tr><th class="p-2.5">المشرف</th><th class="p-2.5">الصلاحية</th><th class="p-2.5 text-center">إجراء</th></tr>
+                                </thead>
+                                <tbody id="supervisors-list-rows" class="divide-y divide-slate-800/60 bg-slate-950/30">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
 

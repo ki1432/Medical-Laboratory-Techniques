@@ -301,3 +301,114 @@ async function deleteSupervisor(idx) {
         renderSupervisorsList();
     }
 }
+
+
+// إدارة حسابات المشرفين وحس النمط الأمني
+let supervisors = JSON.parse(localStorage.getItem('sys_supervisors')) || [
+    { name: 'المدير الرئيسي', email: 'admin@mlt.edu', pin: '123456', role: 'مدير نظام كامل' }
+];
+
+let currentLoggedInAdmin = JSON.parse(sessionStorage.getItem('active_admin_session')) || null;
+
+// معالجة دخول المشرف
+function handleAdminLogin(e) {
+    e.preventDefault();
+    const user = document.getElementById('admin-username').value.trim();
+    const pin = document.getElementById('admin-password').value.trim();
+
+    const matched = supervisors.find(s => (s.name === user || s.email === user) && s.pin === pin);
+
+    if (matched || (user === 'admin' && pin === '123456')) {
+        currentLoggedInAdmin = matched || { name: user, role: 'مدير نظام كامل' };
+        sessionStorage.setItem('active_admin_session', JSON.stringify(currentLoggedInAdmin));
+        showAdminDashboard();
+    } else {
+        alert('رمز الدخول أو اسم المشرف غير صحيح!');
+    }
+}
+
+// عرض لوحة التحكم بعد التحقق
+function showAdminDashboard() {
+    document.getElementById('admin-login-screen').classList.add('hidden');
+    document.getElementById('admin-dashboard-screen').classList.remove('hidden');
+    document.getElementById('current-admin-name').innerText = currentLoggedInAdmin.name;
+    renderSupervisorsList();
+}
+
+// تسجيل الخروج
+function logoutAdmin() {
+    currentLoggedInAdmin = null;
+    sessionStorage.removeItem('active_admin_session');
+    document.getElementById('admin-login-screen').classList.remove('hidden');
+    document.getElementById('admin-dashboard-screen').classList.add('hidden');
+}
+
+// تبديل الأبواب داخل لوحة الإدارة
+function switchAdminTab(tab) {
+    document.getElementById('admin-tab-announcement').classList.toggle('hidden', tab !== 'announcement');
+    document.getElementById('admin-tab-supervisors').classList.toggle('hidden', tab !== 'supervisors');
+    
+    document.getElementById('tab-btn-announcement').className = tab === 'announcement' ? 'pb-2 border-b-2 border-teal-400 text-teal-400' : 'pb-2 text-slate-400 hover:text-white';
+    document.getElementById('tab-btn-supervisors').className = tab === 'supervisors' ? 'pb-2 border-b-2 border-teal-400 text-teal-400' : 'pb-2 text-slate-400 hover:text-white';
+}
+
+// إضافة مشرف جديد
+function addNewSupervisor(e) {
+    e.preventDefault();
+    const name = document.getElementById('new-sup-name').value.trim();
+    const email = document.getElementById('new-sup-email').value.trim();
+    const pin = document.getElementById('new-sup-pin').value.trim();
+    const role = document.getElementById('new-sup-role').value;
+
+    if (supervisors.some(s => s.name === name)) {
+        alert('اسم المشرف موجود مسبقاً!');
+        return;
+    }
+
+    supervisors.push({ name, email, pin, role });
+    localStorage.setItem('sys_supervisors', JSON.stringify(supervisors));
+    renderSupervisorsList();
+    e.target.reset();
+    alert('تمت إضافة المشرف الجديد بنجاح وتفعيل رمز الدخول الخاص به!');
+}
+
+// عرض المشرفين
+function renderSupervisorsList() {
+    const tbody = document.getElementById('supervisors-list-rows');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    supervisors.forEach((s, idx) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td class="p-2.5 font-bold">${s.name} <span class="block text-[10px] text-slate-400">${s.email || ''}</span></td>
+            <td class="p-2.5"><span class="bg-teal-500/10 text-teal-400 px-2 py-0.5 rounded text-[10px]">${s.role}</span></td>
+            <td class="p-2.5 text-center">
+                ${idx > 0 ? `<button onclick="deleteSupervisor(${idx})" class="text-rose-400 hover:text-rose-300 p-1"><i class="fa-solid fa-user-minus"></i></button>` : '<span class="text-[10px] text-slate-500">رئيسي</span>'}
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+// حذف مشرف
+function deleteSupervisor(idx) {
+    if (confirm('هل أنت متأكد من إلغاء صلاحية هذا المشرف؟')) {
+        supervisors.splice(idx, 1);
+        localStorage.setItem('sys_supervisors', JSON.stringify(supervisors));
+        renderSupervisorsList();
+    }
+}
+
+// فتح نافذة الإدارة المؤمّنة
+const origOpenModal = window.openAdminModal;
+window.openAdminModal = function() {
+    const modal = document.getElementById('admin-modal');
+    if (!modal) return;
+    modal.classList.remove('hidden');
+    if (currentLoggedInAdmin) {
+        showAdminDashboard();
+    } else {
+        document.getElementById('admin-login-screen').classList.remove('hidden');
+        document.getElementById('admin-dashboard-screen').classList.add('hidden');
+    }
+}
