@@ -101,3 +101,86 @@ function calculateGPA() {
     const gpa = totalPoints / totalUnits;
     document.getElementById('gpa-result').innerText = gpa.toFixed(2);
 }
+
+
+// إظهار أو إخفاء حقل الحالة المرضية الأخرى
+function toggleMedicalInput(val) {
+    const otherInput = document.getElementById('reg-medical-other');
+    if (!otherInput) return;
+    if (val === 'أخرى') {
+        otherInput.classList.remove('hidden');
+        otherInput.required = true;
+    } else {
+        otherInput.classList.add('hidden');
+        otherInput.required = false;
+        otherInput.value = '';
+    }
+}
+
+// دالة طباعة جدول التسجيل كملف PDF
+function printRegistrationPDF() {
+    const printWindow = window.open('', '', 'height=700,width=1000');
+    printWindow.document.write('<html><head><title>سجل طلبة المرحلة الأولى - تقنيات التخدير</title>');
+    printWindow.document.write('<style>');
+    printWindow.document.write('body { font-family: Tahoma, sans-serif; direction: rtl; padding: 20px; color: #000; }');
+    printWindow.document.write('h2 { text-align: center; margin-bottom: 5px; }');
+    printWindow.document.write('p { text-align: center; font-size: 12px; color: #555; margin-bottom: 20px; }');
+    printWindow.document.write('table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 10px; }');
+    printWindow.document.write('th, td { border: 1px solid #333; padding: 6px; text-align: right; }');
+    printWindow.document.write('th { background-color: #f2f2f2; }');
+    printWindow.document.write('.no-print { display: none !important; }');
+    printWindow.document.write('</style></head><body>');
+    printWindow.document.write('<h2>قسم تقنيات المختبرات الطبية - سجل طلبة المرحلة الأولى (تخدير)</h2>');
+    printWindow.document.write('<p>العام الدراسي: 2026-2027</p>');
+    
+    // نسخ جدول الطلبة بدون أعمدة الإجراءات
+    const tableHTML = document.querySelector('.printable-table').outerHTML;
+    // إزالة خلية الإجراءات إن وجدت في النسخة المطبوعة
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(tableHTML, 'text/html');
+    const noPrintElements = doc.querySelectorAll('.no-print');
+    noPrintElements.forEach(el => el.remove());
+    
+    printWindow.document.write(doc.body.innerHTML);
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => {
+        printWindow.print();
+        printWindow.close();
+    }, 500);
+}
+
+// تعديل دالة إضافة الطالب لتأخذ الحالة المرضية المخصصة
+const originalAddStudent = window.addStudentRecord;
+window.addStudentRecord = function(e) {
+    e.preventDefault();
+    const medicalSelect = document.getElementById('reg-medical').value;
+    const medicalOther = document.getElementById('reg-medical-other').value.trim();
+    const finalMedical = medicalSelect === 'أخرى' ? (medicalOther || 'أخرى') : 'سليم';
+
+    const student = {
+        name: document.getElementById('reg-name').value.trim(),
+        studyType: document.getElementById('reg-study-type').value,
+        gender: document.getElementById('reg-gender').value,
+        channel: document.getElementById('reg-channel').value,
+        prevStudy: document.getElementById('reg-prev-study').value.trim(),
+        gpa: document.getElementById('reg-gpa').value,
+        blood: document.getElementById('reg-blood').value,
+        medical: finalMedical,
+        dob: document.getElementById('reg-dob').value,
+        address: document.getElementById('reg-address').value.trim(),
+        phone: document.getElementById('reg-phone').value.trim(),
+        guardianPhone: document.getElementById('reg-guardian-phone').value.trim(),
+        receipt: document.getElementById('reg-receipt').value.trim() || 'غير مسجل'
+    };
+
+    if (typeof registeredStudents !== 'undefined') {
+        registeredStudents.push(student);
+        localStorage.setItem('first_year_students', JSON.stringify(registeredStudents));
+        if (typeof renderStudentsTable === 'function') renderStudentsTable();
+        document.getElementById('student-reg-form').reset();
+        document.getElementById('reg-medical-other').classList.add('hidden');
+        alert('تم تسجيل الطالب بنجاح!');
+    }
+}

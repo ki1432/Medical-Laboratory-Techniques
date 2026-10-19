@@ -435,6 +435,7 @@
             
             <!-- ==================== قسم تسجيل طلبة المرحلة الأولى (تخدير 2026-2027) ==================== -->
             <!-- ==================== قسم تسجيل طلبة المرحلة الأولى (تخدير 2026-2027) ==================== -->
+            <!-- ==================== قسم تسجيل طلبة المرحلة الأولى (تخدير 2026-2027) ==================== -->
             <section id="first-year-registration" class="glass-panel p-6 md:p-8 rounded-3xl border border-sky-500/30 space-y-6 bg-slate-900/40">
                 <div class="border-b border-slate-800 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
@@ -443,6 +444,9 @@
                         <p class="text-xs text-slate-400 mt-1">إدخال وتسجيل بيانات الطلبة الجدد للعام الدراسي 2026-2027 حسب النموذج الرسمي:</p>
                     </div>
                     <div class="flex items-center gap-2">
+                        <button onclick="printRegistrationPDF()" class="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs rounded-xl shadow-lg transition flex items-center gap-2">
+                            <i class="fa-solid fa-print"></i> طباعة كملف PDF
+                        </button>
                         <button onclick="exportToExactExcel()" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-xl shadow-lg transition flex items-center gap-2">
                             <i class="fa-solid fa-file-excel"></i> تصدير إلى Excel (مطابق للنموذج)
                         </button>
@@ -500,10 +504,11 @@
                     </div>
                     <div>
                         <label class="block text-[11px] font-bold text-slate-300 mb-1">الحالة المرضية:</label>
-                        <select id="reg-medical" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-sky-500">
+                        <select id="reg-medical" onchange="toggleMedicalInput(this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-sky-500">
                             <option value="سليم">سليم</option>
                             <option value="أخرى">أخرى</option>
                         </select>
+                        <input type="text" id="reg-medical-other" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-sky-500 mt-2 hidden" placeholder="اكتب الحالة المرضية...">
                     </div>
                     <div>
                         <label class="block text-[11px] font-bold text-slate-300 mb-1">تاريخ التولد:</label>
@@ -531,7 +536,7 @@
 
                 <!-- جدول عرض الطلبة المسجلين -->
                 <div class="overflow-x-auto rounded-xl border border-slate-800">
-                    <table class="w-full text-right text-xs text-slate-300">
+                    <table class="w-full text-right text-xs text-slate-300 printable-table">
                         <thead class="bg-slate-950 text-sky-400 border-b border-slate-800 font-bold">
                             <tr>
                                 <th class="p-3">ت</th>
@@ -548,7 +553,7 @@
                                 <th class="p-3">الهاتف</th>
                                 <th class="p-3">هاتف ولي الامر</th>
                                 <th class="p-3">رقم الوصل</th>
-                                <th class="p-3 text-center">إجراء</th>
+                                <th class="p-3 text-center no-print">إجراء</th>
                             </tr>
                         </thead>
                         <tbody id="students-reg-rows" class="divide-y divide-slate-800/60 bg-slate-950/30">
