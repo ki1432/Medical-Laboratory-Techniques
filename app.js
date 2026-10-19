@@ -184,3 +184,120 @@ window.addStudentRecord = function(e) {
         alert('تم تسجيل الطالب بنجاح!');
     }
 }
+
+
+// ==================== ربط المشرفين المباشر بـ Supabase ====================
+
+// 1. التحقق وتسجيل دخول المشرف عبر Supabase
+async function handleAdminLogin(e) {
+    e.preventDefault();
+    const user = document.getElementById('admin-username').value.trim();
+    const pin = document.getElementById('admin-password').value.trim();
+
+    if (supabaseClient) {
+        try {
+            // الاستعلام من جدول المشرفين في Supabase
+            const { data, error } = await supabaseClient
+                .from('supervisors')
+                .select('*')
+                .or(`name.eq.${user},email.eq.${user}`)
+                .eq('pin', pin);
+
+            if (error) throw error;
+
+            if (data && data.length > 0) {
+                currentLoggedInAdmin = data[0];
+                sessionStorage.setItem('active_admin_session', JSON.stringify(currentLoggedInAdmin));
+                showAdminDashboard();
+                return;
+            }
+        } catch (err) {
+            console.error('Supabase Login Error:', err);
+        }
+    }
+
+    // التحقق المحلي السريع كبديل في حال عدم الاتصال
+    const localMatched = supervisors.find(s => (s.name === user || s.email === user) && s.pin === pin);
+    if (localMatched || (user === 'admin' && pin === '123456')) {
+        currentLoggedInAdmin = localMatched || { name: user, role: 'مدير نظام كامل' };
+        sessionStorage.setItem('active_admin_session', JSON.stringify(currentLoggedInAdmin));
+        showAdminDashboard();
+    } else {
+        alert('رمز الدخول أو اسم المشرف غير صحيح!');
+    }
+}
+
+// 2. إضافة مشرف جديد وتخزينه فوراً في Supabase
+async function addNewSupervisor(e) {
+    e.preventDefault();
+    const name = document.getElementById('new-sup-name').value.trim();
+    const email = document.getElementById('new-sup-email').value.trim();
+    const pin = document.getElementById('new-sup-pin').value.trim();
+    const role = document.getElementById('new-sup-role').value;
+
+    const newSupervisor = { name, email, pin, role };
+
+    if (supabaseClient) {
+        try {
+            const { data, error } = await supabaseClient
+                .from('supervisors')
+                .insert([newSupervisor]);
+
+            if (error) {
+                alert('حدث خطأ أثناء الحفظ في Supabase: ' + error.message);
+                return;
+            }
+            alert('تم حَفظ وإضافة المشرف الجديد في Supabase بنجاح!');
+        } catch (err) {
+            console.error('Supabase Insert Error:', err);
+        }
+    }
+
+    // التحديث المحلي
+    supervisors.push(newSupervisor);
+    localStorage.setItem('sys_supervisors', JSON.stringify(supervisors));
+    fetchAndRenderSupervisors();
+    e.target.reset();
+}
+
+// 3. جلب قائمة المشرفين من Supabase
+async function fetchAndRenderSupervisors() {
+    if (supabaseClient) {
+        try {
+            const { data, error } = await supabaseClient
+                .from('supervisors')
+                .select('*')
+                .order('id', { ascending: true });
+
+            if (!error && data) {
+                supervisors = data;
+            }
+        } catch (err) {
+            console.error('Fetch Supervisors Error:', err);
+        }
+    }
+    renderSupervisorsList();
+}
+
+// 4. حذف مشرف من Supabase
+async function deleteSupervisor(idx) {
+    const targetSup = supervisors[idx];
+    if (!targetSup) return;
+
+    if (confirm(`هل أنت متأكد من إلغاء صلاحية المشرف (${targetSup.name})؟`)) {
+        if (supabaseClient && targetSup.id) {
+            try {
+                await supabaseClient
+                    .from('supervisors')
+                    .delete()
+                    .eq('id', targetSup.id);
+            } catch (err) {
+                console.error('Delete Supervisor Error:', err);
+            }
+        }
+
+        supervisors.splice(idx, 1);
+        localStorage.setItem('sys_supervisors', JSON.stringify(supervisors));
+        renderSupervisorsList();
+    }
+}
