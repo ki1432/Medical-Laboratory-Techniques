@@ -312,3 +312,14 @@ async function deleteSupervisor(idx) {
 window.addEventListener('DOMContentLoaded', () => {
     renderStudentsTable();
 });
+
+
+// تصفية الفحوصات المختبرية في الدليل السريع
+function filterLabTests() {
+    const query = document.getElementById('lab-search-input').value.toLowerCase();
+    const cards = document.querySelectorAll('.lab-card');
+    cards.forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(query) ? 'block' : 'none';
+    });
+}

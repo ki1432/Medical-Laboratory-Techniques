@@ -563,43 +563,50 @@
             </section>
     
 
-            <section id="gpa-calculator" class="p-6 md:p-8 rounded-3xl border border-sky-500/30 space-y-6 bg-slate-900/40">
+            <!-- ==================== قسم دليل الفحوصات المختبرية السريع ==================== -->
+            <section id="lab-reference-guide" class="glass-panel p-6 md:p-8 rounded-3xl border border-teal-500/30 space-y-6 bg-slate-900/40">
                 <div class="border-b border-slate-800 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
-                        <span class="text-sky-400 text-xs font-bold uppercase tracking-wider">Student Utility</span>
-                        <h3 class="text-2xl font-black mt-1">حاسبة المعدل الأكاديمي الفصلي</h3>
+                        <span class="text-teal-400 text-xs font-bold uppercase tracking-wider">Medical Labs Reference</span>
+                        <h3 class="text-2xl font-black text-white mt-1">دليل الفحوصات المختبرية السريع</h3>
+                        <p class="text-xs text-slate-400 mt-1">مرجع سريع لطلبة تقنيات المختبرات الطبية لقيم الفحوصات الشائعة:</p>
                     </div>
-                    <button onclick="addGpaRow()" class="px-4 py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs rounded-xl shadow-lg transition flex items-center gap-2 self-start md:self-auto">
-                        <i class="fa-solid fa-plus"></i> إضافة مادة
-                    </button>
+                    <div>
+                        <input type="text" id="lab-search-input" onkeyup="filterLabTests()" placeholder="ابحث عن فحوصات (CBC, Blood, Urea...)" class="bg-slate-950 border border-slate-700 rounded-xl px-4 py-2 text-xs text-slate-200 outline-none focus:border-teal-400 w-64">
+                    </div>
                 </div>
 
-                <div class="overflow-x-auto rounded-xl border border-slate-800">
-                    <table class="w-full text-right text-xs">
-                        <thead class="bg-slate-950 text-sky-400 border-b border-slate-800 font-bold">
-                            <tr>
-                                <th class="p-3">اسم المادة الدراسية</th>
-                                <th class="p-3">عدد الوحدات</th>
-                                <th class="p-3">الدرجة من 100</th>
-                                <th class="p-3 text-center">إجراء</th>
-                            </tr>
-                        </thead>
-                        <tbody id="gpa-rows" class="divide-y divide-slate-800/60 bg-slate-950/30">
-                            <tr>
-                                <td class="p-3"><input type="text" placeholder="اسم المادة" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs outline-none focus:border-sky-500 course-name"></td>
-                                <td class="p-3"><input type="number" min="1" max="6" value="3" class="w-24 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs outline-none focus:border-sky-500 course-units"></td>
-                                <td class="p-3"><input type="number" min="0" max="100" placeholder="الدرجة" class="w-24 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs outline-none focus:border-sky-500 course-grade"></td>
-                                <td class="p-3 text-center"><button onclick="removeGpaRow(this)" class="text-rose-400 hover:text-rose-300 p-1"><i class="fa-solid fa-trash-can"></i></button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-slate-950/60 rounded-2xl border border-slate-800">
-                    <button onclick="calculateGPA()" class="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-sky-500 to-teal-400 text-slate-950 font-black text-xs rounded-xl shadow-lg hover:opacity-95 transition">احسب المعدل الآن</button>
-                    <div class="text-center sm:text-left">
-                        <span class="text-xs">المعدل الفصلـي التقديري:</span>
-                        <span id="gpa-result" class="text-2xl font-black text-teal-400 mr-2">0.00</span>
+                <!-- شبكة الفحوصات المختبرية -->
+                <div id="lab-tests-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="lab-card p-4 bg-slate-950/60 rounded-2xl border border-slate-800 space-y-2">
+                        <div class="flex justify-between items-center"><h4 class="text-sm font-bold text-teal-400">فحص الدم الشامل (CBC)</h4><span class="text-[10px] bg-teal-500/10 text-teal-300 px-2 py-0.5 rounded">أحياء دقيقة/دم</span></div>
+                        <p class="text-xs text-slate-300">يضمن قياس الهيموجلوبين (Hb)، كريات الدم الحمراء والبيضاء، والصفائح الدموية.</p>
+                        <div class="text-[11px] text-slate-400 pt-1 border-t border-slate-800">المعدل الطبيعي: Hb (13.5-17.5 للذكور)</div>
+                    </div>
+                    <div class="lab-card p-4 bg-slate-950/60 rounded-2xl border border-slate-800 space-y-2">
+                        <div class="flex justify-between items-center"><h4 class="text-sm font-bold text-teal-400">فصيلة الدم (Blood Group)</h4><span class="text-[10px] bg-teal-500/10 text-teal-300 px-2 py-0.5 rounded">بنك الدم</span></div>
+                        <p class="text-xs text-slate-300">تحديد نظام ABO وعامل الريص (Rh Factor) باستخدام مضادات A, B, D.</p>
+                        <div class="text-[11px] text-slate-400 pt-1 border-t border-slate-800">النتيجة: A, B, AB, O (موجب أو سالب)</div>
+                    </div>
+                    <div class="lab-card p-4 bg-slate-950/60 rounded-2xl border border-slate-800 space-y-2">
+                        <div class="flex justify-between items-center"><h4 class="text-sm font-bold text-teal-400">فحص اليوريا في الدم (Blood Urea)</h4><span class="text-[10px] bg-teal-500/10 text-teal-300 px-2 py-0.5 rounded">كيمياء حيوية</span></div>
+                        <p class="text-xs text-slate-300">تقييم كفاءة وظائف الكلى ومعدل تصفية الفضلات النيتروجينية.</p>
+                        <div class="text-[11px] text-slate-400 pt-1 border-t border-slate-800">المعدل الطبيعي: 20 - 40 mg/dL</div>
+                    </div>
+                    <div class="lab-card p-4 bg-slate-950/60 rounded-2xl border border-slate-800 space-y-2">
+                        <div class="flex justify-between items-center"><h4 class="text-sm font-bold text-teal-400">كرياتينين الدم (Serum Creatinine)</h4><span class="text-[10px] bg-teal-500/10 text-teal-300 px-2 py-0.5 rounded">كيمياء حيوية</span></div>
+                        <p class="text-xs text-slate-300">مؤشر دقيق لعمل الكلى وتصريف العضلات للفضلات.</p>
+                        <div class="text-[11px] text-slate-400 pt-1 border-t border-slate-800">المعدل الطبيعي: 0.6 - 1.2 mg/dL</div>
+                    </div>
+                    <div class="lab-card p-4 bg-slate-950/60 rounded-2xl border border-slate-800 space-y-2">
+                        <div class="flex justify-between items-center"><h4 class="text-sm font-bold text-teal-400">فحص الإدرار العام (GUE)</h4><span class="text-[10px] bg-teal-500/10 text-teal-300 px-2 py-0.5 rounded">تحليلات مرضية</span></div>
+                        <p class="text-xs text-slate-300">فحص الفيزيائي، الكيميائي، والمجهري لعينة الإدرار لاكتشاف الالتهابات.</p>
+                        <div class="text-[11px] text-slate-400 pt-1 border-t border-slate-800">اللون الطبيعي: أصفر باهت (Pale Yellow)</div>
+                    </div>
+                    <div class="lab-card p-4 bg-slate-950/60 rounded-2xl border border-slate-800 space-y-2">
+                        <div class="flex justify-between items-center"><h4 class="text-sm font-bold text-teal-400">سرعة ترسيب الدم (ESR)</h4><span class="text-[10px] bg-teal-500/10 text-teal-300 px-2 py-0.5 rounded">مناعة/دم</span></div>
+                        <p class="text-xs text-slate-300">قياس معدل ترسب كريات الدم الحمراء للكشف عن وجود التهابات أو أمراض مناعية.</p>
+                        <div class="text-[11px] text-slate-400 pt-1 border-t border-slate-800">المعدل الطبيعي: 0 - 20 mm/hr</div>
                     </div>
                 </div>
             </section>
