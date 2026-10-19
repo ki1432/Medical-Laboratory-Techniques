@@ -222,14 +222,19 @@ function logoutAdmin() {
 function switchAdminTab(tab) {
     const annTab = document.getElementById('admin-tab-announcement');
     const supTab = document.getElementById('admin-tab-supervisors');
+    const regTab = document.getElementById('admin-tab-registration');
+
     const btnAnn = document.getElementById('tab-btn-announcement');
     const btnSup = document.getElementById('tab-btn-supervisors');
+    const btnReg = document.getElementById('tab-btn-registration');
 
     if (annTab) annTab.classList.toggle('hidden', tab !== 'announcement');
     if (supTab) supTab.classList.toggle('hidden', tab !== 'supervisors');
+    if (regTab) regTab.classList.toggle('hidden', tab !== 'registration');
     
     if (btnAnn) btnAnn.className = tab === 'announcement' ? 'pb-2 border-b-2 border-teal-400 text-teal-400 font-bold text-xs' : 'pb-2 text-slate-400 hover:text-white font-bold text-xs';
     if (btnSup) btnSup.className = tab === 'supervisors' ? 'pb-2 border-b-2 border-teal-400 text-teal-400 font-bold text-xs' : 'pb-2 text-slate-400 hover:text-white font-bold text-xs';
+    if (btnReg) btnReg.className = tab === 'registration' ? 'pb-2 border-b-2 border-teal-400 text-teal-400 font-bold text-xs' : 'pb-2 text-slate-400 hover:text-white font-bold text-xs';
 }
 
 async function addNewSupervisor(e) {
