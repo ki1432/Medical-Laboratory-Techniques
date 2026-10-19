@@ -7,45 +7,16 @@ let supervisors = JSON.parse(localStorage.getItem('sys_supervisors')) || [
 let currentLoggedInAdmin = JSON.parse(sessionStorage.getItem('active_admin_session')) || null;
 
 // 1. الوضع الليلي والنهاري
-function toggleTheme() {
-    const isDark = document.documentElement.classList.toggle('dark');
-    localStorage.setItem('theme_preference', isDark ? 'dark' : 'light');
-}
+
 
 // 2. إدارة الجداول الدراسية
-const timetablesData = {
-    "1_morning": [
-        { day: "الأحد", p1: "فيزياء طبية (نظري)", p2: "كيمياء عامة (نظري)", p3: "كيمياء عامة (عملي)", break: "استراحة", p4: "حاسوب (نظري)", p5: "حاسوب (عملي)" },
-        { day: "الإثنين", p1: "أحياء عامة (نظري)", p2: "أحياء عامة (عملي)", p3: "لغة عربية", break: "استراحة", p4: "لغة إنجليزية", p5: "حقوق الإنسان" },
-        { day: "الثلاثاء", p1: "تشريح ونسيج (نظري)", p2: "تشريح ونسيج (عملي)", p3: "فيزياء طبية (عملي)", break: "استراحة", p4: "مصطلحات طبية", p5: "مصطلحات طبية" },
-        { day: "الأربعاء", p1: "كيمياء عضوية", p2: "كيمياء عضوية", p3: "سلامة مهنية", break: "استراحة", p4: "تاريخ علوم", p5: "نشاط رياضي" },
-        { day: "الخميس", p1: "مختبر افتراضي", p2: "مختبر افتراضي", p3: "مراجعة عامة", break: "استراحة", p4: "إرشاد أكاديمي", p5: "إرشاد أكاديمي" }
-    ],
-    "2_morning": [
-        { day: "الأحد", p1: "أحياء مجهرية (عملي)", p2: "أحياء مجهرية (عملي)", p3: "كيمياء سريرية (نظري)", break: "استراحة", p4: "طفيليات (نظري)", p5: "مناعة (عملي)" },
-        { day: "الإثنين", p1: "كيمياء حيوية (عملي)", p2: "كيمياء حيوية (عملي)", p3: "أمراض دم (نظري)", break: "استراحة", p4: "لغة إنجليزية", p5: "حاسوب (عملي)" },
-        { day: "الثلاثاء", p1: "أمراض دم (عملي)", p2: "أمراض دم (عملي)", p3: "أحياء مجهرية (نظري)", break: "استراحة", p4: "تشريح مرضي", p5: "تشريح مرضي" },
-        { day: "الأربعاء", p1: "طفيليات (عملي)", p2: "طفيليات (عملي)", p3: "مناعة (نظري)", break: "استراحة", p4: "أخلاقيات مهنة", p5: "نشاط إرشادي" },
-        { day: "الخميس", p1: "دم ومناعة (مراجعة)", p2: "كيمياء سريرية (عملي)", p3: "كيمياء سريرية (عملي)", break: "استراحة", p4: "حلقات بحثية", p5: "حلقات بحثية" }
-    ]
-};
 
-function switchSchedule() {
-    const stageSelect = document.getElementById('schedule-stage');
-    const typeSelect = document.getElementById('schedule-type');
-    const stage = stageSelect ? stageSelect.value : '2';
-    const type = typeSelect ? typeSelect.value : 'morning';
-    renderTimetableData(stage, type);
-}
 
-function renderTimetable() {
-    switchSchedule();
-}
 
-function renderTimetableData(stage, type) {
-    const tbody = document.getElementById('timetable-rows');
-    if (!tbody) return;
-    const key = `${stage}_${type}`;
+
+
+
+_${type}`;
     const schedule = timetablesData[key] || timetablesData["2_morning"];
     tbody.innerHTML = '';
     schedule.forEach(row => {
@@ -200,7 +171,7 @@ function filterLabTests() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-    switchSchedule();
+    
     renderStudentsTable();
     const savedAnn = localStorage.getItem('latest_announcement');
     if (savedAnn) {
@@ -209,9 +180,9 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 // تصدير الدوال عالمياً للوصول المباشر من عناصر HTML
-window.toggleTheme = toggleTheme;
-window.switchSchedule = switchSchedule;
-window.renderTimetable = renderTimetable;
+
+
+
 window.openAdminModal = openAdminModal;
 window.closeAdminModal = closeAdminModal;
 window.handleAdminLogin = handleAdminLogin;
