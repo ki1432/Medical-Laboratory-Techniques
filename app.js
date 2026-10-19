@@ -207,3 +207,15 @@ window.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.announcement-ticker-text').forEach(el => el.innerText = savedAnn);
     }
 });
+
+// تصدير الدوال عالمياً للوصول المباشر من عناصر HTML
+window.toggleTheme = toggleTheme;
+window.switchSchedule = switchSchedule;
+window.renderTimetable = renderTimetable;
+window.openAdminModal = openAdminModal;
+window.closeAdminModal = closeAdminModal;
+window.handleAdminLogin = handleAdminLogin;
+window.logoutAdmin = logoutAdmin;
+window.switchAdminTab = switchAdminTab;
+window.updateAnnouncement = updateAnnouncement;
+window.addStudentRecord = addStudentRecord;
