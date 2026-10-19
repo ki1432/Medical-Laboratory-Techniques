@@ -396,3 +396,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Initialization error caught safely:', err);
     }
 });
+
+window.switchSchedule = function() {};
+window.renderTimetable = function() {};
