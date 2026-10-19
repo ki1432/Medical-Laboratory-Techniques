@@ -1,4 +1,4 @@
-// ==================== النظام البرمجي الشامل - تقنيات المختبرات الطبية ====================
+// ==================== النظام البرمجي الشامل - تقنيات المختبرات الطبية (إصدار الخبير) ====================
 
 let registeredStudents = JSON.parse(localStorage.getItem('first_year_students')) || [];
 let supervisors = JSON.parse(localStorage.getItem('sys_supervisors')) || [
@@ -6,9 +6,10 @@ let supervisors = JSON.parse(localStorage.getItem('sys_supervisors')) || [
 ];
 let currentLoggedInAdmin = JSON.parse(sessionStorage.getItem('active_admin_session')) || null;
 
-// 1. الوضع الليلي والنهاري (toggleTheme)
+// --- 1. نظام المظهر (الوضع الليلي والنهاري) ---
 function toggleTheme() {
     const htmlEl = document.documentElement;
+    if (!htmlEl) return;
     const isDark = htmlEl.classList.toggle('dark');
     if (isDark) {
         document.body.style.backgroundColor = '#020617';
@@ -20,7 +21,7 @@ function toggleTheme() {
     localStorage.setItem('theme_preference', isDark ? 'dark' : 'light');
 }
 
-// 2. إدارة نافذة الإدارة (فتح وإغلاق وتأكيد الدخول)
+// --- 2. لوحة الإدارة (فتح، إغلاق، تسجيل الدخول) ---
 function openAdminModal() {
     const modal = document.getElementById('admin-modal');
     if (!modal) return;
@@ -41,10 +42,15 @@ function closeAdminModal() {
 }
 
 async function handleAdminLogin(e) {
-    if (e && e.preventDefault) e.preventDefault();
-    const user = document.getElementById('admin-username')?.value.trim();
-    const pin = document.getElementById('admin-password')?.value.trim();
+    if (e && typeof e.preventDefault === 'function') e.preventDefault();
+    const userInput = document.getElementById('admin-username');
+    const pinInput = document.getElementById('admin-password');
+    if (!userInput || !pinInput) return;
 
+    const user = userInput.value.trim();
+    const pin = pinInput.value.trim();
+
+    // التحقق عبر Supabase إن وجد
     if (window.supabaseClient) {
         try {
             const { data, error } = await window.supabaseClient
@@ -60,10 +66,11 @@ async function handleAdminLogin(e) {
                 return;
             }
         } catch (err) {
-            console.error('Supabase Login Error:', err);
+            console.warn('Supabase offline or error, falling back to local storage:', err);
         }
     }
 
+    // التحقق المحلي
     const localMatched = supervisors.find(s => (s.name === user || s.email === user) && s.pin === pin);
     if (localMatched || (user === 'admin' && pin === '123456')) {
         currentLoggedInAdmin = localMatched || { name: user || 'المدير', role: 'مدير نظام كامل' };
@@ -81,8 +88,9 @@ function showAdminDashboard() {
     if (dashScreen) dashScreen.classList.remove('hidden');
     const nameSpan = document.getElementById('current-admin-name');
     if (nameSpan && currentLoggedInAdmin) nameSpan.innerText = currentLoggedInAdmin.name;
-    fetchAndRenderSupervisors();
-    renderStudentsTable();
+    
+    if (typeof fetchAndRenderSupervisors === 'function') fetchAndRenderSupervisors();
+    if (typeof renderStudentsTable === 'function') renderStudentsTable();
 }
 
 function logoutAdmin() {
@@ -112,7 +120,7 @@ function switchAdminTab(tab) {
     if (btnReg) btnReg.className = tab === 'registration' ? 'pb-2 border-b-2 border-teal-400 text-teal-400 font-bold text-xs' : 'pb-2 text-slate-400 hover:text-white font-bold text-xs';
 }
 
-// 3. تحديث الشريط الإعلاني
+// --- 3. الإعلانات والتنويهات ---
 async function updateAnnouncement() {
     const input = document.getElementById('admin-announcement-input');
     if (!input) return;
@@ -139,15 +147,21 @@ async function updateAnnouncement() {
     input.value = '';
 }
 
-// 4. إدارة المشرفين
+// --- 4. إدارة المشرفين ---
 async function addNewSupervisor(e) {
-    if (e && e.preventDefault) e.preventDefault();
-    const name = document.getElementById('new-sup-name').value.trim();
-    const email = document.getElementById('new-sup-email').value.trim();
-    const pin = document.getElementById('new-sup-pin').value.trim();
-    const role = document.getElementById('new-sup-role').value;
+    if (e && typeof e.preventDefault === 'function') e.preventDefault();
+    const nameEl = document.getElementById('new-sup-name');
+    const emailEl = document.getElementById('new-sup-email');
+    const pinEl = document.getElementById('new-sup-pin');
+    const roleEl = document.getElementById('new-sup-role');
+    if (!nameEl || !pinEl || !roleEl) return;
 
-    const newSup = { name, email, pin, role };
+    const newSup = {
+        name: nameEl.value.trim(),
+        email: emailEl ? emailEl.value.trim() : '',
+        pin: pinEl.value.trim(),
+        role: roleEl.value
+    };
 
     if (window.supabaseClient) {
         try {
@@ -156,7 +170,6 @@ async function addNewSupervisor(e) {
                 alert('خطأ في الحفظ على Supabase: ' + error.message);
                 return;
             }
-            alert('تم حفظ المشرف الجديد في Supabase بنجاح!');
         } catch (err) {
             console.error(err);
         }
@@ -165,7 +178,8 @@ async function addNewSupervisor(e) {
     supervisors.push(newSup);
     localStorage.setItem('sys_supervisors', JSON.stringify(supervisors));
     renderSupervisorsList();
-    e.target.reset();
+    if (e && e.target && typeof e.target.reset === 'function') e.target.reset();
+    alert('تم إضافة المشرف بنجاح!');
 }
 
 async function fetchAndRenderSupervisors() {
@@ -189,10 +203,10 @@ function renderSupervisorsList() {
     supervisors.forEach((s, idx) => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td class="p-2.5 font-bold">${s.name} <span class="block text-[10px] text-slate-400">${s.email || ''}</span></td>
-            <td class="p-2.5"><span class="bg-teal-500/10 text-teal-400 px-2 py-0.5 rounded text-[10px]">${s.role}</span></td>
+            <td class="p-2.5 font-bold">${s.name || ''} <span class="block text-[10px] text-slate-400">${s.email || ''}</span></td>
+            <td class="p-2.5"><span class="bg-teal-500/10 text-teal-400 px-2 py-0.5 rounded text-[10px]">${s.role || ''}</span></td>
             <td class="p-2.5 text-center">
-                ${idx > 0 ? `<button onclick="deleteSupervisor(${idx})" class="text-rose-400 hover:text-rose-300 p-1"><i class="fa-solid fa-user-minus"></i></button>` : '<span class="text-[10px] text-slate-500">رئيسي</span>'}
+                ${idx > 0 ? `<button type="button" onclick="deleteSupervisor(${idx})" class="text-rose-400 hover:text-rose-300 p-1"><i class="fa-solid fa-user-minus"></i></button>` : '<span class="text-[10px] text-slate-500">رئيسي</span>'}
             </td>
         `;
         tbody.appendChild(row);
@@ -217,21 +231,24 @@ async function deleteSupervisor(idx) {
     }
 }
 
-// 5. إدارة سجل الطلبة (إضافة، استعراض، حذف، وتصدير)
+// --- 5. إدارة الطلبة والسجلات ---
 function addStudentRecord(e) {
-    if (e && e.preventDefault) e.preventDefault();
+    if (e && typeof e.preventDefault === 'function') e.preventDefault();
+    const nameEl = document.getElementById('reg-name');
+    if (!nameEl) return;
+
     const medicalSelect = document.getElementById('reg-medical')?.value || 'سليم';
     const medicalOther = document.getElementById('reg-medical-other')?.value.trim() || '';
     const finalMedical = medicalSelect === 'أخرى' ? (medicalOther || 'أخرى') : 'سليم';
 
     const student = {
-        name: document.getElementById('reg-name').value.trim(),
-        studyType: document.getElementById('reg-study-type').value,
-        gender: document.getElementById('reg-gender').value,
-        channel: document.getElementById('reg-channel').value,
+        name: nameEl.value.trim(),
+        studyType: document.getElementById('reg-study-type')?.value || 'صباحي',
+        gender: document.getElementById('reg-gender')?.value || 'ذكر',
+        channel: document.getElementById('reg-channel')?.value || 'عامة',
         prevStudy: document.getElementById('reg-prev-study')?.value.trim() || '',
         gpa: document.getElementById('reg-gpa')?.value || '',
-        blood: document.getElementById('reg-blood').value,
+        blood: document.getElementById('reg-blood')?.value || 'O+',
         medical: finalMedical,
         dob: document.getElementById('reg-dob')?.value || '',
         address: document.getElementById('reg-address')?.value.trim() || '',
@@ -243,7 +260,8 @@ function addStudentRecord(e) {
     registeredStudents.push(student);
     localStorage.setItem('first_year_students', JSON.stringify(registeredStudents));
     renderStudentsTable();
-    document.getElementById('student-reg-form').reset();
+    const formEl = document.getElementById('student-reg-form');
+    if (formEl && typeof formEl.reset === 'function') formEl.reset();
     alert('تم إضافة الطالب بنجاح!');
 }
 
@@ -255,21 +273,21 @@ function renderStudentsTable() {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td class="p-2.5">${idx + 1}</td>
-            <td class="p-2.5 font-bold">${s.name}</td>
-            <td class="p-2.5">${s.studyType}</td>
-            <td class="p-2.5">${s.gender}</td>
-            <td class="p-2.5">${s.channel}</td>
+            <td class="p-2.5 font-bold">${s.name || ''}</td>
+            <td class="p-2.5">${s.studyType || ''}</td>
+            <td class="p-2.5">${s.gender || ''}</td>
+            <td class="p-2.5">${s.channel || ''}</td>
             <td class="p-2.5">${s.prevStudy || '-'}</td>
             <td class="p-2.5">${s.gpa || '-'}</td>
-            <td class="p-2.5">${s.blood}</td>
-            <td class="p-2.5">${s.medical}</td>
+            <td class="p-2.5">${s.blood || ''}</td>
+            <td class="p-2.5">${s.medical || ''}</td>
             <td class="p-2.5">${s.dob || '-'}</td>
             <td class="p-2.5">${s.address || '-'}</td>
             <td class="p-2.5">${s.phone || '-'}</td>
             <td class="p-2.5">${s.guardianPhone || '-'}</td>
-            <td class="p-2.5">${s.receipt}</td>
+            <td class="p-2.5">${s.receipt || '-'}</td>
             <td class="p-2.5 text-center no-print">
-                <button onclick="deleteStudent(${idx})" class="text-rose-400 hover:text-rose-300"><i class="fa-solid fa-trash"></i></button>
+                <button type="button" onclick="deleteStudent(${idx})" class="text-rose-400 hover:text-rose-300"><i class="fa-solid fa-trash"></i></button>
             </td>
         `;
         tbody.appendChild(row);
@@ -299,6 +317,7 @@ function toggleMedicalInput(val) {
 
 function printRegistrationPDF() {
     const printWindow = window.open('', '', 'height=700,width=1000');
+    if (!printWindow) return;
     printWindow.document.write('<html><head><title>سجل طلبة المرحلة الأولى - تقنيات المختبرات الطبية</title>');
     printWindow.document.write('<style>body{font-family:Tahoma,sans-serif;direction:rtl;padding:20px;}table{width:100%;border-collapse:collapse;}th,td{border:1px solid #333;padding:6px;text-align:right;font-size:10px;}.no-print{display:none;}</style></head><body>');
     printWindow.document.write('<h2>سجل طلبة المرحلة الأولى - قسم تقنيات المختبرات الطبية</h2>');
@@ -319,11 +338,9 @@ function exportToExactExcel() {
         alert('لا توجد بيانات مسجلة للتصدير!');
         return;
     }
-    let csv = '﻿ت,اسم الطالب,نوع الدراسة,الجنس,قناة القبول,الدراسة السابقة,المعدل,فصيلة الدم,الحالة المرضية,تاريخ التولد,عنوان السكن,الهاتف,هاتف ولي الامر,رقم الوصل
-';
+    let csv = '﻿ت,اسم الطالب,نوع الدراسة,الجنس,قناة القبول,الدراسة السابقة,المعدل,فصيلة الدم,الحالة المرضية,تاريخ التولد,عنوان السكن,الهاتف,هاتف ولي الامر,رقم الوصل\n';
     registeredStudents.forEach((s, i) => {
-        csv += `${i+1},"${s.name}","${s.studyType}","${s.gender}","${s.channel}","${s.prevStudy}","${s.gpa}","${s.blood}","${s.medical}","${s.dob}","${s.address}","${s.phone}","${s.guardianPhone}","${s.receipt}"
-`;
+        csv += `${i+1},"${s.name || ''}","${s.studyType || ''}","${s.gender || ''}","${s.channel || ''}","${s.prevStudy || ''}","${s.gpa || ''}","${s.blood || ''}","${s.medical || ''}","${s.dob || ''}","${s.address || ''}","${s.phone || ''}","${s.guardianPhone || ''}","${s.receipt || ''}"\n`;
     });
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
@@ -339,7 +356,7 @@ function filterLabTests() {
     });
 }
 
-// ربط كافة الدوال بنطاق window لمنع أي ReferenceError
+// --- 6. التصدير الحتمي لنطاق الـ Window العالمي لضمان عدم فشل أي زر ---
 window.toggleTheme = toggleTheme;
 window.openAdminModal = openAdminModal;
 window.closeAdminModal = closeAdminModal;
@@ -355,21 +372,27 @@ window.deleteStudent = deleteStudent;
 window.toggleMedicalInput = toggleMedicalInput;
 window.printRegistrationPDF = printRegistrationPDF;
 window.exportToExactExcel = exportToExactExcel;
+window.filterLabTests = filterLabTests;
 
-window.addEventListener('DOMContentLoaded', () => {
-    renderStudentsTable();
-    const savedAnn = localStorage.getItem('latest_announcement');
-    if (savedAnn) {
-        document.querySelectorAll('.announcement-ticker-text').forEach(el => el.innerText = savedAnn);
-    }
-    const savedTheme = localStorage.getItem('theme_preference');
-    if (savedTheme === 'light') {
-        document.documentElement.classList.remove('dark');
-        document.body.style.backgroundColor = '#f8fafc';
-        document.body.style.color = '#0f172a';
-    } else {
-        document.documentElement.classList.add('dark');
-        document.body.style.backgroundColor = '#020617';
-        document.body.style.color = '#f8fafc';
+// --- 7. التشغيل الآمن عند تحميل الصفحة ---
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        renderStudentsTable();
+        const savedAnn = localStorage.getItem('latest_announcement');
+        if (savedAnn) {
+            document.querySelectorAll('.announcement-ticker-text').forEach(el => el.innerText = savedAnn);
+        }
+        const savedTheme = localStorage.getItem('theme_preference');
+        if (savedTheme === 'light') {
+            document.documentElement.classList.remove('dark');
+            document.body.style.backgroundColor = '#f8fafc';
+            document.body.style.color = '#0f172a';
+        } else {
+            document.documentElement.classList.add('dark');
+            document.body.style.backgroundColor = '#020617';
+            document.body.style.color = '#f8fafc';
+        }
+    } catch (err) {
+        console.error('Initialization error caught safely:', err);
     }
 });
