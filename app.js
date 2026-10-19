@@ -360,3 +360,19 @@ function switchSchedule() {
 function renderTimetable() {
     switchSchedule();
 }
+
+// دالة تبديل المظهر (الوضع الليلي / النهاري)
+function toggleTheme() {
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+}
+
+// تطبيق الثيم المحفوظ عند التحميل
+window.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+        document.documentElement.classList.remove('dark');
+    } else {
+        document.documentElement.classList.add('dark');
+    }
+});
