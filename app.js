@@ -337,3 +337,26 @@ window.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.announcement-ticker-text').forEach(el => el.innerText = savedAnn);
     }
 });
+
+// دالة تبديل عرض الجداول الدراسية الأسبوعية
+function switchSchedule() {
+    const selectEl = document.getElementById('schedule-select') || document.querySelector('select[onchange*="switchSchedule"]');
+    if (!selectEl) return;
+
+    const val = selectEl.value;
+    console.log("Switching timetable to:", val);
+
+    // تحديث أجزاء الجداول أو إظهار/إخفاء المراحل بناءً على القيمة المختارة
+    const allTables = document.querySelectorAll('.timetable-container, [id^="schedule-stage-"]');
+    allTables.forEach(t => t.classList.add('hidden'));
+
+    const targetTable = document.getElementById(`schedule-stage-${val}`);
+    if (targetTable) {
+        targetTable.classList.remove('hidden');
+    }
+}
+
+// دالة تفاعلية أخرى للجداول (renderTimetable)
+function renderTimetable() {
+    switchSchedule();
+}
