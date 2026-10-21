@@ -1,4 +1,4 @@
-﻿// ==================== النظام البرمجي الشامل - تقنيات المختبرات الطبية (إصدار متكامل) ====================
+// ==================== النظام البرمجي الشامل - تقنيات المختبرات الطبية ====================
 
 let registeredStudents = JSON.parse(localStorage.getItem('first_year_students')) || [];
 let supervisors = JSON.parse(localStorage.getItem('sys_supervisors')) || [
@@ -21,35 +21,44 @@ function toggleTheme() {
     localStorage.setItem('theme_preference', isDark ? 'dark' : 'light');
 }
 
-// 2. حاسبة المعدل السريعة
-function calculateQuickGPA() {
-    const input = document.getElementById('calc-grade-input');
+// 2. حاسبة الدرجة النهائية (السعي من 40)
+function calculateFinalCourseGrade() {
+    const midEl = document.getElementById('calc-mid-input');
+    const dailyEl = document.getElementById('calc-daily-input');
+    const attEl = document.getElementById('calc-attendance-input');
     const resultBox = document.getElementById('gpa-result-box');
-    if (!input || !resultBox) return;
 
-    const val = parseFloat(input.value);
-    if (isNaN(val) || val < 0 || val > 100) {
-        alert('يرجى إدخال درجة صالحة بين 0 و 100');
+    if (!midEl || !dailyEl || !attEl || !resultBox) return;
+
+    const mid = parseFloat(midEl.value) || 0;
+    const daily = parseFloat(dailyEl.value) || 0;
+    const attendance = parseFloat(attEl.value) || 0;
+
+    if (mid < 0 || mid > 20 || daily < 0 || daily > 10 || attendance < 0 || attendance > 10) {
+        alert('يرجى التأكد من إدخال الدرجات ضمن الحدود الصحيحة:\n- الميد: 0 إلى 20\n- اليومي والكوزات: 0 إلى 10\n- الحضور: 0 إلى 10');
         return;
     }
 
-    let status = '';
-    if (val >= 90) status = 'امتياز (Excellent)';
-    else if (val >= 80) status = 'جيد جداً (Very Good)';
-    else if (val >= 70) status = 'جيد (Good)';
-    else if (val >= 60) status = 'متوسط (Medium)';
-    else if (val >= 50) status = 'مقبول (Pass)';
-    else status = 'راسب (Fail)';
+    const total = mid + daily + attendance;
 
-    resultBox.innerText = `التقدير الأكاديمي المتوقع: ${status} - الدرجة: ${val}%`;
+    let evaluation = '';
+    if (total >= 36) evaluation = 'ممتاز جداً 🌟';
+    else if (total >= 32) evaluation = 'جيد جداً 🟢';
+    else if (total >= 28) evaluation = 'جيد 🔵';
+    else if (total >= 20) evaluation = 'مقبول 🟡';
+    else evaluation = 'ضعيف / يحتاج تحسين 🔴';
+
+    resultBox.innerHTML = `
+        <div class="space-y-1">
+            <span class="text-slate-400 block text-[11px]">مجموع السعي النهائي المستنتج:</span>
+            <div class="text-2xl font-black text-teal-400">${total} / 40</div>
+            <div class="text-xs font-bold text-slate-300 mt-1">التقييم المستهدف: ${evaluation}</div>
+        </div>
+    `;
     resultBox.classList.remove('hidden');
 }
 
-// 3. فلترة الفحوصات المختبرية
-);
-}
-
-// 4. إدارة لوحة الإدارة
+// 3. إدارة لوحة الإدارة
 function openAdminModal() {
     const modal = document.getElementById('admin-modal');
     if (!modal) return;
@@ -143,7 +152,7 @@ function switchAdminTab(tab) {
     if (btnReg) btnReg.className = tab === 'registration' ? 'pb-2 border-b-2 border-teal-400 text-teal-400 font-bold text-xs' : 'pb-2 text-slate-400 hover:text-white font-bold text-xs';
 }
 
-// 5. إدارة الإعلانات
+// 4. إدارة الإعلانات
 async function updateAnnouncement() {
     const input = document.getElementById('admin-announcement-input');
     if (!input) return;
@@ -170,7 +179,7 @@ async function updateAnnouncement() {
     input.value = '';
 }
 
-// 6. إدارة المشرفين
+// 5. إدارة المشرفين
 async function addNewSupervisor(e) {
     if (e && typeof e.preventDefault === 'function') e.preventDefault();
     const nameEl = document.getElementById('new-sup-name');
@@ -249,7 +258,7 @@ async function deleteSupervisor(idx) {
     }
 }
 
-// 7. إدارة الطلبة والتصدير
+// 6. إدارة الطلبة والتصدير
 function addStudentRecord(e) {
     if (e && typeof e.preventDefault === 'function') e.preventDefault();
     const nameEl = document.getElementById('reg-name');
@@ -367,10 +376,9 @@ function exportToExactExcel() {
     link.click();
 }
 
-// 8. تصدير كافة الدوال لنطاق الـ Window العام ومقابض الأمان للفحوصات القديمة
+// 7. تصدير كافة الدوال لنطاق الـ Window العام
 window.toggleTheme = toggleTheme;
-window.calculateQuickGPA = calculateQuickGPA;
-
+window.calculateFinalCourseGrade = calculateFinalCourseGrade;
 window.openAdminModal = openAdminModal;
 window.closeAdminModal = closeAdminModal;
 window.handleAdminLogin = handleAdminLogin;
@@ -386,7 +394,6 @@ window.toggleMedicalInput = toggleMedicalInput;
 window.printRegistrationPDF = printRegistrationPDF;
 window.exportToExactExcel = exportToExactExcel;
 
-// مقابض استجابة لمنع أخطاء الجداول القديمة
 window.switchSchedule = function() {};
 window.renderTimetable = function() {};
 
@@ -407,43 +414,3 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.style.color = '#f8fafc';
     }
 });
-
-
-// دالة احتساب السعي النهائي من 40
-function calculateFinalCourseGrade() {
-    const midEl = document.getElementById('calc-mid-input');
-    const dailyEl = document.getElementById('calc-daily-input');
-    const attEl = document.getElementById('calc-attendance-input');
-    const resultBox = document.getElementById('gpa-result-box');
-
-    if (!midEl || !dailyEl || !attEl || !resultBox) return;
-
-    const mid = parseFloat(midEl.value) || 0;
-    const daily = parseFloat(dailyEl.value) || 0;
-    const attendance = parseFloat(attEl.value) || 0;
-
-    if (mid < 0 || mid > 20 || daily < 0 || daily > 10 || attendance < 0 || attendance > 10) {
-        alert('يرجى التاكد من إدخال الدرجات ضمن الحدود الصحيحة:\n- الميد: 0 إلى 20\n- اليومي والكوزات: 0 إلى 10\n- الحضور: 0 إلى 10');
-        return;
-    }
-
-    const total = mid + daily + attendance;
-
-    let evaluation = '';
-    if (total >= 36) evaluation = 'ممتاز جداً 🌟';
-    else if (total >= 32) evaluation = 'جيد جداً 🟢';
-    else if (total >= 28) evaluation = 'جيد 🔵';
-    else if (total >= 20) evaluation = 'مقبول 🟡';
-    else evaluation = 'ضعيف / يحتاج تحسين 🔴';
-
-    resultBox.innerHTML = `
-        <div class="space-y-1">
-            <span class="text-slate-400 block text-[11px]">مجموع السعي النهائي المستنتج:</span>
-            <div class="text-2xl font-black text-teal-400">${total} / 40</div>
-            <div class="text-xs font-bold text-slate-300 mt-1">التقييم المستهدف: ${evaluation}</div>
-        </div>
-    `;
-    resultBox.classList.remove('hidden');
-}
-
-window.calculateFinalCourseGrade = calculateFinalCourseGrade;
