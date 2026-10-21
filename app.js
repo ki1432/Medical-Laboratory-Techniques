@@ -1,4 +1,4 @@
-// ==================== النظام البرمجي الشامل - تقنيات المختبرات الطبية (إصدار الخبير) ====================
+﻿// ==================== النظام البرمجي الشامل - تقنيات المختبرات الطبية (إصدار متكامل) ====================
 
 let registeredStudents = JSON.parse(localStorage.getItem('first_year_students')) || [];
 let supervisors = JSON.parse(localStorage.getItem('sys_supervisors')) || [
@@ -6,7 +6,7 @@ let supervisors = JSON.parse(localStorage.getItem('sys_supervisors')) || [
 ];
 let currentLoggedInAdmin = JSON.parse(sessionStorage.getItem('active_admin_session')) || null;
 
-// --- 1. نظام المظهر (الوضع الليلي والنهاري) ---
+// 1. نظام المظهر (الوضع الليلي والنهاري)
 function toggleTheme() {
     const htmlEl = document.documentElement;
     if (!htmlEl) return;
@@ -21,7 +21,39 @@ function toggleTheme() {
     localStorage.setItem('theme_preference', isDark ? 'dark' : 'light');
 }
 
-// --- 2. لوحة الإدارة (فتح، إغلاق، تسجيل الدخول) ---
+// 2. حاسبة المعدل السريعة
+function calculateQuickGPA() {
+    const input = document.getElementById('calc-grade-input');
+    const resultBox = document.getElementById('gpa-result-box');
+    if (!input || !resultBox) return;
+
+    const val = parseFloat(input.value);
+    if (isNaN(val) || val < 0 || val > 100) {
+        alert('يرجى إدخال درجة صالحة بين 0 و 100');
+        return;
+    }
+
+    let status = '';
+    if (val >= 90) status = 'امتياز (Excellent)';
+    else if (val >= 80) status = 'جيد جداً (Very Good)';
+    else if (val >= 70) status = 'جيد (Good)';
+    else if (val >= 60) status = 'متوسط (Medium)';
+    else if (val >= 50) status = 'مقبول (Pass)';
+    else status = 'راسب (Fail)';
+
+    resultBox.innerText = `التقدير الأكاديمي المتوقع: ${status} - الدرجة: ${val}%`;
+    resultBox.classList.remove('hidden');
+}
+
+// 3. فلترة الفحوصات المختبرية
+function filterLabTests() {
+    const query = document.getElementById('lab-search-input')?.value.toLowerCase() || '';
+    document.querySelectorAll('.lab-card').forEach(card => {
+        card.style.display = card.innerText.toLowerCase().includes(query) ? 'block' : 'none';
+    });
+}
+
+// 4. إدارة لوحة الإدارة
 function openAdminModal() {
     const modal = document.getElementById('admin-modal');
     if (!modal) return;
@@ -43,14 +75,11 @@ function closeAdminModal() {
 
 async function handleAdminLogin(e) {
     if (e && typeof e.preventDefault === 'function') e.preventDefault();
-    const userInput = document.getElementById('admin-username');
-    const pinInput = document.getElementById('admin-password');
-    if (!userInput || !pinInput) return;
+    const user = document.getElementById('admin-username')?.value.trim();
+    const pin = document.getElementById('admin-password')?.value.trim();
 
-    const user = userInput.value.trim();
-    const pin = pinInput.value.trim();
+    if (!user || !pin) return;
 
-    // التحقق عبر Supabase إن وجد
     if (window.supabaseClient) {
         try {
             const { data, error } = await window.supabaseClient
@@ -66,11 +95,10 @@ async function handleAdminLogin(e) {
                 return;
             }
         } catch (err) {
-            console.warn('Supabase offline or error, falling back to local storage:', err);
+            console.warn('Supabase Login Fallback:', err);
         }
     }
 
-    // التحقق المحلي
     const localMatched = supervisors.find(s => (s.name === user || s.email === user) && s.pin === pin);
     if (localMatched || (user === 'admin' && pin === '123456')) {
         currentLoggedInAdmin = localMatched || { name: user || 'المدير', role: 'مدير نظام كامل' };
@@ -88,9 +116,8 @@ function showAdminDashboard() {
     if (dashScreen) dashScreen.classList.remove('hidden');
     const nameSpan = document.getElementById('current-admin-name');
     if (nameSpan && currentLoggedInAdmin) nameSpan.innerText = currentLoggedInAdmin.name;
-    
-    if (typeof fetchAndRenderSupervisors === 'function') fetchAndRenderSupervisors();
-    if (typeof renderStudentsTable === 'function') renderStudentsTable();
+    fetchAndRenderSupervisors();
+    renderStudentsTable();
 }
 
 function logoutAdmin() {
@@ -120,7 +147,7 @@ function switchAdminTab(tab) {
     if (btnReg) btnReg.className = tab === 'registration' ? 'pb-2 border-b-2 border-teal-400 text-teal-400 font-bold text-xs' : 'pb-2 text-slate-400 hover:text-white font-bold text-xs';
 }
 
-// --- 3. الإعلانات والتنويهات ---
+// 5. إدارة الإعلانات
 async function updateAnnouncement() {
     const input = document.getElementById('admin-announcement-input');
     if (!input) return;
@@ -138,7 +165,7 @@ async function updateAnnouncement() {
         try {
             await window.supabaseClient.from('announcements').insert([{ content: newText }]);
         } catch (err) {
-            console.error('Supabase Announcement Error:', err);
+            console.error('Supabase Error:', err);
         }
     }
 
@@ -147,29 +174,26 @@ async function updateAnnouncement() {
     input.value = '';
 }
 
-// --- 4. إدارة المشرفين ---
+// 6. إدارة المشرفين
 async function addNewSupervisor(e) {
     if (e && typeof e.preventDefault === 'function') e.preventDefault();
     const nameEl = document.getElementById('new-sup-name');
     const emailEl = document.getElementById('new-sup-email');
     const pinEl = document.getElementById('new-sup-pin');
     const roleEl = document.getElementById('new-sup-role');
-    if (!nameEl || !pinEl || !roleEl) return;
+
+    if (!nameEl || !pinEl) return;
 
     const newSup = {
         name: nameEl.value.trim(),
         email: emailEl ? emailEl.value.trim() : '',
         pin: pinEl.value.trim(),
-        role: roleEl.value
+        role: roleEl ? roleEl.value : 'مشرف إعلانات وتسجيل'
     };
 
     if (window.supabaseClient) {
         try {
-            const { error } = await window.supabaseClient.from('supervisors').insert([newSup]);
-            if (error) {
-                alert('خطأ في الحفظ على Supabase: ' + error.message);
-                return;
-            }
+            await window.supabaseClient.from('supervisors').insert([newSup]);
         } catch (err) {
             console.error(err);
         }
@@ -186,9 +210,7 @@ async function fetchAndRenderSupervisors() {
     if (window.supabaseClient) {
         try {
             const { data, error } = await window.supabaseClient.from('supervisors').select('*');
-            if (!error && data) {
-                supervisors = data;
-            }
+            if (!error && data) supervisors = data;
         } catch (err) {
             console.error(err);
         }
@@ -203,8 +225,8 @@ function renderSupervisorsList() {
     supervisors.forEach((s, idx) => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td class="p-2.5 font-bold">${s.name || ''} <span class="block text-[10px] text-slate-400">${s.email || ''}</span></td>
-            <td class="p-2.5"><span class="bg-teal-500/10 text-teal-400 px-2 py-0.5 rounded text-[10px]">${s.role || ''}</span></td>
+            <td class="p-2.5 font-bold">${s.name} <span class="block text-[10px] text-slate-400">${s.email || ''}</span></td>
+            <td class="p-2.5"><span class="bg-teal-500/10 text-teal-400 px-2 py-0.5 rounded text-[10px]">${s.role}</span></td>
             <td class="p-2.5 text-center">
                 ${idx > 0 ? `<button type="button" onclick="deleteSupervisor(${idx})" class="text-rose-400 hover:text-rose-300 p-1"><i class="fa-solid fa-user-minus"></i></button>` : '<span class="text-[10px] text-slate-500">رئيسي</span>'}
             </td>
@@ -231,7 +253,7 @@ async function deleteSupervisor(idx) {
     }
 }
 
-// --- 5. إدارة الطلبة والسجلات ---
+// 7. إدارة الطلبة والتصدير
 function addStudentRecord(e) {
     if (e && typeof e.preventDefault === 'function') e.preventDefault();
     const nameEl = document.getElementById('reg-name');
@@ -273,19 +295,19 @@ function renderStudentsTable() {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td class="p-2.5">${idx + 1}</td>
-            <td class="p-2.5 font-bold">${s.name || ''}</td>
-            <td class="p-2.5">${s.studyType || ''}</td>
-            <td class="p-2.5">${s.gender || ''}</td>
-            <td class="p-2.5">${s.channel || ''}</td>
+            <td class="p-2.5 font-bold">${s.name}</td>
+            <td class="p-2.5">${s.studyType}</td>
+            <td class="p-2.5">${s.gender}</td>
+            <td class="p-2.5">${s.channel}</td>
             <td class="p-2.5">${s.prevStudy || '-'}</td>
             <td class="p-2.5">${s.gpa || '-'}</td>
-            <td class="p-2.5">${s.blood || ''}</td>
-            <td class="p-2.5">${s.medical || ''}</td>
+            <td class="p-2.5">${s.blood}</td>
+            <td class="p-2.5">${s.medical}</td>
             <td class="p-2.5">${s.dob || '-'}</td>
             <td class="p-2.5">${s.address || '-'}</td>
             <td class="p-2.5">${s.phone || '-'}</td>
             <td class="p-2.5">${s.guardianPhone || '-'}</td>
-            <td class="p-2.5">${s.receipt || '-'}</td>
+            <td class="p-2.5">${s.receipt}</td>
             <td class="p-2.5 text-center no-print">
                 <button type="button" onclick="deleteStudent(${idx})" class="text-rose-400 hover:text-rose-300"><i class="fa-solid fa-trash"></i></button>
             </td>
@@ -338,9 +360,9 @@ function exportToExactExcel() {
         alert('لا توجد بيانات مسجلة للتصدير!');
         return;
     }
-    let csv = '﻿ت,اسم الطالب,نوع الدراسة,الجنس,قناة القبول,الدراسة السابقة,المعدل,فصيلة الدم,الحالة المرضية,تاريخ التولد,عنوان السكن,الهاتف,هاتف ولي الامر,رقم الوصل\n';
+    let csv = '\ufeffت,اسم الطالب,نوع الدراسة,الجنس,قناة القبول,الدراسة السابقة,المعدل,فصيلة الدم,الحالة المرضية,تاريخ التولد,عنوان السكن,الهاتف,هاتف ولي الامر,رقم الوصل\n';
     registeredStudents.forEach((s, i) => {
-        csv += `${i+1},"${s.name || ''}","${s.studyType || ''}","${s.gender || ''}","${s.channel || ''}","${s.prevStudy || ''}","${s.gpa || ''}","${s.blood || ''}","${s.medical || ''}","${s.dob || ''}","${s.address || ''}","${s.phone || ''}","${s.guardianPhone || ''}","${s.receipt || ''}"\n`;
+        csv += `${i+1},"${s.name}","${s.studyType}","${s.gender}","${s.channel}","${s.prevStudy}","${s.gpa}","${s.blood}","${s.medical}","${s.dob}","${s.address}","${s.phone}","${s.guardianPhone}","${s.receipt}"\n`;
     });
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
@@ -349,15 +371,10 @@ function exportToExactExcel() {
     link.click();
 }
 
-function filterLabTests() {
-    const query = document.getElementById('lab-search-input')?.value.toLowerCase() || '';
-    document.querySelectorAll('.lab-card').forEach(card => {
-        card.style.display = card.innerText.toLowerCase().includes(query) ? 'block' : 'none';
-    });
-}
-
-// --- 6. التصدير الحتمي لنطاق الـ Window العالمي لضمان عدم فشل أي زر ---
+// 8. تصدير كافة الدوال لنطاق الـ Window العام ومقابض الأمان للفحوصات القديمة
 window.toggleTheme = toggleTheme;
+window.calculateQuickGPA = calculateQuickGPA;
+window.filterLabTests = filterLabTests;
 window.openAdminModal = openAdminModal;
 window.closeAdminModal = closeAdminModal;
 window.handleAdminLogin = handleAdminLogin;
@@ -372,30 +389,25 @@ window.deleteStudent = deleteStudent;
 window.toggleMedicalInput = toggleMedicalInput;
 window.printRegistrationPDF = printRegistrationPDF;
 window.exportToExactExcel = exportToExactExcel;
-window.filterLabTests = filterLabTests;
 
-// --- 7. التشغيل الآمن عند تحميل الصفحة ---
-document.addEventListener('DOMContentLoaded', () => {
-    try {
-        renderStudentsTable();
-        const savedAnn = localStorage.getItem('latest_announcement');
-        if (savedAnn) {
-            document.querySelectorAll('.announcement-ticker-text').forEach(el => el.innerText = savedAnn);
-        }
-        const savedTheme = localStorage.getItem('theme_preference');
-        if (savedTheme === 'light') {
-            document.documentElement.classList.remove('dark');
-            document.body.style.backgroundColor = '#f8fafc';
-            document.body.style.color = '#0f172a';
-        } else {
-            document.documentElement.classList.add('dark');
-            document.body.style.backgroundColor = '#020617';
-            document.body.style.color = '#f8fafc';
-        }
-    } catch (err) {
-        console.error('Initialization error caught safely:', err);
-    }
-});
-
+// مقابض استجابة لمنع أخطاء الجداول القديمة
 window.switchSchedule = function() {};
 window.renderTimetable = function() {};
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderStudentsTable();
+    const savedAnn = localStorage.getItem('latest_announcement');
+    if (savedAnn) {
+        document.querySelectorAll('.announcement-ticker-text').forEach(el => el.innerText = savedAnn);
+    }
+    const savedTheme = localStorage.getItem('theme_preference');
+    if (savedTheme === 'light') {
+        document.documentElement.classList.remove('dark');
+        document.body.style.backgroundColor = '#f8fafc';
+        document.body.style.color = '#0f172a';
+    } else {
+        document.documentElement.classList.add('dark');
+        document.body.style.backgroundColor = '#020617';
+        document.body.style.color = '#f8fafc';
+    }
+});
