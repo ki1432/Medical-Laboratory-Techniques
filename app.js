@@ -411,3 +411,43 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.style.color = '#f8fafc';
     }
 });
+
+
+// دالة احتساب السعي النهائي من 40
+function calculateFinalCourseGrade() {
+    const midEl = document.getElementById('calc-mid-input');
+    const dailyEl = document.getElementById('calc-daily-input');
+    const attEl = document.getElementById('calc-attendance-input');
+    const resultBox = document.getElementById('gpa-result-box');
+
+    if (!midEl || !dailyEl || !attEl || !resultBox) return;
+
+    const mid = parseFloat(midEl.value) || 0;
+    const daily = parseFloat(dailyEl.value) || 0;
+    const attendance = parseFloat(attEl.value) || 0;
+
+    if (mid < 0 || mid > 20 || daily < 0 || daily > 10 || attendance < 0 || attendance > 10) {
+        alert('يرجى التاكد من إدخال الدرجات ضمن الحدود الصحيحة:\n- الميد: 0 إلى 20\n- اليومي والكوزات: 0 إلى 10\n- الحضور: 0 إلى 10');
+        return;
+    }
+
+    const total = mid + daily + attendance;
+
+    let evaluation = '';
+    if (total >= 36) evaluation = 'ممتاز جداً 🌟';
+    else if (total >= 32) evaluation = 'جيد جداً 🟢';
+    else if (total >= 28) evaluation = 'جيد 🔵';
+    else if (total >= 20) evaluation = 'مقبول 🟡';
+    else evaluation = 'ضعيف / يحتاج تحسين 🔴';
+
+    resultBox.innerHTML = `
+        <div class="space-y-1">
+            <span class="text-slate-400 block text-[11px]">مجموع السعي النهائي المستنتج:</span>
+            <div class="text-2xl font-black text-teal-400">${total} / 40</div>
+            <div class="text-xs font-bold text-slate-300 mt-1">التقييم المستهدف: ${evaluation}</div>
+        </div>
+    `;
+    resultBox.classList.remove('hidden');
+}
+
+window.calculateFinalCourseGrade = calculateFinalCourseGrade;
