@@ -46,11 +46,7 @@ function calculateQuickGPA() {
 }
 
 // 3. فلترة الفحوصات المختبرية
-function filterLabTests() {
-    const query = document.getElementById('lab-search-input')?.value.toLowerCase() || '';
-    document.querySelectorAll('.lab-card').forEach(card => {
-        card.style.display = card.innerText.toLowerCase().includes(query) ? 'block' : 'none';
-    });
+);
 }
 
 // 4. إدارة لوحة الإدارة
@@ -374,7 +370,7 @@ function exportToExactExcel() {
 // 8. تصدير كافة الدوال لنطاق الـ Window العام ومقابض الأمان للفحوصات القديمة
 window.toggleTheme = toggleTheme;
 window.calculateQuickGPA = calculateQuickGPA;
-window.filterLabTests = filterLabTests;
+
 window.openAdminModal = openAdminModal;
 window.closeAdminModal = closeAdminModal;
 window.handleAdminLogin = handleAdminLogin;
