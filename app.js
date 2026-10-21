@@ -414,3 +414,58 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.style.color = '#f8fafc';
     }
 });
+
+// تأثير القطرات المتساقطة الناعمة في الخلفية
+function initFallingDrops() {
+    const container = document.getElementById('falling-drops-container');
+    if (!container) return;
+
+    const numberOfDrops = 25; // عدد القطرات في الشاشة
+    for (let i = 0; i < numberOfDrops; i++) {
+        const drop = document.createElement('div');
+        drop.className = 'absolute bg-teal-500/20 rounded-full blur-[1px] animate-fall';
+        
+        // أحجام عشوائية للقطرات (تشبه الندى أو القطرات المختبرية)
+        const size = Math.random() * 4 + 2; 
+        drop.style.width = `${size}px`;
+        drop.style.height = `${size * 3}px`;
+        
+        // مواقع أفقية وبدايات عشوائية
+        drop.style.left = `${Math.random() * 100}vw`;
+        drop.style.top = `-${Math.random() * 20}vh`;
+        
+        // سرعات وزوايا سقوط مختلفة
+        const duration = Math.random() * 5 + 3; // من 3 إلى 8 ثوانٍ
+        const delay = Math.random() * 5;
+        drop.style.animation = `fallAnimation ${duration}s linear infinite ${delay}s`;
+        
+        container.appendChild(drop);
+    }
+}
+
+// إضافة أنماط حركة القطرات (CSS Keyframes) برمجياً
+const dropStyle = document.createElement('style');
+dropStyle.innerHTML = `
+    @keyframes fallAnimation {
+        0% {
+            transform: translateY(-10vh) translateX(0);
+            opacity: 0;
+        }
+        20% {
+            opacity: 0.6;
+        }
+        80% {
+            opacity: 0.6;
+        }
+        100% {
+            transform: translateY(110vh) translateX(20px);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(dropStyle);
+
+// تشغيل التأثير عند تحميل الصفحة
+window.addEventListener('DOMContentLoaded', () => {
+    initFallingDrops();
+});
