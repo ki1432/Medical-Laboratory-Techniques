@@ -1,4 +1,4 @@
-// ==================== النظام البرمجي الشامل - تقنيات المختبرات الطبية ====================
+// ==================== النظام البرمجي الشامل - تقنيات المختبرات الطبية (إصدار الرونق الفاخر) ====================
 
 let registeredStudents = JSON.parse(localStorage.getItem('first_year_students')) || [];
 let supervisors = JSON.parse(localStorage.getItem('sys_supervisors')) || [
@@ -21,7 +21,80 @@ function toggleTheme() {
     localStorage.setItem('theme_preference', isDark ? 'dark' : 'light');
 }
 
-// 2. حاسبة الدرجة النهائية (السعي من 40)
+// 2. خلفية البتلات الناعمة المتساقطة (Falling Petals Animation)
+function initFallingPetals() {
+    const container = document.getElementById('falling-drops-container');
+    if (!container) return;
+    container.innerHTML = ''; // تنظيف أي تأثير قديم
+
+    const numberOfPetals = 22; // عدد البتلات في الشاشة
+    for (let i = 0; i < numberOfPetals; i++) {
+        const petal = document.createElement('div');
+        // شكل بتلة زهور ناعمة بانحناءات مميزة
+        petal.className = 'absolute rounded-tl-full rounded-br-full opacity-30 pointer-events-none';
+        
+        const size = Math.random() * 10 + 6; // أحجام متناسقة
+        petal.style.width = `${size}px`;
+        petal.style.height = `${size * 1.6}px`;
+        
+        // تدرج ألوان فخم بين التيل المختبري والوردي الناعم
+        petal.style.background = i % 2 === 0 ? 'rgba(20, 184, 166, 0.35)' : 'rgba(244, 63, 94, 0.25)';
+        
+        // توزع أفقي عشوائي
+        petal.style.left = `${Math.random() * 100}vw`;
+        petal.style.top = `-${Math.random() * 20}vh`;
+        
+        // سرعة وحركة تموجية دورانية
+        const duration = Math.random() * 7 + 5; // من 5 إلى 12 ثانية
+        const delay = Math.random() * 5;
+        petal.style.animation = `petalFallAnimation ${duration}s ease-in-out infinite ${delay}s`;
+        
+        container.appendChild(petal);
+    }
+}
+
+// حقن أنماط الحركة الانسيابية للبتلات برمجياً في الـ DOM
+const petalStyles = document.createElement('style');
+petalStyles.innerHTML = `
+    @keyframes petalFallAnimation {
+        0% {
+            transform: translateY(-10vh) translateX(0) rotate(0deg);
+            opacity: 0;
+        }
+        25% {
+            opacity: 0.5;
+            transform: translateY(25vh) translateX(20px) rotate(90deg);
+        }
+        50% {
+            transform: translateY(55vh) translateX(-15px) rotate(180deg);
+        }
+        75% {
+            opacity: 0.5;
+            transform: translateY(85vh) translateX(25px) rotate(270deg);
+        }
+        100% {
+            transform: translateY(110vh) translateX(-10px) rotate(360deg);
+            opacity: 0;
+        }
+    }
+    
+    /* تأثيرات جمالية إضافية للبطاقات (Glassmorphism & Glow) */
+    .glass-panel {
+        background: rgba(15, 23, 42, 0.75);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(20, 184, 166, 0.15);
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        transition: all 0.3s ease;
+    }
+    .glass-panel:hover {
+        border-color: rgba(20, 184, 166, 0.35);
+        box-shadow: 0 15px 35px -10px rgba(20, 184, 166, 0.15);
+    }
+`;
+document.head.appendChild(petalStyles);
+
+// 3. حاسبة الدرجة النهائية (السعي من 40)
 function calculateFinalCourseGrade() {
     const midEl = document.getElementById('calc-mid-input');
     const dailyEl = document.getElementById('calc-daily-input');
@@ -49,7 +122,7 @@ function calculateFinalCourseGrade() {
     else evaluation = 'ضعيف / يحتاج تحسين 🔴';
 
     resultBox.innerHTML = `
-        <div class="space-y-1">
+        <div class="space-y-1 animate-pulse">
             <span class="text-slate-400 block text-[11px]">مجموع السعي النهائي المستنتج:</span>
             <div class="text-2xl font-black text-teal-400">${total} / 40</div>
             <div class="text-xs font-bold text-slate-300 mt-1">التقييم المستهدف: ${evaluation}</div>
@@ -58,7 +131,7 @@ function calculateFinalCourseGrade() {
     resultBox.classList.remove('hidden');
 }
 
-// 3. إدارة لوحة الإدارة
+// 4. إدارة لوحة الإدارة
 function openAdminModal() {
     const modal = document.getElementById('admin-modal');
     if (!modal) return;
@@ -152,7 +225,7 @@ function switchAdminTab(tab) {
     if (btnReg) btnReg.className = tab === 'registration' ? 'pb-2 border-b-2 border-teal-400 text-teal-400 font-bold text-xs' : 'pb-2 text-slate-400 hover:text-white font-bold text-xs';
 }
 
-// 4. إدارة الإعلانات
+// 5. إدارة الإعلانات
 async function updateAnnouncement() {
     const input = document.getElementById('admin-announcement-input');
     if (!input) return;
@@ -179,7 +252,7 @@ async function updateAnnouncement() {
     input.value = '';
 }
 
-// 5. إدارة المشرفين
+// 6. إدارة المشرفين
 async function addNewSupervisor(e) {
     if (e && typeof e.preventDefault === 'function') e.preventDefault();
     const nameEl = document.getElementById('new-sup-name');
@@ -258,7 +331,7 @@ async function deleteSupervisor(idx) {
     }
 }
 
-// 6. إدارة الطلبة والتصدير
+// 7. إدارة الطلبة والتصدير
 function addStudentRecord(e) {
     if (e && typeof e.preventDefault === 'function') e.preventDefault();
     const nameEl = document.getElementById('reg-name');
@@ -376,7 +449,7 @@ function exportToExactExcel() {
     link.click();
 }
 
-// 7. تصدير كافة الدوال لنطاق الـ Window العام
+// 8. تصدير كافة الدوال لنطاق الـ Window العام
 window.toggleTheme = toggleTheme;
 window.calculateFinalCourseGrade = calculateFinalCourseGrade;
 window.openAdminModal = openAdminModal;
@@ -399,6 +472,7 @@ window.renderTimetable = function() {};
 
 document.addEventListener('DOMContentLoaded', () => {
     renderStudentsTable();
+    initFallingPetals();
     const savedAnn = localStorage.getItem('latest_announcement');
     if (savedAnn) {
         document.querySelectorAll('.announcement-ticker-text').forEach(el => el.innerText = savedAnn);
@@ -413,59 +487,4 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.style.backgroundColor = '#020617';
         document.body.style.color = '#f8fafc';
     }
-});
-
-// تأثير القطرات المتساقطة الناعمة في الخلفية
-function initFallingDrops() {
-    const container = document.getElementById('falling-drops-container');
-    if (!container) return;
-
-    const numberOfDrops = 25; // عدد القطرات في الشاشة
-    for (let i = 0; i < numberOfDrops; i++) {
-        const drop = document.createElement('div');
-        drop.className = 'absolute bg-teal-500/20 rounded-full blur-[1px] animate-fall';
-        
-        // أحجام عشوائية للقطرات (تشبه الندى أو القطرات المختبرية)
-        const size = Math.random() * 4 + 2; 
-        drop.style.width = `${size}px`;
-        drop.style.height = `${size * 3}px`;
-        
-        // مواقع أفقية وبدايات عشوائية
-        drop.style.left = `${Math.random() * 100}vw`;
-        drop.style.top = `-${Math.random() * 20}vh`;
-        
-        // سرعات وزوايا سقوط مختلفة
-        const duration = Math.random() * 5 + 3; // من 3 إلى 8 ثوانٍ
-        const delay = Math.random() * 5;
-        drop.style.animation = `fallAnimation ${duration}s linear infinite ${delay}s`;
-        
-        container.appendChild(drop);
-    }
-}
-
-// إضافة أنماط حركة القطرات (CSS Keyframes) برمجياً
-const dropStyle = document.createElement('style');
-dropStyle.innerHTML = `
-    @keyframes fallAnimation {
-        0% {
-            transform: translateY(-10vh) translateX(0);
-            opacity: 0;
-        }
-        20% {
-            opacity: 0.6;
-        }
-        80% {
-            opacity: 0.6;
-        }
-        100% {
-            transform: translateY(110vh) translateX(20px);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(dropStyle);
-
-// تشغيل التأثير عند تحميل الصفحة
-window.addEventListener('DOMContentLoaded', () => {
-    initFallingDrops();
 });
