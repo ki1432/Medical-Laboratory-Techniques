@@ -527,7 +527,6 @@
             const container = document.getElementById('bacteria-container');
             const view = document.getElementById('microscope-view');
             
-            // Blur calculation based on focus knob (exact focus at 8)
             let blurAmount = Math.abs(8 - currentFocus);
             if (currentMag === 100) blurAmount = Math.max(0, blurAmount - 2);
             view.style.filter = `blur(${blurAmount}px)`;
@@ -538,22 +537,18 @@
             }
 
             let html = '';
-            // Render bacterial morphology based on staining state
-            let color = "#64748b"; // default un-stained
-            if (appliedViolet && !appliedDecolor) color = "#7e22ce"; // Purple Gram + and -
-            else if (appliedDecolor && !appliedSafranin) color = "#7e22ce"; // Gram + stays purple, gram - colorless
-            else if (appliedSafranin) color = "#e11d48"; // Gram - turns pink/red, Gram + stays purple
+            let color = "#64748b";
+            if (appliedViolet && !appliedDecolor) color = "#7e22ce";
+            else if (appliedDecolor && !appliedSafranin) color = "#7e22ce";
+            else if (appliedSafranin) color = "#e11d48";
 
-            // Draw multiple bacteria (Staphylococcus clusters & E.coli bacilli)
             for(let i=0; i<12; i++) {
                 let left = 20 + (i * 15) % 180;
                 let top = 20 + (i * 23) % 160;
                 if(i % 2 === 0) {
-                    // Cocci (Staphylococcus)
                     let cColor = color;
                     html += `<div style="position:absolute; left:${left}px; top:${top}px; width:8px; height:8px; border-radius:50%; background:${cColor};"></div>`;
                 } else {
-                    // Bacilli (E. coli) -> Pink if safranin applied
                     let bColor = (appliedSafranin) ? "#f43f5e" : color;
                     html += `<div style="position:absolute; left:${left}px; top:${top}px; width:12px; height:6px; border-radius:3px; background:${bColor}; transform:rotate(45deg);"></div>`;
                 }
@@ -573,7 +568,7 @@
         // Blood Typing State
         let addedA = false, addedB = false, addedD = false;
         let mixedA = false, mixedB = false, mixedD = false;
-        const targetBlood = "A+"; // test sample is A+
+        const targetBlood = "A+";
 
         function resetBloodTyping() {
             addedA = addedB = addedD = false;
@@ -593,19 +588,16 @@
         function mixWell(type) {
             if(type === 'A' && addedA) {
                 mixedA = true;
-                // For A+, Anti-A agglutinates
                 document.getElementById('blood-a').className = "w-16 h-16 rounded-full bg-red-600 transition-all duration-500 flex items-center justify-center shadow-lg scale-110 border-2 border-red-400";
                 document.getElementById('blood-a').innerHTML = '<span class="text-[10px] text-white font-bold">تلازن (+)</span>';
             }
             if(type === 'B' && addedB) {
                 mixedB = true;
-                // For A+, Anti-B does NOT agglutinate
                 document.getElementById('blood-b').className = "w-16 h-16 rounded-full bg-red-900/40 transition-all duration-500 flex items-center justify-center";
                 document.getElementById('blood-b').innerHTML = '<span class="text-[10px] text-slate-300">سالب (-)</span>';
             }
             if(type === 'D' && addedD) {
                 mixedD = true;
-                // For A+, Anti-D (Rh) agglutinates
                 document.getElementById('blood-d').className = "w-16 h-16 rounded-full bg-red-600 transition-all duration-500 flex items-center justify-center shadow-lg scale-110 border-2 border-red-400";
                 document.getElementById('blood-d').innerHTML = '<span class="text-[10px] text-white font-bold">تلازن Rh (+)</span>';
             }
