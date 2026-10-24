@@ -1,138 +1,666 @@
-'use strict';
-// Educational cases: authored examples, not patient data. Increment VERSION when scoring changes.
-const VERSION = 1;
-const STORAGE_KEY = 'mlt-virtual-lab-v1';
-const SOURCES = {
- cbc: {name:'NHS · متطلبات عينة تعداد الدم',url:'https://www.nbt.nhs.uk/severn-pathology/requesting/test-information/full-blood-count'},
- anemia: {name:'Merck Manual · فقر الدم بعوز الحديد',url:'https://www.merckmanuals.com/professional/hematology/anemias-caused-by-deficient-erythropoiesis/iron-deficiency-anemia'},
- urine: {name:'MedlinePlus · النتريت في البول وجمع العينة',url:'https://medlineplus.gov/lab-tests/nitrites-in-urine/'},
- gram: {name:'OpenStax · صبغ العينات المجهرية',url:'https://openstax.org/books/microbiology/pages/2-4-staining-microscopic-specimens'},
- asm: {name:'ASM · مرجع صبغة غرام (PDF)',url:'https://asm.org/getcontentasset/4b39bb62-6b77-4db3-8bfd-af8faba12a98/dfc3d011-8f63-43f6-9ed8-4b444333a1d0/gram-stain-protocols.pdf?language=en-US'}
-};
-const CASES = [
- {id:'anemia',title:'لغز فقر الدم',subject:'علم الدم',time:'6–8 دقائق',badge:'قارئ مؤشرات الدم',description:'من أنبوب العينة إلى تفسير مؤشرات كريات الدم الحمراء.',story:'حالة افتراضية: طالبة عمرها 22 عاماً تشكو التعب. طُلب تعداد دم كامل (CBC). مهمتك تقييم العينة وقراءة النتائج، دون وصف علاج.',sources:['cbc','anemia'],figure:'blood',table:[['Hb','9.0 g/dL','12–16'],['MCV','68 fL','80–100'],['Ferritin','8 ng/mL','15–150']],tableNote:'قيم ومجالات مرجعية افتراضية لامرأة بالغة في هذا التمرين؛ تُستخدم مجالات المختبر الفعلية عند العمل.',steps:[
- {stage:'اختيار العينة',q:'أي عينة تختار لفحص CBC؟',options:['مصل في أنبوب دون مانع تخثر','دم كامل في أنبوب يحتوي EDTA','بول في وعاء معقم'],answer:1,why:'يحتاج CBC إلى خلايا الدم في عينة دم كامل مع EDTA. المصل لا يحتوي المكونات الخلوية اللازمة للعد. اعتمد اسم المادة المضافة؛ ألوان الأغطية قد تختلف.',source:'cbc'},
- {stage:'جودة العينة',q:'وُجدت خثرة في عينة CBC. ما التصرف المناسب؟',options:['إزالة الخثرة ثم إصدار النتائج','رجّ الأنبوب بقوة لإذابة الخثرة','رفض العينة وفق سياسة المختبر وطلب إعادة الجمع'],answer:2,why:'قد تُحتجز الخلايا في الخثرة فتتأثر دقة العد. إزالة الخثرة لا تعيد صلاحية العينة. تُوثّق المشكلة وتُعاد العينة وفق الإجراء المعتمد.',source:'cbc'},
- {stage:'قراءة النتائج',context:'وصلت عينة بديلة مقبولة، وأصبحت النتائج الافتراضية في الجدول متاحة.',showResults:true,q:'Hb = 9.0 g/dL وMCV = 68 fL. كيف تصنف النمط؟',options:['فقر دم صغير الكريات','فقر دم كبير الكريات','لا يوجد فقر دم وفق المجال المعروض'],answer:0,why:'الهيموغلوبين أقل من المجال المعروض، وMCV أقل من 80 fL؛ إذن النمط صغير الكريات. هذا وصف للنمط وليس تحديداً نهائياً للسبب.',source:'anemia'},
- {stage:'ربط الأدلة',showResults:true,q:'مع هذا النمط، ماذا تدعم قيمة Ferritin = 8 ng/mL؟',options:['نقص مخزون الحديد','زيادة مخزون الحديد','أن سبب فقر الدم قد حُسم دون أي سياق آخر'],answer:0,why:'الفيريتين المنخفض يدعم نقص مخزون الحديد. تفسير السبب يحتاج القصة السريرية وبقية الفحوص؛ الفيريتين قد يرتفع أيضاً مع الالتهاب.',source:'anemia'},
- {stage:'حدود الاستنتاج',showResults:true,q:'أي خلاصة تعليمية هي الأدق لهذه النتائج؟',options:['بدء علاج بجرعة محددة من الموقع','نمط يدعم عوز الحديد ويحتاج تقييماً سريرياً لسببه','انخفاض MCV يثبت الثلاسيميا وحدها'],answer:1,why:'اجتماع انخفاض Hb وMCV والفيريتين يدعم عوز الحديد في هذا المثال. يُقيّم الطبيب السبب؛ مؤشرات الدم وحدها لا تبرر وصف علاج أو استبعاد كل الاحتمالات.',source:'anemia'}]},
- {id:'urine',title:'ما الذي تخبرنا به العينة؟',subject:'تحليل البول',time:'5–7 دقائق',badge:'مستكشف تحليل البول',description:'اجمع الدليل من جودة العينة وشريط الفحص ونتائجها.',story:'حالة افتراضية: شخص بالغ لديه حرقة وتكرار تبول. طُلب تحليل بول. ركّز على جمع العينة ومعنى النتائج وحدودها.',sources:['urine'],figure:'urine',table:[['Nitrite','Positive','Negative'],['Leukocyte esterase','Positive','Negative']],tableNote:'نتائج تعليمية افتراضية. لا تُحدد هذه النتائج وحدها نوع البكتريا أو العلاج.',steps:[
- {stage:'اختيار العينة',q:'ما الاختيار الأنسب لعينة نظيفة في هذه الحالة؟',options:['عينة من منتصف جريان البول في الوعاء المخصص وفق التعليمات','عينة تُجمع من المرحاض','عينة في وعاء منزلي مستخدم'],answer:0,why:'جمع منتصف الجريان في وعاء مخصص وباتباع تعليمات النظافة يقلل تلوث العينة بجراثيم الجلد.',source:'urine'},
- {stage:'تسلسل الجمع',type:'order',q:'رتّب مراحل الجمع المبسطة، من الأولى إلى الأخيرة.',context:'هذا ترتيب تعليمي؛ تُتبع تعليمات الجمع التفصيلية الصادرة من المختبر.',items:['غسل اليدين وتنظيف المنطقة وفق التعليمات','بدء التبول في المرحاض','جمع منتصف الجريان دون لمس داخل الوعاء','إغلاق الوعاء وتسليمه وفق تعليمات المختبر'],display:[2,0,3,1],answer:[0,1,2,3],why:'النظافة أولاً، ثم يُترك الجزء الأول، ويُجمع منتصف الجريان مع حماية الوعاء من التلوث، ثم يُغلق ويُسلّم.',source:'urine'},
- {stage:'قراءة الشريط',showResults:true,q:'النتريت موجب في العينة. أي تفسير هو الأنسب؟',options:['يثبت نوع البكتريا بدقة','يدعم احتمال وجود عدوى بولية ضمن السياق السريري','يثبت أن العينة طبيعية'],answer:1,why:'بعض البكتريا تحوّل النترات إلى نتريت. إيجابيته تدعم احتمال العدوى، لكنها لا تحدد النوع الجرثومي.',source:'urine'},
- {stage:'اكتشاف الاستنتاج الخاطئ',q:'في عينة أخرى كانت نتيجة النتريت سلبية رغم وجود أعراض. ماذا نستنتج؟',options:['تُستبعد العدوى البولية قطعياً','لا حاجة لأي تقييم آخر','النتيجة السلبية لا تنفي العدوى البولية'],answer:2,why:'ليست كل البكتريا المسببة للعدوى تنتج النتريت؛ لذلك لا تكفي النتيجة السلبية لنفي العدوى.',source:'urine'},
- {stage:'الخطوة التالية',showResults:true,q:'ما دور زرع البول عند طلبه ضمن تقييم الحالة؟',options:['المساعدة في تحديد الجرثومة وتوجيه تقييم حساسيتها','استبدال جميع بيانات المريض','اختيار دواء تلقائياً دون تقييم طبي'],answer:0,why:'قد يُطلب الزرع للمساعدة في تحديد الجرثومة وتقييم حساسيتها. تُربط النتائج بالأعراض والتقييم الطبي.',source:'urine'}]},
- {id:'gram',title:'شيفرة اللون البنفسجي',subject:'البكتريا الطبية والتشخيصية',time:'6–8 دقائق',badge:'محقق صبغة غرام',description:'رتّب الصبغات، اقرأ الشكل واللون، واكتشف خطأ الجودة.',story:'أمامك لطاخة تعليمية افتراضية مُحضّرة مسبقاً. ستراجع تسلسل الصبغ وتصف مظهراً توضيحياً، ثم تقيّم خطأ في ضبط الجودة. لا يتضمن التدريب زراعة كائنات أو التعامل مع عينات حقيقية.',sources:['gram','asm'],figure:'gram',steps:[
- {stage:'ترتيب الكواشف',type:'order',q:'رتّب الكواشف الأساسية لصبغة غرام.',context:'رتّب الكواشف فقط؛ لا يمثل هذا السؤال إجراء تشغيل مختبرياً كاملاً.',items:['البنفسجي البلوري · Crystal violet','يود غرام · Iodine','مزيل اللون · Decolorizer','السافرانين · Safranin'],display:[3,1,0,2],answer:[0,1,2,3],why:'تبدأ الصبغة الأولية، يليها اليود لتكوين المعقّد، ثم إزالة اللون، ثم الصبغة المقابلة. مراحل التحضير والغسل وضبط الجودة تُراجع في إجراء المختبر.',source:'asm'},
- {stage:'فهم الكاشف',q:'ما الدور الأساسي ليود غرام؟',options:['صبغ الخلايا بالوردي كصبغة مقابلة','تكوين معقّد مع البنفسجي البلوري','تحديد النوع البكتيري وحده'],answer:1,why:'اليود عامل تثبيت للصبغة (mordant)؛ يتفاعل مع البنفسجي البلوري لتكوين المعقّد الذي يختلف احتفاظ الخلايا به بعد إزالة اللون.',source:'gram'},
- {stage:'قراءة المشهد',showResults:true,q:'يُظهر الرسم مكورات بنفسجية متجمعة. ما الوصف المبدئي المناسب؟',options:['عصيات سالبة غرام','مكورات موجبة غرام في تجمعات','تحديد مؤكد للنوع Staphylococcus aureus'],answer:1,why:'في صبغة صحيحة، يشير البنفسجي إلى إيجابية غرام، والشكل الكروي إلى مكورات. هذا الوصف لا يثبت نوعاً بعينه.',source:'gram'},
- {stage:'ضبط الجودة',q:'ظهر شاهد موجب غرام بلون وردي بعد إزالة لون مفرطة. ما الخطأ المحتمل؟',options:['نتيجة سالبة غرام كاذبة بسبب فقد الصبغة','نجاح الفحص بالضرورة','يمكن تجاهل الشاهد وإصدار النتيجة'],answer:0,why:'الإفراط في إزالة اللون قد يفقد الخلايا الموجبة معقّد الصبغة فتظهر وردية. فشل الشاهد يستلزم مراجعة الصبغ وإعادته وفق إجراء الجودة قبل اعتماد النتائج.',source:'asm'},
- {stage:'حدود الفحص',showResults:true,q:'ما الذي تستطيع صبغة غرام تقديمه وحدها؟',options:['هوية النوع وحساسية المضادات بشكل مؤكد','وصف مبدئي لتفاعل غرام والشكل والترتيب','وصفة علاجية نهائية'],answer:1,why:'غرام فحص تفريقي يعطي وصفاً أولياً. تحديد النوع وحساسية المضادات يحتاج فحوصاً إضافية معتمدة وسياقاً سريرياً.',source:'gram'}]}
-];
-const $ = id => document.getElementById(id);
-function element(tag,text,className){const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(className)n.className=className;return n;}
-function button(text,fn,secondary=false){const b=element('button',text,'btn'+(secondary?' secondary':''));b.type='button';b.addEventListener('click',fn);return b;}
-function same(a,b){return JSON.stringify(a)===JSON.stringify(b);}
-function validAnswer(step,value){return step.type==='order'?Array.isArray(value)&&value.length===step.items.length&&new Set(value).size===step.items.length&&value.every(x=>Number.isInteger(x)&&x>=0&&x<step.items.length):Number.isInteger(value)&&value>=0&&value<step.options.length;}
-function fresh(c){return {answers:Array(c.steps.length).fill(null),best:null,attempts:0,done:false};}
-let storageOK=true;
-function readProgress(){
- let raw;try{raw=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');}catch{storageOK=false;}
- const output={};
- for(const c of CASES){
-  const v=raw&&raw.version===VERSION&&raw.cases&&raw.cases[c.id];const p=fresh(c);
-  if(v&&Array.isArray(v.answers)&&v.answers.length===c.steps.length){
-   let gap=false;
-   p.answers=v.answers.map((a,i)=>{if(gap||!validAnswer(c.steps[i],a)){gap=true;return null;}return a;});
-   p.done=v.done===true&&p.answers.every(a=>a!==null);
-   p.best=Number.isInteger(v.best)&&v.best>=0&&v.best<=100?v.best:null;
-   p.attempts=Number.isInteger(v.attempts)&&v.attempts>=0?v.attempts:0;
-  }output[c.id]=p;
- }return output;
-}
-let progress=readProgress();
-let active=null,stepIndex=0,draft=null;
-function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify({version:VERSION,cases:progress}));}catch{storageOK=false;}storageStatus();}
-function storageStatus(){if(!storageOK)$('storage-note').textContent='تعذّر الاعتماد على التخزين المحلي. يمكنك إكمال التدريب الآن، لكن قد لا يُحفظ تقدمك بعد إغلاق الصفحة.';}
-function score(c){return Math.round(progress[c.id].answers.filter((a,i)=>same(a,c.steps[i].answer)).length/c.steps.length*100);}
-function complete(c){const p=progress[c.id];if(!p.done&&p.answers.every(a=>a!==null)){p.done=true;p.attempts++;p.best=Math.max(p.best||0,score(c));}}
-function drawDashboard(){
- const list=$('case-list');list.replaceChildren();
- for(const [i,c] of CASES.entries()){
-  const p=progress[c.id];const count=p.answers.filter(a=>a!==null).length;
-  const card=element('article',undefined,'case-card'+(active===c.id?' active':''));
-  const top=element('div',undefined,'case-top');top.append(element('span','0'+(i+1),'case-number'),element('span',p.best>=80?'✦ '+c.badge:c.subject,'tag'));card.append(top,element('h3',c.title),element('p',c.description));
-  const meta=element('div',undefined,'case-meta');meta.append(element('p','5 خطوات · '+c.time));
-  meta.append(element('p',p.best!==null?'أفضل نتيجة: '+p.best+'% · محاولات مكتملة: '+p.attempts:count?'تقدمك: '+count+' من 5 خطوات':'جاهز لأول تجربة'));
-  meta.append(button(p.done?'عرض النتيجة':count?'استكمال الحالة':'ابدأ الحالة',()=>openCase(c.id)));card.append(meta);list.append(card);
- }
- const finished=CASES.filter(c=>progress[c.id].best!==null).length;const badges=CASES.filter(c=>progress[c.id].best!==null&&progress[c.id].best>=80).length;
- $('total-progress').textContent=finished+' / 3 حالات مكتملة · '+badges+' شارات';storageStatus();
-}
-function sourceLink(key){const s=SOURCES[key];const a=element('a',s.name+' ↗');a.href=s.url;a.target='_blank';a.rel='noopener noreferrer';return a;}
-function diagram(kind){
- const fig=element('figure',undefined,'figure');
- // Original schematic SVGs: deliberately stylised and not microscope photographs.
- let shapes='',label='';
- if(kind==='blood'){
-  shapes='<circle cx="62" cy="76" r="28" fill="#dc7c8a"/><circle cx="62" cy="76" r="10" fill="#fff0f1"/>';
-  [[150,55],[199,86],[143,112],[225,47]].forEach(([x,y])=>{shapes+='<circle cx="'+x+'" cy="'+y+'" r="19" fill="#e6a0ab"/><circle cx="'+x+'" cy="'+y+'" r="11" fill="#fff0f1"/>';});
-  shapes+='<path d="M108 25V145" stroke="#b8b2c8" stroke-dasharray="4 5"/>';
-  label='رسم تخطيطي: خلية مرجعية كبيرة يساراً، وخلايا أصغر ذات شحوب مركزي أوسع يميناً. ليس مقياساً للحجم أو لطاخة حقيقية.';
- }else if(kind==='gram'){
-  [[70,65],[85,57],[89,75],[66,83],[80,94],[104,89],[175,92],[190,81],[207,90],[191,103],[213,108],[177,113]].forEach(([x,y])=>{shapes+='<circle cx="'+x+'" cy="'+y+'" r="8" fill="#7545a3" stroke="#58327c" stroke-width="2"/>';});
-  label='رسم تخطيطي لمكورات بنفسجية في تجمعات. يوضح الشكل واللون فقط، ولا يحدد النوع الجرثومي.';
- }else{
-  shapes='<rect x="38" y="62" width="210" height="32" rx="6" fill="#e1ded0"/><rect x="48" y="67" width="23" height="22" rx="2" fill="#bd89b6"/><rect x="84" y="67" width="23" height="22" rx="2" fill="#ec9ba5"/><rect x="120" y="67" width="23" height="22" rx="2" fill="#e6cb80"/><rect x="156" y="67" width="23" height="22" rx="2" fill="#92bdb3"/>';
-  label='رسم توضيحي لشريط فحص فقط. الألوان لا تمثل دليل قراءة لأي شركة؛ استند إلى النتائج المكتوبة في الجدول.';
- }
- fig.innerHTML='<svg viewBox="0 0 280 170" role="img" aria-label="'+label+'"><circle cx="140" cy="85" r="80" fill="#f0edf7"/>'+shapes+'</svg>';
- fig.append(element('figcaption',label));return fig;
-}
-function makeSidebar(c,showResults){
- const aside=element('aside',undefined,'panel sidebar');const info=element('section');info.append(element('p','ملف الحالة','mini-title'),element('h3',c.subject),element('p',c.story));aside.append(info);
- if(showResults){const evidence=element('section');evidence.append(element('p','لوحة الأدلة','mini-title'),diagram(c.figure));
-  if(c.table){const table=element('table',undefined,'results-table');table.append(element('caption','نتائج العينة الافتراضية'));const head=element('thead');const tr=element('tr');['الفحص','النتيجة','المجال / المتوقع'].forEach(t=>{const th=element('th',t);th.scope='col';tr.append(th);});head.append(tr);table.append(head);const body=element('tbody');c.table.forEach(row=>{const tr=element('tr');row.forEach(t=>{const td=element('td',t);td.dir='ltr';tr.append(td);});body.append(tr);});table.append(body);evidence.append(table,element('p',c.tableNote,'muted'));}aside.append(evidence);
- }
- const sources=element('section');sources.append(element('p','للمراجعة والتوسع','mini-title'));const ul=element('ul',undefined,'source-list');for(const s of c.sources){const li=element('li');li.append(sourceLink(s));ul.append(li);}sources.append(ul,element('p','إعداد المحتوى: 22 أكتوبر 2026 · بانتظار مراجعة التدريسي.','storage-note'));aside.append(sources);return aside;
-}
-function openCase(id,focus=true){const c=CASES.find(x=>x.id===id);if(!c)return;active=id;const p=progress[id];stepIndex=p.done?c.steps.length:p.answers.findIndex(a=>a===null);if(stepIndex<0){complete(c);save();stepIndex=c.steps.length;}draft=null;try{history.replaceState(null,'','#'+id);}catch{}drawDashboard();renderWorkspace(focus);}
-function focusHeading(){const h=$('question-heading');if(h){h.focus({preventScroll:true});$('workspace').scrollIntoView({behavior:'auto',block:'start'});}}
-function renderWorkspace(focus=true){
- if(!active)return;const c=CASES.find(x=>x.id===active),p=progress[active];const root=$('workspace');root.hidden=false;root.replaceChildren();
- const header=element('div',undefined,'work-header');header.append(element('div',c.title,'eyebrow'),button('العودة إلى الحالات',()=>{active=null;root.hidden=true;try{history.replaceState(null,'',location.pathname+location.search);}catch{}drawDashboard();const first=$('case-list').querySelector('button');if(first)first.focus();},true));root.append(header);
- const layout=element('div',undefined,'work-layout'),panel=element('div',undefined,'panel');layout.append(panel);root.append(layout);
- if(p.done||stepIndex>=c.steps.length){renderResult(c,p,panel);layout.append(makeSidebar(c,true));if(focus)focusHeading();return;}
- const q=c.steps[stepIndex],saved=p.answers[stepIndex],locked=saved!==null;
- const meter=element('progress');meter.max=c.steps.length;meter.value=p.answers.filter(a=>a!==null).length;meter.setAttribute('aria-label','الخطوات المجاب عنها');panel.append(meter,element('p','الخطوة '+(stepIndex+1)+' من 5 · '+q.stage,'stage-label'));
- const h=element('h2',q.q,'question-title');h.id='question-heading';h.tabIndex=-1;panel.append(h);
- if(q.context)panel.append(element('p',q.context,'context'));
- const field=element('fieldset',undefined,'choices');const legend=element('legend',q.type==='order'?'اختر العناصر بالترتيب المطلوب':'اختر إجابة واحدة','sr-only');field.append(legend);panel.append(field);
- const submit=button('تحقق من الإجابة',()=>submitAnswer(c,q));submit.disabled=locked||draft===null;
- if(q.type==='order'){
-  const selected=locked?saved:(Array.isArray(draft)?draft:[]);draft=locked?null:selected;
-  field.append(element('p','اضغط العناصر تباعاً لبناء الترتيب من الأول إلى الأخير.','muted'));
-  const order=element('ol',undefined,'order-preview');order.setAttribute('aria-live','polite');selected.forEach(i=>order.append(element('li',q.items[i])));field.append(order);
-  const bank=element('div',undefined,'order-bank');for(const i of q.display){const b=element('button',q.items[i]);b.type='button';b.disabled=locked||selected.includes(i);b.addEventListener('click',()=>{draft=[...selected,i];renderWorkspace(false);const next=$('workspace').querySelector('.order-bank button:not(:disabled)')||$('workspace').querySelector('.actions button');if(next)next.focus({preventScroll:true});});bank.append(b);}field.append(bank);
-  const clear=button('إعادة الترتيب',()=>{draft=[];renderWorkspace(false);},true);clear.disabled=locked||selected.length===0;field.append(clear);submit.disabled=locked||selected.length!==q.items.length;
- }else{
-  q.options.forEach((text,i)=>{const label=element('label',undefined,'choice');const input=element('input');input.type='radio';input.name='answer';input.value=i;input.checked=locked?saved===i:draft===i;input.disabled=locked;input.addEventListener('change',()=>{draft=i;submit.disabled=false;});label.append(input,element('span',text));field.append(label);});
- }
- if(!locked){const actions=element('div',undefined,'actions');actions.append(submit);panel.append(actions);}else{
-  const correct=same(saved,q.answer);const feed=element('div',undefined,'feedback'+(correct?'':' wrong'));feed.setAttribute('role','status');feed.append(element('strong',correct?'✓ إجابة صحيحة':'↻ فرصة للتعلّم'),element('p',q.why));if(!correct)feed.append(element('p','الإجابة الصحيحة: '+answerText(q,q.answer)));feed.append(sourceLink(q.source));panel.append(feed);
-  const actions=element('div',undefined,'actions');actions.append(button(stepIndex===c.steps.length-1?'عرض النتيجة':'الخطوة التالية',()=>{stepIndex++;draft=null;if(stepIndex===c.steps.length){complete(c);save();drawDashboard();}renderWorkspace();}));panel.append(actions);
- }
- layout.append(makeSidebar(c,!!q.showResults));if(focus)focusHeading();
-}
-function answerText(q,a){return q.type==='order'?a.map((i,n)=>(n+1)+'. '+q.items[i]).join(' ← '):q.options[a];}
-function submitAnswer(c,q){const p=progress[c.id];if(p.done||p.answers[stepIndex]!==null||!validAnswer(q,draft))return;p.answers[stepIndex]=Array.isArray(draft)?[...draft]:draft;save();drawDashboard();renderWorkspace(false);const f=$('workspace').querySelector('.feedback');if(f){f.tabIndex=-1;f.focus();}}
-function renderResult(c,p,panel){
- const total=score(c),wrap=element('div',undefined,'completion');const title=element('h2','أكملت الحالة','question-title');title.id='question-heading';title.tabIndex=-1;wrap.append(title,element('div',total+'%','score'),element('p',p.answers.filter((a,i)=>same(a,c.steps[i].answer)).length+' إجابات صحيحة من 5'));
- wrap.append(element('span',total>=80?'✦ حصلت على شارة «'+c.badge+'»':'راجِع التفسير، ثم حاول مجدداً','tag'),element('p','أفضل نتيجة محفوظة: '+p.best+'% · الشارة تُمنح من 80%.','storage-note'));
- const actions=element('div',undefined,'actions');actions.append(button('إعادة المحاولة',()=>{const freshAttempt=fresh(c);freshAttempt.best=p.best;freshAttempt.attempts=p.attempts;progress[c.id]=freshAttempt;save();openCase(c.id);}));const next=CASES[(CASES.indexOf(c)+1)%CASES.length];actions.append(button('جرّب: '+next.title,()=>openCase(next.id),true));wrap.append(actions);panel.append(wrap);
- const review=element('div',undefined,'review');review.append(element('h3','راجع قراراتك'));c.steps.forEach((q,i)=>{const correct=same(p.answers[i],q.answer);const detail=element('details');detail.open=!correct;detail.append(element('summary',(correct?'✓ ':'↻ ')+(i+1)+'. '+q.stage),element('p',q.q),element('p','إجابتك: '+answerText(q,p.answers[i])));if(!correct)detail.append(element('p','الصحيح: '+answerText(q,q.answer)));detail.append(element('p',q.why),sourceLink(q.source));review.append(detail);});panel.append(review);
-}
-drawDashboard();
-const requested=location.hash.slice(1);if(CASES.some(c=>c.id===requested))openCase(requested,false);
-window.addEventListener('hashchange',()=>{const id=location.hash.slice(1);if(CASES.some(c=>c.id===id))openCase(id);});
-if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(()=>{});}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المختبر الافتراضي المتقدم | قسم تقنيات المختبرات الطبية</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Tajawal & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Tajawal', 'Inter', sans-serif;
+            user-select: none;
+        }
+        body {
+            background: radial-gradient(circle at top right, #0f172a, #020617, #090d16);
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(56, 189, 248, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.15);
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 15px rgba(56, 189, 248, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(56, 189, 248, 0.7); }
+        }
+        .glow-active {
+            animation: pulse-glow 2s infinite;
+        }
+        @keyframes spin-centrifuge {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .spinning {
+            animation: spin-centrifuge 0.15s linear infinite;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #020617;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="p-3 md:p-6 antialiased selection:bg-cyan-500 selection:text-white">
+
+    <!-- Header & Navigation -->
+    <header class="max-w-7xl mx-auto mb-6">
+        <div class="glass-panel rounded-2xl p-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-2xl text-white shadow-lg shadow-cyan-500/30">
+                    <i class="fa-solid fa-flask-vial"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-blue-500">
+                        المختبر الطبي الافتراضي المتقدم
+                    </h1>
+                    <p class="text-xs md:text-sm text-slate-400">قسم تقنيات المختبرات الطبية - محاكاة تشخيصية تفاعلية</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <a href="index.html" class="px-4 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white text-xs md:text-sm font-medium transition border border-slate-700/50 flex items-center gap-2">
+                    <i class="fa-solid fa-house"></i> الواجهة الرئيسية
+                </a>
+                <a href="student-portal.html" class="px-4 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white text-xs md:text-sm font-medium transition border border-slate-700/50 flex items-center gap-2">
+                    <i class="fa-solid fa-graduation-cap"></i> بوابة الطالب
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Biosafety Banner -->
+    <section class="max-w-7xl mx-auto mb-6">
+        <div class="glass-panel rounded-xl p-4 border-r-4 border-amber-500 flex items-start gap-3 bg-amber-500/10">
+            <i class="fa-solid fa-shield-virus text-amber-400 text-xl mt-1"></i>
+            <div>
+                <h2 class="text-sm font-bold text-amber-300">بروتوكول السلامة الأحيائية (Biosafety Level 2)</h2>
+                <p class="text-xs text-slate-300 mt-0.5">تأكد دائماً من ارتداء معطف المختبر (Lab Coat)، القفازات الواقية (Gloves)، ونظارات الأمان قبل البدء بالتجارب. اختر التجربة أدناه للبدء بالمحاكاة.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Sidebar Navigation for Experiments -->
+        <aside class="lg:col-span-3 space-y-3">
+            <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-2">التجارب المتاحة</h2>
+            
+            <button onclick="switchExperiment('gram')" id="btn-exp-gram" class="w-full text-right p-3.5 rounded-xl glass-card text-slate-200 border-cyan-500/50 bg-cyan-950/30 flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-bacteria"></i>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold">1. صبغة غرام (Gram Stain)</h3>
+                    <p class="text-[11px] text-slate-400">التشخيص البكتيري والمجهر</p>
+                </div>
+            </button>
+
+            <button onclick="switchExperiment('blood')" id="btn-exp-blood" class="w-full text-right p-3.5 rounded-xl glass-card text-slate-200 flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-red-500/20 text-red-400 flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-droplet"></i>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold">2. فصائل الدم (Blood Typing)</h3>
+                    <p class="text-[11px] text-slate-400">تفاعل التلازن ABO & Rh</p>
+                </div>
+            </button>
+
+            <button onclick="switchExperiment('centrifuge')" id="btn-exp-centrifuge" class="w-full text-right p-3.5 rounded-xl glass-card text-slate-200 flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-rotate"></i>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold">3. الطرد المركزي (Centrifuge)</h3>
+                    <p class="text-[11px] text-slate-400">فصل مكونات الدم والرواسب</p>
+                </div>
+            </button>
+
+            <!-- Live Performance Score Box -->
+            <div class="glass-panel rounded-xl p-4 mt-6">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs text-slate-400">سجل الأداء التعليمي</span>
+                    <i class="fa-solid fa-award text-yellow-400"></i>
+                </div>
+                <div class="text-2xl font-bold text-cyan-400" id="score-display">100%</div>
+                <p class="text-[11px] text-slate-400 mt-1" id="score-note">أداء ممتاز، بدون أخطاء إجرائية.</p>
+                <div class="mt-3 pt-3 border-t border-slate-700/50 flex justify-between text-[11px]">
+                    <span class="text-slate-400">الأخطاء الإجرائية:</span>
+                    <span class="text-rose-400 font-bold" id="error-count">0</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Dynamic Interactive Area -->
+        <section class="lg:col-span-9">
+
+            <!-- 1. GRAM STAIN SIMULATOR -->
+            <div id="exp-gram" class="glass-panel rounded-2xl p-4 md:p-6">
+                <div class="flex flex-col md:flex-row justify-between md:items-center gap-2 mb-4 pb-4 border-b border-slate-700/50">
+                    <div>
+                        <h2 class="text-lg font-bold text-cyan-300 flex items-center gap-2">
+                            <i class="fa-solid fa-microscope text-cyan-400"></i> محاكاة صبغة غرام والمجهر التشخيصي
+                        </h2>
+                        <p class="text-xs text-slate-400">قم بصبغ المسحة البكتيرية بالخطوات الصحيحة بالترتيب ثم افحصها تحت المجهر</p>
+                    </div>
+                    <button onclick="resetGramStain()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 border border-slate-700 self-start">
+                        <i class="fa-solid fa-rotate-left"></i> إعادة التجربة
+                    </button>
+                </div>
+
+                <!-- Step Navigator -->
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-6 text-center text-xs">
+                    <div id="gstep-1" class="p-2 rounded-lg bg-cyan-950 border border-cyan-500/50 text-cyan-300 font-semibold">1. تثبيت حراري</div>
+                    <div id="gstep-2" class="p-2 rounded-lg bg-slate-800/50 border border-slate-700 text-slate-400">2. Crystal Violet</div>
+                    <div id="gstep-3" class="p-2 rounded-lg bg-slate-800/50 border border-slate-700 text-slate-400">3. Iodine</div>
+                    <div id="gstep-4" class="p-2 rounded-lg bg-slate-800/50 border border-slate-700 text-slate-400">4. Decolorizer</div>
+                    <div id="gstep-5" class="p-2 rounded-lg bg-slate-800/50 border border-slate-700 text-slate-400">5. Safranin</div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Glass Slide & Reagents Area -->
+                    <div class="glass-card rounded-xl p-4 flex flex-col items-center justify-between min-h-[320px]">
+                        <span class="text-xs text-slate-400 self-start">منصة التفاعل والتثبيت</span>
+                        
+                        <div class="relative w-64 h-20 bg-slate-200/20 backdrop-blur border-2 border-slate-400/50 rounded-md flex items-center justify-center my-6 overflow-hidden shadow-inner">
+                            <div class="absolute left-2 text-[10px] text-slate-400 font-mono">Sample #A4</div>
+                            <div id="slide-smear" class="w-12 h-12 rounded-full bg-slate-400/20 border border-dashed border-slate-400 transition-all duration-700 flex items-center justify-center">
+                                <span id="smear-label" class="text-[9px] text-slate-300 opacity-70">مسحة</span>
+                            </div>
+                        </div>
+
+                        <div class="w-full grid grid-cols-2 sm:grid-cols-3 gap-2">
+                            <button onclick="applyGramStep('heat')" class="p-2 rounded-lg bg-orange-950/40 border border-orange-500/40 hover:bg-orange-900/50 text-orange-300 text-xs font-medium flex items-center justify-center gap-1.5 transition">
+                                <i class="fa-solid fa-fire"></i> موقد بنسن
+                            </button>
+                            <button onclick="applyGramStep('violet')" class="p-2 rounded-lg bg-purple-950/40 border border-purple-500/40 hover:bg-purple-900/50 text-purple-300 text-xs font-medium flex items-center justify-center gap-1.5 transition">
+                                <i class="fa-solid fa-vial"></i> Crystal Violet
+                            </button>
+                            <button onclick="applyGramStep('iodine')" class="p-2 rounded-lg bg-amber-950/40 border border-amber-500/40 hover:bg-amber-900/50 text-amber-300 text-xs font-medium flex items-center justify-center gap-1.5 transition">
+                                <i class="fa-solid fa-bottle-droplet"></i> Gram's Iodine
+                            </button>
+                            <button onclick="applyGramStep('decolor')" class="p-2 rounded-lg bg-sky-950/40 border border-sky-500/40 hover:bg-sky-900/50 text-sky-300 text-xs font-medium flex items-center justify-center gap-1.5 transition">
+                                <i class="fa-solid fa-whiskey-glass"></i> Alcohol (95%)
+                            </button>
+                            <button onclick="applyGramStep('safranin')" class="p-2 rounded-lg bg-rose-950/40 border border-rose-500/40 hover:bg-rose-900/50 text-rose-300 text-xs font-medium flex items-center justify-center gap-1.5 transition">
+                                <i class="fa-solid fa-eye-dropper"></i> Safranin
+                            </button>
+                            <button onclick="applyGramStep('wash')" class="p-2 rounded-lg bg-blue-950/40 border border-blue-500/40 hover:bg-blue-900/50 text-blue-300 text-xs font-medium flex items-center justify-center gap-1.5 transition">
+                                <i class="fa-solid fa-faucet-drip"></i> غسل بالماء
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Microscope Display -->
+                    <div class="glass-card rounded-xl p-4 flex flex-col items-center justify-between">
+                        <div class="w-full flex justify-between items-center text-xs text-slate-400 mb-2">
+                            <span>عدسة المجهر الافتراضي</span>
+                            <span id="mag-level" class="text-cyan-400 font-bold">التكبير: 10x</span>
+                        </div>
+
+                        <div class="relative w-56 h-56 rounded-full border-4 border-slate-700 bg-black overflow-hidden flex items-center justify-center shadow-2xl my-2">
+                            <div class="absolute inset-0 border border-slate-800/40 rounded-full pointer-events-none"></div>
+                            
+                            <div id="microscope-view" class="w-full h-full flex items-center justify-center transition-all duration-300 filter blur-[8px]">
+                                <div id="bacteria-container" class="relative w-full h-full flex items-center justify-center">
+                                    <div class="text-[10px] text-slate-500">ضع الشريحة واضبط التركيز</div>
+                                </div>
+                            </div>
+
+                            <div class="absolute w-full h-[1px] bg-cyan-500/20"></div>
+                            <div class="absolute h-full w-[1px] bg-cyan-500/20"></div>
+                        </div>
+
+                        <div class="w-full space-y-3 mt-2">
+                            <div class="flex justify-center gap-2">
+                                <button onclick="setMagnification(10)" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[11px] text-slate-300">10x</button>
+                                <button onclick="setMagnification(40)" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[11px] text-slate-300">40x</button>
+                                <button onclick="setMagnification(100)" class="px-2.5 py-1 rounded bg-cyan-900 border border-cyan-500/40 text-[11px] text-cyan-200 font-bold">100x Oil</button>
+                            </div>
+
+                            <div class="flex items-center gap-2 text-xs text-slate-400">
+                                <span>الضبط الدقيق (Focus):</span>
+                                <input type="range" id="focus-knob" min="0" max="10" value="0" oninput="adjustFocus(this.value)" class="w-full accent-cyan-400">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-xs flex flex-col md:flex-row items-center justify-between gap-3">
+                    <div id="gram-result-text" class="text-slate-300">
+                        <span class="text-amber-400 font-bold"><i class="fa-solid fa-circle-info"></i> الحالة:</span> يرجى إكمال خطوات التثبيت والصبغ لمشاهدة العينة بوضوح.
+                    </div>
+                    <button onclick="diagnoseGram()" class="px-4 py-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs whitespace-nowrap transition shadow-lg shadow-cyan-600/30">
+                        اعتماد النتيجة التشخيصية
+                    </button>
+                </div>
+            </div>
+
+            <!-- 2. BLOOD TYPING SIMULATOR -->
+            <div id="exp-blood" class="glass-panel rounded-2xl p-4 md:p-6 hidden">
+                <div class="flex flex-col md:flex-row justify-between md:items-center gap-2 mb-4 pb-4 border-b border-slate-700/50">
+                    <div>
+                        <h2 class="text-lg font-bold text-red-400 flex items-center gap-2">
+                            <i class="fa-solid fa-droplet text-red-500"></i> محاكاة فحص فصائل الدم وتفاعل التلازن (ABO & Rh)
+                        </h2>
+                        <p class="text-xs text-slate-400">أضف الأجسام المضادة (Anti-A, Anti-B, Anti-D) على العينة واخلطها لتحديد الفصيلة</p>
+                    </div>
+                    <button onclick="resetBloodTyping()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 border border-slate-700 self-start">
+                        <i class="fa-solid fa-rotate-left"></i> عينة جديدة
+                    </button>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Well A -->
+                        <div class="flex flex-col items-center bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+                            <span class="text-xs font-bold text-blue-400 mb-2">مصل Anti-A (أزرق)</span>
+                            <div id="well-a" class="w-32 h-32 rounded-full border-2 border-slate-700 bg-slate-950 flex items-center justify-center relative overflow-hidden my-2 shadow-inner">
+                                <div id="blood-a" class="w-16 h-16 rounded-full bg-red-700/30 transition-all duration-500 flex items-center justify-center"></div>
+                            </div>
+                            <div class="flex gap-2 mt-2 w-full">
+                                <button onclick="addReagent('A')" class="w-1/2 py-1.5 rounded bg-blue-900/50 hover:bg-blue-800 border border-blue-500/30 text-[11px] text-blue-300 font-medium">قطرة Anti-A</button>
+                                <button onclick="mixWell('A')" class="w-1/2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-[11px] text-slate-300">خلط عود</button>
+                            </div>
+                        </div>
+
+                        <!-- Well B -->
+                        <div class="flex flex-col items-center bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+                            <span class="text-xs font-bold text-yellow-400 mb-2">مصل Anti-B (أصفر)</span>
+                            <div id="well-b" class="w-32 h-32 rounded-full border-2 border-slate-700 bg-slate-950 flex items-center justify-center relative overflow-hidden my-2 shadow-inner">
+                                <div id="blood-b" class="w-16 h-16 rounded-full bg-red-700/30 transition-all duration-500 flex items-center justify-center"></div>
+                            </div>
+                            <div class="flex gap-2 mt-2 w-full">
+                                <button onclick="addReagent('B')" class="w-1/2 py-1.5 rounded bg-yellow-900/50 hover:bg-yellow-800 border border-yellow-500/30 text-[11px] text-yellow-300 font-medium">قطرة Anti-B</button>
+                                <button onclick="mixWell('B')" class="w-1/2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-[11px] text-slate-300">خلط عود</button>
+                            </div>
+                        </div>
+
+                        <!-- Well D (Rh) -->
+                        <div class="flex flex-col items-center bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+                            <span class="text-xs font-bold text-slate-300 mb-2">مصل Anti-D / Rh (شفاف)</span>
+                            <div id="well-d" class="w-32 h-32 rounded-full border-2 border-slate-700 bg-slate-950 flex items-center justify-center relative overflow-hidden my-2 shadow-inner">
+                                <div id="blood-d" class="w-16 h-16 rounded-full bg-red-700/30 transition-all duration-500 flex items-center justify-center"></div>
+                            </div>
+                            <div class="flex gap-2 mt-2 w-full">
+                                <button onclick="addReagent('D')" class="w-1/2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 border border-slate-600 text-[11px] text-slate-200 font-medium">قطرة Anti-D</button>
+                                <button onclick="mixWell('D')" class="w-1/2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-[11px] text-slate-300">خلط عود</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div>
+                        <span class="text-xs text-slate-400">حدد فصيلة الدم المستنتجة بناءً على التلازن (Agglutination):</span>
+                        <div class="flex flex-wrap gap-2 mt-2" id="blood-type-selectors">
+                            <button onclick="checkBloodAnswer('A+')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-red-950 hover:border-red-500 border border-slate-700 text-xs font-bold text-slate-200">A+</button>
+                            <button onclick="checkBloodAnswer('A-')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-red-950 hover:border-red-500 border border-slate-700 text-xs font-bold text-slate-200">A-</button>
+                            <button onclick="checkBloodAnswer('B+')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-red-950 hover:border-red-500 border border-slate-700 text-xs font-bold text-slate-200">B+</button>
+                            <button onclick="checkBloodAnswer('B-')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-red-950 hover:border-red-500 border border-slate-700 text-xs font-bold text-slate-200">B-</button>
+                            <button onclick="checkBloodAnswer('AB+')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-red-950 hover:border-red-500 border border-slate-700 text-xs font-bold text-slate-200">AB+</button>
+                            <button onclick="checkBloodAnswer('AB-')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-red-950 hover:border-red-500 border border-slate-700 text-xs font-bold text-slate-200">AB-</button>
+                            <button onclick="checkBloodAnswer('O+')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-red-950 hover:border-red-500 border border-slate-700 text-xs font-bold text-slate-200">O+</button>
+                            <button onclick="checkBloodAnswer('O-')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-red-950 hover:border-red-500 border border-slate-700 text-xs font-bold text-slate-200">O-</button>
+                        </div>
+                    </div>
+                    <div id="blood-result-status" class="text-xs text-slate-400 font-semibold text-center md:text-left">
+                        في انتظار إجراء الاختبار...
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. CENTRIFUGE SIMULATOR -->
+            <div id="exp-centrifuge" class="glass-panel rounded-2xl p-4 md:p-6 hidden">
+                <div class="flex flex-col md:flex-row justify-between md:items-center gap-2 mb-4 pb-4 border-b border-slate-700/50">
+                    <div>
+                        <h2 class="text-lg font-bold text-emerald-400 flex items-center gap-2">
+                            <i class="fa-solid fa-rotate text-emerald-500"></i> محاكاة جهاز الطرد المركزي (Centrifuge)
+                        </h2>
+                        <p class="text-xs text-slate-400">ضع أنبوب الدم مع الموازنة (Balance Tube) وضبط السرعة لعملية فصل المصل</p>
+                    </div>
+                    <button onclick="resetCentrifuge()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 border border-slate-700 self-start">
+                        <i class="fa-solid fa-rotate-left"></i> إعادة التهيئة
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="glass-card rounded-xl p-6 flex flex-col items-center justify-center">
+                        <span class="text-xs text-slate-400 mb-4">دوار الطرد المركزي (Rotor)</span>
+                        
+                        <div class="relative w-56 h-56 rounded-full border-8 border-slate-700 bg-slate-950 flex items-center justify-center shadow-2xl">
+                            <div id="rotor-disk" class="w-48 h-48 rounded-full border-2 border-slate-800 bg-slate-900 flex items-center justify-center relative transition-all">
+                                <div class="absolute top-2 w-8 h-16 rounded-b-xl border border-red-500/40 bg-slate-800 flex flex-col items-center p-1">
+                                    <div id="rotor-tube-1" class="w-full h-full rounded-b-lg bg-red-600/80 transition-all"></div>
+                                </div>
+                                <div class="absolute bottom-2 w-8 h-16 rounded-b-xl border border-slate-600 bg-slate-800 flex flex-col items-center p-1">
+                                    <div id="rotor-tube-2" class="w-full h-full rounded-b-lg bg-transparent transition-all"></div>
+                                </div>
+                                <div class="w-12 h-12 rounded-full bg-slate-700 border-2 border-slate-500 flex items-center justify-center shadow-lg">
+                                    <i class="fa-solid fa-gear text-slate-400"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 flex items-center gap-3">
+                            <label class="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
+                                <input type="checkbox" id="balance-check" onchange="toggleBalanceTube(this.checked)" class="rounded accent-emerald-500 w-4 h-4">
+                                إضافة أنبوب الموازنة (Balance Tube)
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-xl p-6 flex flex-col justify-between space-y-4">
+                        <div>
+                            <h3 class="text-sm font-bold text-slate-200 mb-3">إعدادات جهاز الطرد</h3>
+                            
+                            <div class="space-y-2 mb-4">
+                                <div class="flex justify-between text-xs text-slate-400">
+                                    <span>سرعة الدوران (RPM):</span>
+                                    <span id="rpm-val" class="text-emerald-400 font-bold">3500 RPM</span>
+                                </div>
+                                <input type="range" id="rpm-slider" min="1000" max="5000" step="500" value="3500" oninput="document.getElementById('rpm-val').innerText = this.value + ' RPM'" class="w-full accent-emerald-400">
+                            </div>
+
+                            <div class="space-y-2 mb-4">
+                                <div class="flex justify-between text-xs text-slate-400">
+                                    <span>زمن الطرد:</span>
+                                    <span id="time-val" class="text-emerald-400 font-bold">5 دقائق</span>
+                                </div>
+                                <input type="range" id="time-slider" min="1" max="15" value="5" oninput="document.getElementById('time-val').innerText = this.value + ' دقائق'" class="w-full accent-emerald-400">
+                            </div>
+
+                            <button id="btn-spin" onclick="startCentrifuge()" class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm transition shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-play"></i> بدء عملية الطرد المركزي
+                            </button>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between">
+                            <div class="text-xs space-y-1">
+                                <div class="text-amber-300 font-bold">نتيجة الفصل:</div>
+                                <div class="text-[11px] text-slate-400"><span class="inline-block w-2 h-2 rounded-full bg-yellow-400 ml-1"></span> البلازما (Plasma): ~55%</div>
+                                <div class="text-[11px] text-slate-400"><span class="inline-block w-2 h-2 rounded-full bg-slate-200 ml-1"></span> طبقة الكريات البيضاء (Buffy Coat): ~1%</div>
+                                <div class="text-[11px] text-slate-400"><span class="inline-block w-2 h-2 rounded-full bg-red-600 ml-1"></span> كريات الدم الحمراء (RBCs): ~45%</div>
+                            </div>
+                            <div id="result-tube" class="w-6 h-24 rounded-b-xl border border-slate-500 bg-slate-800 flex flex-col overflow-hidden shadow-md">
+                                <div id="layer-plasma" class="w-full h-full bg-red-600 transition-all duration-1000"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- JavaScript Simulator Logic -->
+    <script>
+        let currentScore = 100;
+        let errorCount = 0;
+
+        function updateScore(penalty, note) {
+            currentScore = Math.max(0, currentScore - penalty);
+            if (penalty > 0) errorCount++;
+            document.getElementById('score-display').innerText = currentScore + '%';
+            document.getElementById('error-count').innerText = errorCount;
+            if (note) document.getElementById('score-note').innerText = note;
+        }
+
+        function switchExperiment(expId) {
+            document.getElementById('exp-gram').classList.add('hidden');
+            document.getElementById('exp-blood').classList.add('hidden');
+            document.getElementById('exp-centrifuge').classList.add('hidden');
+
+            document.getElementById('btn-exp-gram').className = "w-full text-right p-3.5 rounded-xl glass-card text-slate-200 flex items-center gap-3";
+            document.getElementById('btn-exp-blood').className = "w-full text-right p-3.5 rounded-xl glass-card text-slate-200 flex items-center gap-3";
+            document.getElementById('btn-exp-centrifuge').className = "w-full text-right p-3.5 rounded-xl glass-card text-slate-200 flex items-center gap-3";
+
+            document.getElementById('exp-' + expId).classList.remove('hidden');
+            document.getElementById('btn-exp-' + expId).className = "w-full text-right p-3.5 rounded-xl glass-card text-slate-200 border-cyan-500/50 bg-cyan-950/30 flex items-center gap-3";
+        }
+
+        // Gram Stain State
+        let gramStep = 0;
+        let currentMag = 10;
+        let currentFocus = 0;
+        let appliedHeat = false;
+        let appliedViolet = false;
+        let appliedIodine = false;
+        let appliedDecolor = false;
+        let appliedSafranin = false;
+
+        function resetGramStain() {
+            gramStep = 0;
+            appliedHeat = false;
+            appliedViolet = false;
+            appliedIodine = false;
+            appliedDecolor = false;
+            appliedSafranin = false;
+            document.getElementById('slide-smear').className = "w-12 h-12 rounded-full bg-slate-400/20 border border-dashed border-slate-400 transition-all duration-700 flex items-center justify-center";
+            document.getElementById('smear-label').innerText = "مسحة";
+            document.getElementById('gram-result-text').innerHTML = '<span class="text-amber-400 font-bold"><i class="fa-solid fa-circle-info"></i> الحالة:</span> يرجى إكمال خطوات التثبيت والصبغ لمشاهدة العينة بوضوح.';
+            updateMicroscopeView();
+            for(let i=1; i<=5; i++) {
+                document.getElementById('gstep-'+i).className = i===1 ? "p-2 rounded-lg bg-cyan-950 border border-cyan-500/50 text-cyan-300 font-semibold" : "p-2 rounded-lg bg-slate-800/50 border border-slate-700 text-slate-400";
+            }
+        }
+
+        function applyGramStep(step) {
+            if (step === 'heat') {
+                appliedHeat = true;
+                gramStep = Math.max(gramStep, 1);
+                document.getElementById('slide-smear').style.backgroundColor = "rgba(234, 88, 12, 0.3)";
+                document.getElementById('smear-label').innerText = "مثبتة حرارياً";
+                document.getElementById('gstep-2').className = "p-2 rounded-lg bg-cyan-950 border border-cyan-500/50 text-cyan-300 font-semibold";
+            } else if (step === 'violet') {
+                if(!appliedHeat) { updateScore(10, 'خطأ: لم تقم بالتثبيت الحراري أولاً!'); alert('تحذير السلامة: يجب تثبيت المسحة حرارياً قبل إضافة الصبغة لمنع غسلها!'); return; }
+                appliedViolet = true;
+                gramStep = Math.max(gramStep, 2);
+                document.getElementById('slide-smear').style.backgroundColor = "rgba(147, 51, 234, 0.6)";
+                document.getElementById('smear-label').innerText = "Crystal Violet";
+                document.getElementById('gstep-3').className = "p-2 rounded-lg bg-cyan-950 border border-cyan-500/50 text-cyan-300 font-semibold";
+            } else if (step === 'iodine') {
+                if(!appliedViolet) { updateScore(10, 'خطأ ترتيب الصبغات!'); alert('خطأ إجرائي: يجب إضافة صبغة Crystal Violet قبل مثبت اليود!'); return; }
+                appliedIodine = true;
+                gramStep = Math.max(gramStep, 3);
+                document.getElementById('gstep-4').className = "p-2 rounded-lg bg-cyan-950 border border-cyan-500/50 text-cyan-300 font-semibold";
+            } else if (step === 'decolor') {
+                if(!appliedIodine) { updateScore(15, 'خطأ في التوقيت الإجرائي!'); alert('خطأ: تم إزالة اللون قبل إضافة المثبت (Iodine)!'); return; }
+                appliedDecolor = true;
+                gramStep = Math.max(gramStep, 4);
+                document.getElementById('slide-smear').style.backgroundColor = "rgba(56, 189, 248, 0.4)";
+                document.getElementById('smear-label').innerText = "Decolorized";
+                document.getElementById('gstep-5').className = "p-2 rounded-lg bg-cyan-950 border border-cyan-500/50 text-cyan-300 font-semibold";
+            } else if (step === 'safranin') {
+                if(!appliedDecolor) { updateScore(10, 'خطأ إجرائي بالصبغة المقابلة!'); return; }
+                appliedSafranin = true;
+                gramStep = 5;
+                document.getElementById('slide-smear').style.backgroundColor = "rgba(244, 63, 94, 0.6)";
+                document.getElementById('smear-label').innerText = "Safranin Ready";
+            } else if (step === 'wash') {
+                // water wash step
+            }
+            updateMicroscopeView();
+        }
+
+        function setMagnification(mag) {
+            currentMag = mag;
+            document.getElementById('mag-level').innerText = "التكبير: " + mag + "x";
+            updateMicroscopeView();
+        }
+
+        function adjustFocus(val) {
+            currentFocus = parseInt(val);
+            updateMicroscopeView();
+        }
+
+        function updateMicroscopeView() {
+            const container = document.getElementById('bacteria-container');
+            const view = document.getElementById('microscope-view');
+            
+            // Blur calculation based on focus knob (exact focus at 8)
+            let blurAmount = Math.abs(8 - currentFocus);
+            if (currentMag === 100) blurAmount = Math.max(0, blurAmount - 2);
+            view.style.filter = `blur(${blurAmount}px)`;
+
+            if (currentMag < 40) {
+                container.innerHTML = '<span class="text-[10px] text-slate-400">انتقل إلى عدسة 100x Oil لمشاهدة البكتيريا بوضوح</span>';
+                return;
+            }
+
+            let html = '';
+            // Render bacterial morphology based on staining state
+            let color = "#64748b"; // default un-stained
+            if (appliedViolet && !appliedDecolor) color = "#7e22ce"; // Purple Gram + and -
+            else if (appliedDecolor && !appliedSafranin) color = "#7e22ce"; // Gram + stays purple, gram - colorless
+            else if (appliedSafranin) color = "#e11d48"; // Gram - turns pink/red, Gram + stays purple
+
+            // Draw multiple bacteria (Staphylococcus clusters & E.coli bacilli)
+            for(let i=0; i<12; i++) {
+                let left = 20 + (i * 15) % 180;
+                let top = 20 + (i * 23) % 160;
+                if(i % 2 === 0) {
+                    // Cocci (Staphylococcus)
+                    let cColor = color;
+                    html += `<div style="position:absolute; left:${left}px; top:${top}px; width:8px; height:8px; border-radius:50%; background:${cColor};"></div>`;
+                } else {
+                    // Bacilli (E. coli) -> Pink if safranin applied
+                    let bColor = (appliedSafranin) ? "#f43f5e" : color;
+                    html += `<div style="position:absolute; left:${left}px; top:${top}px; width:12px; height:6px; border-radius:3px; background:${bColor}; transform:rotate(45deg);"></div>`;
+                }
+            }
+            container.innerHTML = html;
+        }
+
+        function diagnoseGram() {
+            if(!appliedSafranin) {
+                alert('يرجى إكمال خطوات صبغة غرام كاملة قبل اعتماد النتيجة.');
+                return;
+            }
+            document.getElementById('gram-result-text').innerHTML = '<span class="text-emerald-400 font-bold"><i class="fa-solid fa-check-circle"></i> نتيجة التشخيص دقيقة:</span> عينة مختلطة تحتوي على (Staphylococcus aureus - مكورات موجبة لغرام بنفجية) و (Escherichia coli - عصيات سالبة لغرام وردية). ممتاز!';
+            updateScore(0, 'تم إنجاز تجربة صبغة غرام بنجاح تام.');
+        }
+
+        // Blood Typing State
+        let addedA = false, addedB = false, addedD = false;
+        let mixedA = false, mixedB = false, mixedD = false;
+        const targetBlood = "A+"; // test sample is A+
+
+        function resetBloodTyping() {
+            addedA = addedB = addedD = false;
+            mixedA = mixedB = mixedD = false;
+            document.getElementById('blood-a').className = "w-16 h-16 rounded-full bg-red-700/30 transition-all duration-500 flex items-center justify-center";
+            document.getElementById('blood-b').className = "w-16 h-16 rounded-full bg-red-700/30 transition-all duration-500 flex items-center justify-center";
+            document.getElementById('blood-d').className = "w-16 h-16 rounded-full bg-red-700/30 transition-all duration-500 flex items-center justify-center";
+            document.getElementById('blood-result-status').innerText = "في انتظار إجراء الاختبار...";
+        }
+
+        function addReagent(type) {
+            if(type === 'A') { addedA = true; document.getElementById('well-a').style.borderColor = "#3b82f6"; }
+            if(type === 'B') { addedB = true; document.getElementById('well-b').style.borderColor = "#eab308"; }
+            if(type === 'D') { addedD = true; document.getElementById('well-d').style.borderColor = "#94a3b8"; }
+        }
+
+        function mixWell(type) {
+            if(type === 'A' && addedA) {
+                mixedA = true;
+                // For A+, Anti-A agglutinates
+                document.getElementById('blood-a').className = "w-16 h-16 rounded-full bg-red-600 transition-all duration-500 flex items-center justify-center shadow-lg scale-110 border-2 border-red-400";
+                document.getElementById('blood-a').innerHTML = '<span class="text-[10px] text-white font-bold">تلازن (+)</span>';
+            }
+            if(type === 'B' && addedB) {
+                mixedB = true;
+                // For A+, Anti-B does NOT agglutinate
+                document.getElementById('blood-b').className = "w-16 h-16 rounded-full bg-red-900/40 transition-all duration-500 flex items-center justify-center";
+                document.getElementById('blood-b').innerHTML = '<span class="text-[10px] text-slate-300">سالب (-)</span>';
+            }
+            if(type === 'D' && addedD) {
+                mixedD = true;
+                // For A+, Anti-D (Rh) agglutinates
+                document.getElementById('blood-d').className = "w-16 h-16 rounded-full bg-red-600 transition-all duration-500 flex items-center justify-center shadow-lg scale-110 border-2 border-red-400";
+                document.getElementById('blood-d').innerHTML = '<span class="text-[10px] text-white font-bold">تلازن Rh (+)</span>';
+            }
+        }
+
+        function checkBloodAnswer(ans) {
+            if(!mixedA || !mixedD) {
+                alert('يرجى إضافة الأجسام المضادة وخلطها في الآبار أولاً!');
+                return;
+            }
+            if(ans === targetBlood) {
+                document.getElementById('blood-result-status').innerHTML = '<span class="text-emerald-400 font-bold">إجابة صحيحة!</span> الفصيلة المستنتجة هي A+ بنجاح.';
+                updateScore(0, 'تم تحديد فصيلة الدم بدقة.');
+            } else {
+                updateScore(15, 'خطأ في قراءة تفاعل التلازن.');
+                document.getElementById('blood-result-status').innerHTML = '<span class="text-rose-400 font-bold">إجابة خاطئة!</span> راجع تفاعل التلازن في آبار Anti-A و Anti-D.';
+            }
+        }
+
+        // Centrifuge State
+        let isBalanced = false;
+        function toggleBalanceTube(checked) {
+            isBalanced = checked;
+            const tube2 = document.getElementById('rotor-tube-2');
+            if(checked) {
+                tube2.className = "w-full h-full rounded-b-lg bg-red-600/80 transition-all";
+            } else {
+                tube2.className = "w-full h-full rounded-b-lg bg-transparent transition-all";
+            }
+        }
+
+        function startCentrifuge() {
+            if(!isBalanced) {
+                updateScore(25, 'خطأ خطير: اهتزاز الجهاز بسبب عدم وجود أنبوب الموازنة!');
+                alert('تنبيه أمان حراري: تشغيل جهاز الطرد المركزي بدون أنبوب موازنة (Balance Tube) يسبب تلفاً خطيراً واهتزازاً مدمراً للدوار!');
+                return;
+            }
+            const disk = document.getElementById('rotor-disk');
+            disk.classList.add('spinning');
+            document.getElementById('btn-spin').innerText = "جاري الطرد المركزي...";
+            
+            setTimeout(() => {
+                disk.classList.remove('spinning');
+                document.getElementById('btn-spin').innerText = "تم الفصل بنجاح";
+                document.getElementById('layer-plasma').style.height = "55%";
+                updateScore(0, 'عملية الطرد المركزي تمت بأمان وبدون أخطاء.');
+            }, 3000);
+        }
+
+        function resetCentrifuge() {
+            document.getElementById('balance-check').checked = false;
+            toggleBalanceTube(false);
+            document.getElementById('btn-spin').innerText = "بدء عملية الطرد المركزي";
+            document.getElementById('layer-plasma').style.height = "100%";
+        }
+    </script>
+</body>
+</html>
