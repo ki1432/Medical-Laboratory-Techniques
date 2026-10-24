@@ -1,5 +1,5 @@
 // ==========================================
-// Virtual Lab Simulator Logic
+// Virtual Lab Simulator & Physics Engine Logic
 // ==========================================
 
 let currentScore = 100;
@@ -46,11 +46,16 @@ function switchExperiment(expId) {
 }
 
 // ------------------------------------------
-// 1. Gram Stain Simulator Logic
+// 1. Gram Stain & Realistic Microscope Engine
 // ------------------------------------------
 let gramStep = 0;
-let currentMag = 10;
-let currentFocus = 0;
+let currentObjective = 4;
+let stageX = 0;
+let stageY = 0;
+let hasOil = false;
+let coarseFocus = 0;
+let fineFocus = 50;
+
 let appliedHeat = false;
 let appliedViolet = false;
 let appliedIodine = false;
@@ -59,6 +64,13 @@ let appliedSafranin = false;
 
 function resetGramStain() {
     gramStep = 0;
+    currentObjective = 4;
+    stageX = 0;
+    stageY = 0;
+    hasOil = false;
+    coarseFocus = 0;
+    fineFocus = 50;
+
     appliedHeat = false;
     appliedViolet = false;
     appliedIodine = false;
@@ -68,14 +80,21 @@ function resetGramStain() {
     const smear = document.getElementById('slide-smear');
     const smearLabel = document.getElementById('smear-label');
     const resultText = document.getElementById('gram-result-text');
+    const oilWarning = document.getElementById('oil-warning');
+    const oilBtn = document.getElementById('btn-oil');
+    const magLabel = document.getElementById('mag-level');
 
     if (smear) smear.className = "w-12 h-12 rounded-full bg-slate-400/20 border border-dashed border-slate-400 transition-all duration-700 flex items-center justify-center";
     if (smearLabel) smearLabel.innerText = "مسحة";
-    if (resultText) {
-        resultText.innerHTML = '<span class="text-amber-400 font-bold"><i class="fa-solid fa-circle-info"></i> الحالة:</span> يرجى إكمال خطوات التثبيت والصبغ لمشاهدة العينة بوضوح.';
+    if (resultText) resultText.innerHTML = '<span class="text-amber-400 font-bold"><i class="fa-solid fa-circle-info"></i> الحالة:</span> يرجى إكمال خطوات التثبيت والصبغ لمشاهدة العينة بوضوح.';
+    if (oilWarning) oilWarning.classList.add('hidden');
+    if (magLabel) magLabel.innerText = "العدسة الحالية: 4x";
+    if (oilBtn) {
+        oilBtn.className = "px-3 py-1 rounded-lg bg-amber-950/50 hover:bg-amber-900/60 text-amber-300 border border-amber-500/40 text-[11px] font-medium transition flex items-center gap-1.5";
+        oilBtn.innerHTML = '<i class="fa-solid fa-droplet"></i> إضافة قطرة زيت';
     }
 
-    updateMicroscopeView();
+    updateRealisticMicroscopeView();
 
     for (let i = 1; i <= 5; i++) {
         const stepElem = document.getElementById('gstep-' + i);
@@ -96,7 +115,6 @@ function applyGramStep(step) {
         gramStep = Math.max(gramStep, 1);
         if (smear) smear.style.backgroundColor = "rgba(234, 88, 12, 0.3)";
         if (smearLabel) smearLabel.innerText = "مثبتة حرارياً";
-        
         const g2 = document.getElementById('gstep-2');
         if (g2) g2.className = "p-2 rounded-lg bg-cyan-950 border border-cyan-500/50 text-cyan-300 font-semibold";
     } 
@@ -110,7 +128,6 @@ function applyGramStep(step) {
         gramStep = Math.max(gramStep, 2);
         if (smear) smear.style.backgroundColor = "rgba(147, 51, 234, 0.6)";
         if (smearLabel) smearLabel.innerText = "Crystal Violet";
-        
         const g3 = document.getElementById('gstep-3');
         if (g3) g3.className = "p-2 rounded-lg bg-cyan-950 border border-cyan-500/50 text-cyan-300 font-semibold";
     } 
@@ -122,7 +139,6 @@ function applyGramStep(step) {
         }
         appliedIodine = true;
         gramStep = Math.max(gramStep, 3);
-        
         const g4 = document.getElementById('gstep-4');
         if (g4) g4.className = "p-2 rounded-lg bg-cyan-950 border border-cyan-500/50 text-cyan-300 font-semibold";
     } 
@@ -136,7 +152,6 @@ function applyGramStep(step) {
         gramStep = Math.max(gramStep, 4);
         if (smear) smear.style.backgroundColor = "rgba(56, 189, 248, 0.4)";
         if (smearLabel) smearLabel.innerText = "Decolorized";
-        
         const g5 = document.getElementById('gstep-5');
         if (g5) g5.className = "p-2 rounded-lg bg-cyan-950 border border-cyan-500/50 text-cyan-300 font-semibold";
     } 
@@ -153,65 +168,132 @@ function applyGramStep(step) {
     else if (step === 'wash') {
         // غسل بالماء
     }
-    updateMicroscopeView();
+    updateRealisticMicroscopeView();
 }
 
-function setMagnification(mag) {
-    currentMag = mag;
-    const magLevel = document.getElementById('mag-level');
-    if (magLevel) magLevel.innerText = "التكبير: " + mag + "x";
-    updateMicroscopeView();
+function setObjectiveLens(lens) {
+    currentObjective = lens;
+    const magLabel = document.getElementById('mag-level');
+    const oilWarning = document.getElementById('oil-warning');
+
+    if (magLabel) magLabel.innerText = "العدسة الحالية: " + lens + "x";
+
+    if (lens === 100 && !hasOil) {
+        if (oilWarning) oilWarning.classList.remove('hidden');
+    } else {
+        if (oilWarning) oilWarning.classList.add('hidden');
+    }
+
+    updateRealisticMicroscopeView();
 }
 
-function adjustFocus(val) {
-    currentFocus = parseInt(val);
-    updateMicroscopeView();
+function applyImmersionOil() {
+    hasOil = true;
+    const oilBtn = document.getElementById('btn-oil');
+    const oilWarning = document.getElementById('oil-warning');
+
+    if (oilBtn) {
+        oilBtn.className = "px-3 py-1 rounded-lg bg-emerald-950 text-emerald-300 border border-emerald-500/50 text-[11px] font-medium flex items-center gap-1.5";
+        oilBtn.innerHTML = '<i class="fa-solid fa-check"></i> تم وضع زيت الغمر';
+    }
+    if (oilWarning) oilWarning.classList.add('hidden');
+
+    updateRealisticMicroscopeView();
 }
 
-function updateMicroscopeView() {
+function adjustFocusPhysics() {
+    const coarseElem = document.getElementById('coarse-knob');
+    const fineElem = document.getElementById('fine-knob');
+    
+    if (coarseElem) {
+        coarseFocus = parseInt(coarseElem.value);
+        const cVal = document.getElementById('coarse-val');
+        if (cVal) cVal.innerText = coarseFocus;
+    }
+    if (fineElem) {
+        fineFocus = parseInt(fineElem.value);
+        const fVal = document.getElementById('fine-val');
+        if (fVal) fVal.innerText = fineFocus;
+    }
+
+    updateRealisticMicroscopeView();
+}
+
+function moveStage(direction) {
+    const step = 20;
+    if (direction === 'up') stageY += step;
+    if (direction === 'down') stageY -= step;
+    if (direction === 'left') stageX += step;
+    if (direction === 'right') stageX -= step;
+
+    updateRealisticMicroscopeView();
+}
+
+function updateRealisticMicroscopeView() {
     const container = document.getElementById('bacteria-container');
     const view = document.getElementById('microscope-view');
     
     if (!container || !view) return;
 
-    let blurAmount = Math.abs(8 - currentFocus);
-    if (currentMag === 100) blurAmount = Math.max(0, blurAmount - 2);
-    view.style.filter = `blur(${blurAmount}px)`;
+    view.style.transform = `translate(${stageX}px, ${stageY}px)`;
 
-    if (currentMag < 40) {
-        container.innerHTML = '<span class="text-[10px] text-slate-400">انتقل إلى عدسة 100x Oil لمشاهدة البكتيريا بوضوح</span>';
-        return;
+    let blurAmount = 0;
+    if (currentObjective === 100) {
+        let coarseDiff = Math.abs(coarseFocus - 50);
+        let fineDiff = Math.abs(fineFocus - 50);
+        blurAmount = (coarseDiff * 0.4) + (fineDiff * 0.1);
+        if (!hasOil) blurAmount += 15;
+    } else if (currentObjective === 40) {
+        blurAmount = Math.abs(50 - fineFocus) * 0.15;
+    } else {
+        blurAmount = 2;
     }
+
+    view.style.filter = `blur(${Math.max(0, blurAmount)}px)`;
 
     let html = '';
-    let color = "#64748b";
-    if (appliedViolet && !appliedDecolor) color = "#7e22ce";
-    else if (appliedDecolor && !appliedSafranin) color = "#7e22ce";
-    else if (appliedSafranin) color = "#e11d48";
+    let gramPositiveColor = "#7e22ce";
+    let gramNegativeColor = "#f43f5e";
 
-    for (let i = 0; i < 12; i++) {
-        let left = 20 + (i * 15) % 180;
-        let top = 20 + (i * 23) % 160;
+    if (!appliedViolet) {
+        gramPositiveColor = gramNegativeColor = "#475569";
+    } else if (appliedDecolor && !appliedSafranin) {
+        gramNegativeColor = "rgba(100, 116, 139, 0.2)";
+    } else if (appliedSafranin) {
+        gramNegativeColor = "#e11d48";
+    }
+
+    for (let i = 0; i < 25; i++) {
+        let posX = (i * 45) % 350 + 20;
+        let posY = (i * 65) % 350 + 20;
+
         if (i % 2 === 0) {
-            html += `<div style="position:absolute; left:${left}px; top:${top}px; width:8px; height:8px; border-radius:50%; background:${color};"></div>`;
+            html += `
+                <div style="position:absolute; left:${posX}px; top:${posY}px; display:flex; flex-wrap:wrap; width:18px;">
+                    <div style="width:6px; height:6px; border-radius:50%; background:${gramPositiveColor}; margin:1px;"></div>
+                    <div style="width:6px; height:6px; border-radius:50%; background:${gramPositiveColor}; margin:1px;"></div>
+                    <div style="width:6px; height:6px; border-radius:50%; background:${gramPositiveColor}; margin:1px;"></div>
+                    <div style="width:6px; height:6px; border-radius:50%; background:${gramPositiveColor}; margin:1px;"></div>
+                </div>`;
         } else {
-            let bColor = appliedSafranin ? "#f43f5e" : color;
-            html += `<div style="position:absolute; left:${left}px; top:${top}px; width:12px; height:6px; border-radius:3px; background:${bColor}; transform:rotate(45deg);"></div>`;
+            html += `
+                <div style="position:absolute; left:${posX + 40}px; top:${posY + 30}px; width:12px; height:6px; border-radius:3px; background:${gramNegativeColor}; transform:rotate(${i * 25}deg);"></div>`;
         }
     }
+
     container.innerHTML = html;
 }
 
 function diagnoseGram() {
     if (!appliedSafranin) {
-        alert('يرجى إكمال خطوات صبغة غرام كاملة قبل اعتماد النتيجة.');
+        alert('يرجى إكمال خطوات صبغة غرام كاملة وضبط المجهر قبل اعتماد النتيجة.');
         return;
     }
     const resultText = document.getElementById('gram-result-text');
     if (resultText) {
-        resultText.innerHTML = '<span class="text-emerald-400 font-bold"><i class="fa-solid fa-check-circle"></i> نتيجة التشخيص دقيقة:</span> عينة مختلطة تحتوي على (Staphylococcus aureus - مكورات موجبة لغرام بنفجية) و (Escherichia coli - عصيات سالبة لغرام وردية). ممتاز!';
+        resultText.innerHTML = '<span class="text-emerald-400 font-bold"><i class="fa-solid fa-check-circle"></i> نتيجة التشخيص دقيقة:</span> عينة مختلطة تحتوي على Staphylococcus aureus و Escherichia coli بوضوح تام تحت العدسة الزيتية!';
     }
-    updateScore(0, 'تم إنجاز تجربة صبغة غرام بنجاح تام.');
+    updateScore(0, 'تم إنجاز تجربة صبغة غرام والمجهر الواقعي بنجاح تام.');
 }
 
 // ------------------------------------------
@@ -230,18 +312,9 @@ function resetBloodTyping() {
     const bloodD = document.getElementById('blood-d');
     const status = document.getElementById('blood-result-status');
 
-    if (bloodA) {
-        bloodA.className = "w-16 h-16 rounded-full bg-red-700/30 transition-all duration-500 flex items-center justify-center";
-        bloodA.innerHTML = '';
-    }
-    if (bloodB) {
-        bloodB.className = "w-16 h-16 rounded-full bg-red-700/30 transition-all duration-500 flex items-center justify-center";
-        bloodB.innerHTML = '';
-    }
-    if (bloodD) {
-        bloodD.className = "w-16 h-16 rounded-full bg-red-700/30 transition-all duration-500 flex items-center justify-center";
-        bloodD.innerHTML = '';
-    }
+    if (bloodA) { bloodA.className = "w-16 h-16 rounded-full bg-red-700/30 transition-all duration-500 flex items-center justify-center"; bloodA.innerHTML = ''; }
+    if (bloodB) { bloodB.className = "w-16 h-16 rounded-full bg-red-700/30 transition-all duration-500 flex items-center justify-center"; bloodB.innerHTML = ''; }
+    if (bloodD) { bloodD.className = "w-16 h-16 rounded-full bg-red-700/30 transition-all duration-500 flex items-center justify-center"; bloodD.innerHTML = ''; }
     if (status) status.innerText = "في انتظار إجراء الاختبار...";
 }
 
@@ -289,7 +362,7 @@ function checkBloodAnswer(ans) {
         updateScore(0, 'تم تحديد فصيلة الدم بدقة.');
     } else {
         updateScore(15, 'خطأ في قراءة تفاعل التلازن.');
-        if (status) status.innerHTML = '<span class="text-rose-400 font-bold">إجابة خاطئة!</span> راجع تفاعل التلازن في آبار Anti-A و Anti-D.';
+        if (status) status.innerHTML = '<span class="text-rose-400 font-bold">إجابة خاطئة!</span> راجع تفاعل التلازن في الآبار.';
     }
 }
 
@@ -309,7 +382,7 @@ function toggleBalanceTube(checked) {
 function startCentrifuge() {
     if (!isBalanced) {
         updateScore(25, 'خطأ خطير: اهتزاز الجهاز بسبب عدم وجود أنبوب الموازنة!');
-        alert('تنبيه أمان حراري: تشغيل جهاز الطرد المركزي بدون أنبوب موازنة (Balance Tube) يسبب تلفاً خطيراً واهتزازاً مدمراً للدوار!');
+        alert('تنبيه أمان حراري: تشغيل جهاز الطرد المركزي بدون أنبوب موازنة يسبب تلفاً خطيراً واهتزازاً للدوار!');
         return;
     }
 
@@ -323,7 +396,7 @@ function startCentrifuge() {
     setTimeout(() => {
         if (disk) disk.classList.remove('spinning');
         if (btnSpin) btnSpin.innerText = "تم الفصل بنجاح";
-        if (layerPlasma) layerPlasma.style.height = "55%"; // تصحيح علامة =
+        if (layerPlasma) layerPlasma.style.height = "55%";
         updateScore(0, 'عملية الطرد المركزي تمت بأمان وبدون أخطاء.');
     }, 3000);
 }

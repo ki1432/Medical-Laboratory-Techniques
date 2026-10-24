@@ -39,13 +39,6 @@
             transform: translateY(-2px);
             box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.15);
         }
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 15px rgba(56, 189, 248, 0.3); }
-            50% { box-shadow: 0 0 30px rgba(56, 189, 248, 0.7); }
-        }
-        .glow-active {
-            animation: pulse-glow 2s infinite;
-        }
         @keyframes spin-centrifuge {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -63,9 +56,6 @@
         ::-webkit-scrollbar-thumb {
             background: #334155;
             border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #475569;
         }
     </style>
 </head>
@@ -103,7 +93,7 @@
             <i class="fa-solid fa-shield-virus text-amber-400 text-xl mt-1"></i>
             <div>
                 <h2 class="text-sm font-bold text-amber-300">بروتوكول السلامة الأحيائية (Biosafety Level 2)</h2>
-                <p class="text-xs text-slate-300 mt-0.5">تأكد دائماً من ارتداء معطف المختبر (Lab Coat)، القفازات الواقية (Gloves)، ونظارات الأمان قبل البدء بالتجارب. اختر التجربة أدناه للبدء بالمحاكاة.</p>
+                <p class="text-xs text-slate-300 mt-0.5">تأكد دائماً من ارتداء معطف المختبر، القفازات الواقية، ونظارات الأمان قبل البدء بالتجارب.</p>
             </div>
         </div>
     </section>
@@ -120,8 +110,8 @@
                     <i class="fa-solid fa-bacteria"></i>
                 </div>
                 <div>
-                    <h3 class="text-sm font-bold">1. صبغة غرام (Gram Stain)</h3>
-                    <p class="text-[11px] text-slate-400">التشخيص البكتيري والمجهر</p>
+                    <h3 class="text-sm font-bold">1. صبغة غرام والمجهر الواقعي</h3>
+                    <p class="text-[11px] text-slate-400">فيزياء العدسات وزيت الغمر</p>
                 </div>
             </button>
 
@@ -141,7 +131,7 @@
                 </div>
                 <div>
                     <h3 class="text-sm font-bold">3. الطرد المركزي (Centrifuge)</h3>
-                    <p class="text-[11px] text-slate-400">فصل مكونات الدم والرواسب</p>
+                    <p class="text-[11px] text-slate-400">فصل المصل والموازنة</p>
                 </div>
             </button>
 
@@ -163,14 +153,14 @@
         <!-- Dynamic Interactive Area -->
         <section class="lg:col-span-9">
 
-            <!-- 1. GRAM STAIN SIMULATOR -->
+            <!-- 1. GRAM STAIN & REALISTIC MICROSCOPE SIMULATOR -->
             <div id="exp-gram" class="glass-panel rounded-2xl p-4 md:p-6">
                 <div class="flex flex-col md:flex-row justify-between md:items-center gap-2 mb-4 pb-4 border-b border-slate-700/50">
                     <div>
                         <h2 class="text-lg font-bold text-cyan-300 flex items-center gap-2">
-                            <i class="fa-solid fa-microscope text-cyan-400"></i> محاكاة صبغة غرام والمجهر التشخيصي
+                            <i class="fa-solid fa-microscope text-cyan-400"></i> محاكاة صبغة غرام والمجهر الضوئي المركب
                         </h2>
-                        <p class="text-xs text-slate-400">قم بصبغ المسحة البكتيرية بالخطوات الصحيحة بالترتيب ثم افحصها تحت المجهر</p>
+                        <p class="text-xs text-slate-400">اتبع خطوات التثبيت والصبغ بدقة، ثم افحص الشريحة باستخدام فيزياء العدسات وحركة المسرح الحقيقية.</p>
                     </div>
                     <button onclick="resetGramStain()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 border border-slate-700 self-start">
                         <i class="fa-solid fa-rotate-left"></i> إعادة التجربة
@@ -220,36 +210,76 @@
                         </div>
                     </div>
 
-                    <!-- Interactive Microscope Display -->
-                    <div class="glass-card rounded-xl p-4 flex flex-col items-center justify-between">
-                        <div class="w-full flex justify-between items-center text-xs text-slate-400 mb-2">
-                            <span>عدسة المجهر الافتراضي</span>
-                            <span id="mag-level" class="text-cyan-400 font-bold">التكبير: 10x</span>
+                    <!-- Interactive Realistic Microscope Display -->
+                    <div class="glass-card rounded-xl p-5 flex flex-col items-center justify-between shadow-2xl border border-slate-700">
+                        <div class="w-full flex justify-between items-center text-xs text-slate-300 mb-3 border-b border-slate-700/50 pb-2">
+                            <span class="font-bold flex items-center gap-1.5 text-cyan-400"><i class="fa-solid fa-microscope"></i> المجهر الضوئي المركب</span>
+                            <span id="mag-level" class="bg-cyan-950 px-2.5 py-1 rounded-md text-cyan-300 border border-cyan-500/40 font-mono font-bold">العدسة الحالية: 4x</span>
                         </div>
 
-                        <div class="relative w-56 h-56 rounded-full border-4 border-slate-700 bg-black overflow-hidden flex items-center justify-center shadow-2xl my-2">
-                            <div class="absolute inset-0 border border-slate-800/40 rounded-full pointer-events-none"></div>
-                            
-                            <div id="microscope-view" class="w-full h-full flex items-center justify-center transition-all duration-300 filter blur-[8px]">
-                                <div id="bacteria-container" class="relative w-full h-full flex items-center justify-center">
-                                    <div class="text-[10px] text-slate-500">ضع الشريحة واضبط التركيز</div>
+                        <!-- Microscope Viewfield -->
+                        <div class="relative w-64 h-64 rounded-full border-8 border-slate-900 bg-slate-950 overflow-hidden flex items-center justify-center shadow-[inset_0_0_30px_rgba(0,0,0,0.9)] my-2">
+                            <div class="absolute inset-0 border border-cyan-500/10 rounded-full pointer-events-none"></div>
+                            <div class="absolute w-full h-[1px] bg-cyan-500/15 pointer-events-none"></div>
+                            <div class="absolute h-full w-[1px] bg-cyan-500/15 pointer-events-none"></div>
+
+                            <!-- Microscope Pan View -->
+                            <div id="microscope-view" class="absolute w-full h-full flex items-center justify-center transition-all duration-200" style="filter: blur(12px); transform: translate(0px, 0px);">
+                                <div id="bacteria-container" class="relative w-[400px] h-[400px]"></div>
+                            </div>
+
+                            <!-- Oil Warning for 100x -->
+                            <div id="oil-warning" class="absolute inset-0 bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center text-center p-4 hidden">
+                                <i class="fa-solid fa-triangle-exclamation text-amber-400 text-2xl mb-1"></i>
+                                <p class="text-[11px] text-amber-200 font-bold">تنبيه بؤري:</p>
+                                <p class="text-[10px] text-slate-300">العدسة الزيتية (100x) تتطلب إضافة قطرة زيت الغمر لتجنب انكسار الضوء وتشويش الصورة!</p>
+                            </div>
+                        </div>
+
+                        <!-- Physics Controls -->
+                        <div class="w-full space-y-3 mt-3 bg-slate-900/80 p-3.5 rounded-xl border border-slate-800">
+                            <div class="flex justify-between items-center text-xs text-slate-400">
+                                <span>العدسات الشيئية:</span>
+                                <div class="flex gap-1.5">
+                                    <button onclick="setObjectiveLens(4)" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-300 border border-slate-700 font-mono">4x</button>
+                                    <button onclick="setObjectiveLens(10)" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-300 border border-slate-700 font-mono">10x</button>
+                                    <button onclick="setObjectiveLens(40)" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-300 border border-slate-700 font-mono">40x</button>
+                                    <button onclick="setObjectiveLens(100)" class="px-2.5 py-1 rounded bg-cyan-950 border border-cyan-500/40 text-[10px] text-cyan-200 font-bold font-mono">100x Oil</button>
                                 </div>
                             </div>
 
-                            <div class="absolute w-full h-[1px] bg-cyan-500/20"></div>
-                            <div class="absolute h-full w-[1px] bg-cyan-500/20"></div>
-                        </div>
-
-                        <div class="w-full space-y-3 mt-2">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="setMagnification(10)" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[11px] text-slate-300">10x</button>
-                                <button onclick="setMagnification(40)" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[11px] text-slate-300">40x</button>
-                                <button onclick="setMagnification(100)" class="px-2.5 py-1 rounded bg-cyan-900 border border-cyan-500/40 text-[11px] text-cyan-200 font-bold">100x Oil</button>
+                            <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-800">
+                                <span class="text-slate-400">زيت الغمر (Immersion Oil):</span>
+                                <button onclick="applyImmersionOil()" id="btn-oil" class="px-3 py-1 rounded-lg bg-amber-950/50 hover:bg-amber-900/60 text-amber-300 border border-amber-500/40 text-[11px] font-medium transition flex items-center gap-1.5">
+                                    <i class="fa-solid fa-droplet"></i> إضافة قطرة زيت
+                                </button>
                             </div>
 
-                            <div class="flex items-center gap-2 text-xs text-slate-400">
-                                <span>الضبط الدقيق (Focus):</span>
-                                <input type="range" id="focus-knob" min="0" max="10" value="0" oninput="adjustFocus(this.value)" class="w-full accent-cyan-400">
+                            <div class="grid grid-cols-2 gap-3 pt-1 border-t border-slate-800">
+                                <div class="space-y-1">
+                                    <div class="flex justify-between text-[10px] text-slate-400">
+                                        <span>الضبط الخشن:</span>
+                                        <span id="coarse-val" class="text-cyan-400 font-mono">0</span>
+                                    </div>
+                                    <input type="range" id="coarse-knob" min="0" max="100" value="0" oninput="adjustFocusPhysics()" class="w-full accent-cyan-500 h-1 bg-slate-800 rounded">
+                                </div>
+                                <div class="space-y-1">
+                                    <div class="flex justify-between text-[10px] text-slate-400">
+                                        <span>الضبط الدقيق:</span>
+                                        <span id="fine-val" class="text-emerald-400 font-mono">50</span>
+                                    </div>
+                                    <input type="range" id="fine-knob" min="0" max="100" value="50" oninput="adjustFocusPhysics()" class="w-full accent-emerald-500 h-1 bg-slate-800 rounded">
+                                </div>
+                            </div>
+
+                            <div class="flex justify-between items-center pt-2 border-t border-slate-800 text-xs">
+                                <span class="text-slate-400">حركة المسرح (Stage X/Y):</span>
+                                <div class="flex gap-1">
+                                    <button onclick="moveStage('up')" class="w-7 h-7 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded flex items-center justify-center"><i class="fa-solid fa-chevron-up text-[10px]"></i></button>
+                                    <button onclick="moveStage('down')" class="w-7 h-7 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded flex items-center justify-center"><i class="fa-solid fa-chevron-down text-[10px]"></i></button>
+                                    <button onclick="moveStage('left')" class="w-7 h-7 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded flex items-center justify-center"><i class="fa-solid fa-chevron-left text-[10px]"></i></button>
+                                    <button onclick="moveStage('right')" class="w-7 h-7 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded flex items-center justify-center"><i class="fa-solid fa-chevron-right text-[10px]"></i></button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -257,7 +287,7 @@
 
                 <div class="mt-4 p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-xs flex flex-col md:flex-row items-center justify-between gap-3">
                     <div id="gram-result-text" class="text-slate-300">
-                        <span class="text-amber-400 font-bold"><i class="fa-solid fa-circle-info"></i> الحالة:</span> يرجى إكمال خطوات التثبيت والصبغ لمشاهدة العينة بوضوح.
+                        <span class="text-amber-400 font-bold"><i class="fa-solid fa-circle-info"></i> الحالة:</span> يرجى إكمال خطوات التثبيت والصبغ والفحص لمشاهدة العينة بوضوح.
                     </div>
                     <button onclick="diagnoseGram()" class="px-4 py-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs whitespace-nowrap transition shadow-lg shadow-cyan-600/30">
                         اعتماد النتيجة التشخيصية
@@ -272,7 +302,7 @@
                         <h2 class="text-lg font-bold text-red-400 flex items-center gap-2">
                             <i class="fa-solid fa-droplet text-red-500"></i> محاكاة فحص فصائل الدم وتفاعل التلازن (ABO & Rh)
                         </h2>
-                        <p class="text-xs text-slate-400">أضف الأجسام المضادة (Anti-A, Anti-B, Anti-D) على العينة واخلطها لتحديد الفصيلة</p>
+                        <p class="text-xs text-slate-400">أضف الأجسام المضادة (Anti-A, Anti-B, Anti-D) واخلطها لتحديد الفصيلة</p>
                     </div>
                     <button onclick="resetBloodTyping()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 border border-slate-700 self-start">
                         <i class="fa-solid fa-rotate-left"></i> عينة جديدة
@@ -281,7 +311,6 @@
 
                 <div class="glass-card rounded-2xl p-6 mb-6">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <!-- Well A -->
                         <div class="flex flex-col items-center bg-slate-900/60 p-4 rounded-xl border border-slate-800">
                             <span class="text-xs font-bold text-blue-400 mb-2">مصل Anti-A (أزرق)</span>
                             <div id="well-a" class="w-32 h-32 rounded-full border-2 border-slate-700 bg-slate-950 flex items-center justify-center relative overflow-hidden my-2 shadow-inner">
@@ -293,7 +322,6 @@
                             </div>
                         </div>
 
-                        <!-- Well B -->
                         <div class="flex flex-col items-center bg-slate-900/60 p-4 rounded-xl border border-slate-800">
                             <span class="text-xs font-bold text-yellow-400 mb-2">مصل Anti-B (أصفر)</span>
                             <div id="well-b" class="w-32 h-32 rounded-full border-2 border-slate-700 bg-slate-950 flex items-center justify-center relative overflow-hidden my-2 shadow-inner">
@@ -305,7 +333,6 @@
                             </div>
                         </div>
 
-                        <!-- Well D (Rh) -->
                         <div class="flex flex-col items-center bg-slate-900/60 p-4 rounded-xl border border-slate-800">
                             <span class="text-xs font-bold text-slate-300 mb-2">مصل Anti-D / Rh (شفاف)</span>
                             <div id="well-d" class="w-32 h-32 rounded-full border-2 border-slate-700 bg-slate-950 flex items-center justify-center relative overflow-hidden my-2 shadow-inner">
@@ -346,7 +373,7 @@
                         <h2 class="text-lg font-bold text-emerald-400 flex items-center gap-2">
                             <i class="fa-solid fa-rotate text-emerald-500"></i> محاكاة جهاز الطرد المركزي (Centrifuge)
                         </h2>
-                        <p class="text-xs text-slate-400">ضع أنبوب الدم مع الموازنة (Balance Tube) وضبط السرعة لعملية فصل المصل</p>
+                        <p class="text-xs text-slate-400">ضع أنبوب الدم مع أنبوب الموازنة وضبط السرعة لعملية فصل المصل</p>
                     </div>
                     <button onclick="resetCentrifuge()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 border border-slate-700 self-start">
                         <i class="fa-solid fa-rotate-left"></i> إعادة التهيئة
@@ -408,7 +435,7 @@
                             <div class="text-xs space-y-1">
                                 <div class="text-amber-300 font-bold">نتيجة الفصل:</div>
                                 <div class="text-[11px] text-slate-400"><span class="inline-block w-2 h-2 rounded-full bg-yellow-400 ml-1"></span> البلازما (Plasma): ~55%</div>
-                                <div class="text-[11px] text-slate-400"><span class="inline-block w-2 h-2 rounded-full bg-slate-200 ml-1"></span> طبقة الكريات البيضاء (Buffy Coat): ~1%</div>
+                                <div class="text-[11px] text-slate-400"><span class="inline-block w-2 h-2 rounded-full bg-slate-200 ml-1"></span> الكريات البيضاء (Buffy Coat): ~1%</div>
                                 <div class="text-[11px] text-slate-400"><span class="inline-block w-2 h-2 rounded-full bg-red-600 ml-1"></span> كريات الدم الحمراء (RBCs): ~45%</div>
                             </div>
                             <div id="result-tube" class="w-6 h-24 rounded-b-xl border border-slate-500 bg-slate-800 flex flex-col overflow-hidden shadow-md">
@@ -422,237 +449,7 @@
         </section>
     </main>
 
-    <!-- JavaScript Simulator Logic -->
-    <script>
-        let currentScore = 100;
-        let errorCount = 0;
-
-        function updateScore(penalty, note) {
-            currentScore = Math.max(0, currentScore - penalty);
-            if (penalty > 0) errorCount++;
-            document.getElementById('score-display').innerText = currentScore + '%';
-            document.getElementById('error-count').innerText = errorCount;
-            if (note) document.getElementById('score-note').innerText = note;
-        }
-
-        function switchExperiment(expId) {
-            document.getElementById('exp-gram').classList.add('hidden');
-            document.getElementById('exp-blood').classList.add('hidden');
-            document.getElementById('exp-centrifuge').classList.add('hidden');
-
-            document.getElementById('btn-exp-gram').className = "w-full text-right p-3.5 rounded-xl glass-card text-slate-200 flex items-center gap-3";
-            document.getElementById('btn-exp-blood').className = "w-full text-right p-3.5 rounded-xl glass-card text-slate-200 flex items-center gap-3";
-            document.getElementById('btn-exp-centrifuge').className = "w-full text-right p-3.5 rounded-xl glass-card text-slate-200 flex items-center gap-3";
-
-            document.getElementById('exp-' + expId).classList.remove('hidden');
-            document.getElementById('btn-exp-' + expId).className = "w-full text-right p-3.5 rounded-xl glass-card text-slate-200 border-cyan-500/50 bg-cyan-950/30 flex items-center gap-3";
-        }
-
-        // Gram Stain State
-        let gramStep = 0;
-        let currentMag = 10;
-        let currentFocus = 0;
-        let appliedHeat = false;
-        let appliedViolet = false;
-        let appliedIodine = false;
-        let appliedDecolor = false;
-        let appliedSafranin = false;
-
-        function resetGramStain() {
-            gramStep = 0;
-            appliedHeat = false;
-            appliedViolet = false;
-            appliedIodine = false;
-            appliedDecolor = false;
-            appliedSafranin = false;
-            document.getElementById('slide-smear').className = "w-12 h-12 rounded-full bg-slate-400/20 border border-dashed border-slate-400 transition-all duration-700 flex items-center justify-center";
-            document.getElementById('smear-label').innerText = "مسحة";
-            document.getElementById('gram-result-text').innerHTML = '<span class="text-amber-400 font-bold"><i class="fa-solid fa-circle-info"></i> الحالة:</span> يرجى إكمال خطوات التثبيت والصبغ لمشاهدة العينة بوضوح.';
-            updateMicroscopeView();
-            for(let i=1; i<=5; i++) {
-                document.getElementById('gstep-'+i).className = i===1 ? "p-2 rounded-lg bg-cyan-950 border border-cyan-500/50 text-cyan-300 font-semibold" : "p-2 rounded-lg bg-slate-800/50 border border-slate-700 text-slate-400";
-            }
-        }
-
-        function applyGramStep(step) {
-            if (step === 'heat') {
-                appliedHeat = true;
-                gramStep = Math.max(gramStep, 1);
-                document.getElementById('slide-smear').style.backgroundColor = "rgba(234, 88, 12, 0.3)";
-                document.getElementById('smear-label').innerText = "مثبتة حرارياً";
-                document.getElementById('gstep-2').className = "p-2 rounded-lg bg-cyan-950 border border-cyan-500/50 text-cyan-300 font-semibold";
-            } else if (step === 'violet') {
-                if(!appliedHeat) { updateScore(10, 'خطأ: لم تقم بالتثبيت الحراري أولاً!'); alert('تحذير السلامة: يجب تثبيت المسحة حرارياً قبل إضافة الصبغة لمنع غسلها!'); return; }
-                appliedViolet = true;
-                gramStep = Math.max(gramStep, 2);
-                document.getElementById('slide-smear').style.backgroundColor = "rgba(147, 51, 234, 0.6)";
-                document.getElementById('smear-label').innerText = "Crystal Violet";
-                document.getElementById('gstep-3').className = "p-2 rounded-lg bg-cyan-950 border border-cyan-500/50 text-cyan-300 font-semibold";
-            } else if (step === 'iodine') {
-                if(!appliedViolet) { updateScore(10, 'خطأ ترتيب الصبغات!'); alert('خطأ إجرائي: يجب إضافة صبغة Crystal Violet قبل مثبت اليود!'); return; }
-                appliedIodine = true;
-                gramStep = Math.max(gramStep, 3);
-                document.getElementById('gstep-4').className = "p-2 rounded-lg bg-cyan-950 border border-cyan-500/50 text-cyan-300 font-semibold";
-            } else if (step === 'decolor') {
-                if(!appliedIodine) { updateScore(15, 'خطأ في التوقيت الإجرائي!'); alert('خطأ: تم إزالة اللون قبل إضافة المثبت (Iodine)!'); return; }
-                appliedDecolor = true;
-                gramStep = Math.max(gramStep, 4);
-                document.getElementById('slide-smear').style.backgroundColor = "rgba(56, 189, 248, 0.4)";
-                document.getElementById('smear-label').innerText = "Decolorized";
-                document.getElementById('gstep-5').className = "p-2 rounded-lg bg-cyan-950 border border-cyan-500/50 text-cyan-300 font-semibold";
-            } else if (step === 'safranin') {
-                if(!appliedDecolor) { updateScore(10, 'خطأ إجرائي بالصبغة المقابلة!'); return; }
-                appliedSafranin = true;
-                gramStep = 5;
-                document.getElementById('slide-smear').style.backgroundColor = "rgba(244, 63, 94, 0.6)";
-                document.getElementById('smear-label').innerText = "Safranin Ready";
-            } else if (step === 'wash') {
-                // water wash step
-            }
-            updateMicroscopeView();
-        }
-
-        function setMagnification(mag) {
-            currentMag = mag;
-            document.getElementById('mag-level').innerText = "التكبير: " + mag + "x";
-            updateMicroscopeView();
-        }
-
-        function adjustFocus(val) {
-            currentFocus = parseInt(val);
-            updateMicroscopeView();
-        }
-
-        function updateMicroscopeView() {
-            const container = document.getElementById('bacteria-container');
-            const view = document.getElementById('microscope-view');
-            
-            let blurAmount = Math.abs(8 - currentFocus);
-            if (currentMag === 100) blurAmount = Math.max(0, blurAmount - 2);
-            view.style.filter = `blur(${blurAmount}px)`;
-
-            if (currentMag < 40) {
-                container.innerHTML = '<span class="text-[10px] text-slate-400">انتقل إلى عدسة 100x Oil لمشاهدة البكتيريا بوضوح</span>';
-                return;
-            }
-
-            let html = '';
-            let color = "#64748b";
-            if (appliedViolet && !appliedDecolor) color = "#7e22ce";
-            else if (appliedDecolor && !appliedSafranin) color = "#7e22ce";
-            else if (appliedSafranin) color = "#e11d48";
-
-            for(let i=0; i<12; i++) {
-                let left = 20 + (i * 15) % 180;
-                let top = 20 + (i * 23) % 160;
-                if(i % 2 === 0) {
-                    let cColor = color;
-                    html += `<div style="position:absolute; left:${left}px; top:${top}px; width:8px; height:8px; border-radius:50%; background:${cColor};"></div>`;
-                } else {
-                    let bColor = (appliedSafranin) ? "#f43f5e" : color;
-                    html += `<div style="position:absolute; left:${left}px; top:${top}px; width:12px; height:6px; border-radius:3px; background:${bColor}; transform:rotate(45deg);"></div>`;
-                }
-            }
-            container.innerHTML = html;
-        }
-
-        function diagnoseGram() {
-            if(!appliedSafranin) {
-                alert('يرجى إكمال خطوات صبغة غرام كاملة قبل اعتماد النتيجة.');
-                return;
-            }
-            document.getElementById('gram-result-text').innerHTML = '<span class="text-emerald-400 font-bold"><i class="fa-solid fa-check-circle"></i> نتيجة التشخيص دقيقة:</span> عينة مختلطة تحتوي على (Staphylococcus aureus - مكورات موجبة لغرام بنفجية) و (Escherichia coli - عصيات سالبة لغرام وردية). ممتاز!';
-            updateScore(0, 'تم إنجاز تجربة صبغة غرام بنجاح تام.');
-        }
-
-        // Blood Typing State
-        let addedA = false, addedB = false, addedD = false;
-        let mixedA = false, mixedB = false, mixedD = false;
-        const targetBlood = "A+";
-
-        function resetBloodTyping() {
-            addedA = addedB = addedD = false;
-            mixedA = mixedB = mixedD = false;
-            document.getElementById('blood-a').className = "w-16 h-16 rounded-full bg-red-700/30 transition-all duration-500 flex items-center justify-center";
-            document.getElementById('blood-b').className = "w-16 h-16 rounded-full bg-red-700/30 transition-all duration-500 flex items-center justify-center";
-            document.getElementById('blood-d').className = "w-16 h-16 rounded-full bg-red-700/30 transition-all duration-500 flex items-center justify-center";
-            document.getElementById('blood-result-status').innerText = "في انتظار إجراء الاختبار...";
-        }
-
-        function addReagent(type) {
-            if(type === 'A') { addedA = true; document.getElementById('well-a').style.borderColor = "#3b82f6"; }
-            if(type === 'B') { addedB = true; document.getElementById('well-b').style.borderColor = "#eab308"; }
-            if(type === 'D') { addedD = true; document.getElementById('well-d').style.borderColor = "#94a3b8"; }
-        }
-
-        function mixWell(type) {
-            if(type === 'A' && addedA) {
-                mixedA = true;
-                document.getElementById('blood-a').className = "w-16 h-16 rounded-full bg-red-600 transition-all duration-500 flex items-center justify-center shadow-lg scale-110 border-2 border-red-400";
-                document.getElementById('blood-a').innerHTML = '<span class="text-[10px] text-white font-bold">تلازن (+)</span>';
-            }
-            if(type === 'B' && addedB) {
-                mixedB = true;
-                document.getElementById('blood-b').className = "w-16 h-16 rounded-full bg-red-900/40 transition-all duration-500 flex items-center justify-center";
-                document.getElementById('blood-b').innerHTML = '<span class="text-[10px] text-slate-300">سالب (-)</span>';
-            }
-            if(type === 'D' && addedD) {
-                mixedD = true;
-                document.getElementById('blood-d').className = "w-16 h-16 rounded-full bg-red-600 transition-all duration-500 flex items-center justify-center shadow-lg scale-110 border-2 border-red-400";
-                document.getElementById('blood-d').innerHTML = '<span class="text-[10px] text-white font-bold">تلازن Rh (+)</span>';
-            }
-        }
-
-        function checkBloodAnswer(ans) {
-            if(!mixedA || !mixedD) {
-                alert('يرجى إضافة الأجسام المضادة وخلطها في الآبار أولاً!');
-                return;
-            }
-            if(ans === targetBlood) {
-                document.getElementById('blood-result-status').innerHTML = '<span class="text-emerald-400 font-bold">إجابة صحيحة!</span> الفصيلة المستنتجة هي A+ بنجاح.';
-                updateScore(0, 'تم تحديد فصيلة الدم بدقة.');
-            } else {
-                updateScore(15, 'خطأ في قراءة تفاعل التلازن.');
-                document.getElementById('blood-result-status').innerHTML = '<span class="text-rose-400 font-bold">إجابة خاطئة!</span> راجع تفاعل التلازن في آبار Anti-A و Anti-D.';
-            }
-        }
-
-        // Centrifuge State
-        let isBalanced = false;
-        function toggleBalanceTube(checked) {
-            isBalanced = checked;
-            const tube2 = document.getElementById('rotor-tube-2');
-            if(checked) {
-                tube2.className = "w-full h-full rounded-b-lg bg-red-600/80 transition-all";
-            } else {
-                tube2.className = "w-full h-full rounded-b-lg bg-transparent transition-all";
-            }
-        }
-
-        function startCentrifuge() {
-            if(!isBalanced) {
-                updateScore(25, 'خطأ خطير: اهتزاز الجهاز بسبب عدم وجود أنبوب الموازنة!');
-                alert('تنبيه أمان حراري: تشغيل جهاز الطرد المركزي بدون أنبوب موازنة (Balance Tube) يسبب تلفاً خطيراً واهتزازاً مدمراً للدوار!');
-                return;
-            }
-            const disk = document.getElementById('rotor-disk');
-            disk.classList.add('spinning');
-            document.getElementById('btn-spin').innerText = "جاري الطرد المركزي...";
-            
-            setTimeout(() => {
-                disk.classList.remove('spinning');
-                document.getElementById('btn-spin').innerText = "تم الفصل بنجاح";
-                document.getElementById('layer-plasma').style.height = "55%";
-                updateScore(0, 'عملية الطرد المركزي تمت بأمان وبدون أخطاء.');
-            }, 3000);
-        }
-
-        function resetCentrifuge() {
-            document.getElementById('balance-check').checked = false;
-            toggleBalanceTube(false);
-            document.getElementById('btn-spin').innerText = "بدء عملية الطرد المركزي";
-            document.getElementById('layer-plasma').style.height = "100%";
-        }
-    </script>
+    <!-- JavaScript Link -->
+    <script src="./virtual-lab.js" defer></script>
 </body>
 </html>
