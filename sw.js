@@ -1,11 +1,14 @@
-const CACHE_NAME = 'mlt-department-offline-v2';
+﻿const CACHE_NAME = 'mlt-department-offline-v3';
 const LOCAL_ASSETS = [
   './',
   './index.html',
-  './app.js'
+  './app.js',
+  './student-portal.html',
+  './virtual-lab.html',
+  './virtual-lab.js',
+  './virtual-lab.css'
 ];
 
-// تثبيت الكاش للملفات الأساسية المحلية
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -15,7 +18,6 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
-// تفعيل وتطهير الكاش القديم
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
@@ -31,7 +33,6 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// جلب الملفات من الكاش عند انقطاع الإنترنت
 self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
