@@ -83,6 +83,10 @@ a{color:black}
 <span class="stat">25 مادة بحسب المرحلة</span>
 <span class="stat">الفصل الدراسي الأول</span>
 </div>
+<<<<<<< HEAD
+=======
+<a class="source" href="./virtual-lab.html"><strong>🧪 المختبر الافتراضي — جرّب معرفتك عملياً</strong><small>فقر الدم · تحليل البول · صبغة غرام | حالات تفاعلية وتقييم وحفظ تقدمك</small></a>
+>>>>>>> 462fc59c371e55982de066d00b89a99350c092d5
 <div class="notice">
 <strong>عن المحتوى:</strong>
 أسماء المواد وتصنيفها مستخرجة من الجدول المرفق للصباحي والمسائي للفصل الأول 2026–2027.
@@ -456,6 +460,15 @@ function render(){
     const en=node("p",r[2],"english");
     en.lang="en";
     card.appendChild(en);
+<<<<<<< HEAD
+=======
+    const labs = {"Hematology":[["anemia","فقر الدم"]],"Medical Bacteriology":[["gram","صبغة غرام"]],"Diagnostic Bacteriology":[["gram","صبغة غرام"],["urine","تحليل البول"]],"Advanced Laboratory Techniques":[["urine","تحليل البول"]]};
+    (labs[r[2]] || []).forEach(([id,title])=>{
+      const lab=node("a","🧪 جرّب عملياً: "+title,"source");
+      lab.href="./virtual-lab.html#"+id;
+      card.appendChild(lab);
+    });
+>>>>>>> 462fc59c371e55982de066d00b89a99350c092d5
     card.appendChild(node("h3","رؤية مقترحة للمادة"));
     card.appendChild(node("p",r[4]));
 
@@ -514,4 +527,8 @@ document.getElementById("print").addEventListener("click",()=>window.print());
 render();
 </script>
 </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> 462fc59c371e55982de066d00b89a99350c092d5
