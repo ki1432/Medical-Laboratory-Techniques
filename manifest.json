@@ -1,20 +1,27 @@
 {
-  "name": "المختبر الطبي الافتراضي المتقدم",
-  "short_name": "المختبر الافتراضي",
-  "description": "منصة تعليمية متقدمة لمحاكاة الفحوصات المختبرية الطبية والمجهر الضوئي المركب",
+  "name": "قسم تقنيات المختبرات الطبية",
+  "short_name": "تقنيات المختبرات",
+  "description": "منصة تعليمية متقدمة لمحاكاة الفحوصات المختبرية الطبية والمجهر الضوئي المركب خاصة بقسم تقنيات المختبرات الطبية",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#020617",
   "theme_color": "#0f172a",
-  "orientation": "portrait",
   "lang": "ar",
   "dir": "rtl",
   "categories": ["education", "medical", "science"],
   "icons": [
     {
-      "src": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/svgs/solid/flask-vial.svg",
-      "sizes": "192x192 512x512",
-      "type": "image/svg+xml",
+      "src": "./icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ]
