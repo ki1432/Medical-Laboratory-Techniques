@@ -1,456 +1,269 @@
 ﻿<!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المختبر الافتراضي المتقدم | قسم تقنيات المختبرات الطبية</title>
-    <!-- Tailwind CSS -->
+    <title>المختبر الافتراضي - فحص صورة الدم الكاملة CBC</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts Tajawal & Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="manifest" href="./manifest.json">
-    <meta name="theme-color" content="#0f172a">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: { colors: { brand: { 500: '#14b8a6', 600: '#0d9488' } } } }
+        }
+    </script>
     <style>
-        * {
-            font-family: 'Tajawal', 'Inter', sans-serif;
-            user-select: none;
-        }
-        body {
-            background: radial-gradient(circle at top right, #0f172a, #020617, #090d16);
-            color: #f8fafc;
-            min-height: 100vh;
-        }
-        .glass-panel {
-            background: rgba(15, 23, 42, 0.75);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-        }
-        .glass-card {
-            background: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .glass-card:hover {
-            border-color: rgba(56, 189, 248, 0.4);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.15);
-        }
-        @keyframes spin-centrifuge {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .spinning {
-            animation: spin-centrifuge 0.15s linear infinite;
-        }
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #020617;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #334155;
-            border-radius: 4px;
+        body { font-family: system-ui, -apple-system, sans-serif; }
+        .glass-panel { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); }
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; color: black !important; }
+            .glass-panel { background: white !important; border: 1px solid #ccc !important; }
         }
     </style>
 </head>
-<body class="p-3 md:p-6 antialiased selection:bg-cyan-500 selection:text-white">
-
-    <!-- Header & Navigation -->
-    <header class="max-w-7xl mx-auto mb-6">
-        <div class="glass-panel rounded-2xl p-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4">
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-2xl text-white shadow-lg shadow-cyan-500/30">
-                    <i class="fa-solid fa-flask-vial"></i>
-                </div>
-                <div>
-                    <h1 class="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-blue-500">
-                        المختبر الطبي الافتراضي المتقدم
-                    </h1>
-                    <p class="text-xs md:text-sm text-slate-400">قسم تقنيات المختبرات الطبية - محاكاة تشخيصية تفاعلية</p>
-                </div>
+<body class="bg-slate-950 text-slate-100 min-h-screen p-4 md:p-6">
+    <!-- Header -->
+    <header class="max-w-6xl mx-auto flex items-center justify-between pb-6 mb-6 border-b border-slate-800">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/30 flex items-center justify-center text-teal-400 text-xl font-bold">
+                <i class="fa-solid fa-flask-vial"></i>
             </div>
-            
-            <div class="flex items-center gap-3">
-                <a href="index.html" class="px-4 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white text-xs md:text-sm font-medium transition border border-slate-700/50 flex items-center gap-2">
-                    <i class="fa-solid fa-house"></i> الواجهة الرئيسية
-                </a>
-                <a href="student-portal.html" class="px-4 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white text-xs md:text-sm font-medium transition border border-slate-700/50 flex items-center gap-2">
-                    <i class="fa-solid fa-graduation-cap"></i> بوابة الطالب
-                </a>
+            <div>
+                <h1 class="text-base font-black text-white">المختبر الافتراضي السريري — فحص CBC</h1>
+                <span class="text-xs text-slate-400">Complete Blood Count Automated Analysis & Microscopy</span>
             </div>
         </div>
+        <a href="./index.html" class="px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white text-xs font-bold transition flex items-center gap-2">
+            <i class="fa-solid fa-house"></i> العودة للرئيسية
+        </a>
     </header>
 
-    <!-- Biosafety Banner -->
-    <section class="max-w-7xl mx-auto mb-6">
-        <div class="glass-panel rounded-xl p-4 border-r-4 border-amber-500 flex items-start gap-3 bg-amber-500/10">
-            <i class="fa-solid fa-shield-virus text-amber-400 text-xl mt-1"></i>
-            <div>
-                <h2 class="text-sm font-bold text-amber-300">بروتوكول السلامة الأحيائية (Biosafety Level 2)</h2>
-                <p class="text-xs text-slate-300 mt-0.5">تأكد دائماً من ارتداء معطف المختبر، القفازات الواقية، ونظارات الأمان قبل البدء بالتجارب.</p>
+    <!-- Main Lab Workstation -->
+    <main class="max-w-6xl mx-auto space-y-6">
+        <!-- Step 1: Case & Sample Setup -->
+        <div class="glass-panel p-6 rounded-3xl border border-slate-800 shadow-xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h2 class="text-sm font-bold text-teal-400 flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-full bg-teal-500/20 flex items-center justify-center text-xs">1</span>
+                    تحضير العينة والحالة السريرية
+                </h2>
+                <span class="text-[11px] text-slate-400">أنبوب سحب الدم: K2-EDTA (Lavender Top)</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div>
+                    <label class="block font-bold text-slate-300 mb-1">اختر الحالة السريرية للمريض:</label>
+                    <select id="patient-case" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-white outline-none focus:border-teal-400">
+                        <option value="normal">حالة طبيعية (Normal Control)</option>
+                        <option value="anemia">فقر الدم بعوز الحديد (Iron Deficiency Anemia)</option>
+                        <option value="infection">التهاب بكتيري حاد (Acute Bacterial Infection / Leukocytosis)</option>
+                        <option value="thrombocytopenia">قلة الصفيحات الدموية (Thrombocytopenia)</option>
+                    </select>
+                </div>
+                <div class="flex items-end">
+                    <button type="button" onclick="startAnalyzer()" class="w-full py-3 bg-teal-500 hover:bg-teal-400 text-slate-950 font-black rounded-xl shadow transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-microchip"></i> تشغيل جهاز التحليل السري (Hematology Analyzer)
+                    </button>
+                </div>
             </div>
         </div>
-    </section>
 
-    <!-- Main Content Container -->
-    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Step 2: Analyzer Processing Simulation -->
+        <div id="analyzer-box" class="glass-panel p-6 rounded-3xl border border-slate-800 shadow-xl space-y-4 hidden">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h2 class="text-sm font-bold text-amber-400 flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-full bg-amber-500/20 flex items-center justify-center text-xs">2</span>
+                    مرحلة التحليل الآلي وسحب العينة (Aspiration & Impedance Method)
+                </h2>
+                <span id="analyzer-status" class="text-xs text-amber-400 font-bold animate-pulse">جارٍ معالجة العينة...</span>
+            </div>
+            <div class="w-full bg-slate-900 rounded-full h-3 border border-slate-800 overflow-hidden">
+                <div id="progress-bar" class="bg-teal-500 h-full w-0 transition-all duration-700"></div>
+            </div>
+        </div>
 
-        <!-- Sidebar Navigation for Experiments -->
-        <aside class="lg:col-span-3 space-y-3">
-            <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-2">التجارب المتاحة</h2>
-            
-            <button onclick="switchExperiment('gram')" id="btn-exp-gram" class="w-full text-right p-3.5 rounded-xl glass-card text-slate-200 border-cyan-500/50 bg-cyan-950/30 flex items-center gap-3">
-                <div class="w-9 h-9 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg">
-                    <i class="fa-solid fa-bacteria"></i>
-                </div>
+        <!-- Step 3: CBC Official Report Results -->
+        <div id="report-box" class="glass-panel p-6 md:p-8 rounded-3xl border border-slate-800 shadow-xl space-y-6 hidden">
+            <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-800 pb-4 gap-4">
                 <div>
-                    <h3 class="text-sm font-bold">1. صبغة غرام والمجهر الواقعي</h3>
-                    <p class="text-[11px] text-slate-400">فيزياء العدسات وزيت الغمر</p>
+                    <span class="text-teal-400 text-[10px] font-bold uppercase tracking-wider">Official Laboratory Report</span>
+                    <h2 class="text-xl font-black text-white mt-1">نتيجة فحص صورة الدم الكاملة (CBC Report)</h2>
+                    <p class="text-xs text-slate-400 mt-0.5">تقنية العد الكهربائي البصري (Laser Flow Cytometry & Impedance)</p>
                 </div>
-            </button>
-
-            <button onclick="switchExperiment('blood')" id="btn-exp-blood" class="w-full text-right p-3.5 rounded-xl glass-card text-slate-200 flex items-center gap-3">
-                <div class="w-9 h-9 rounded-lg bg-red-500/20 text-red-400 flex items-center justify-center text-lg">
-                    <i class="fa-solid fa-droplet"></i>
-                </div>
-                <div>
-                    <h3 class="text-sm font-bold">2. فصائل الدم (Blood Typing)</h3>
-                    <p class="text-[11px] text-slate-400">تفاعل التلازن ABO & Rh</p>
-                </div>
-            </button>
-
-            <button onclick="switchExperiment('centrifuge')" id="btn-exp-centrifuge" class="w-full text-right p-3.5 rounded-xl glass-card text-slate-200 flex items-center gap-3">
-                <div class="w-9 h-9 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg">
-                    <i class="fa-solid fa-rotate"></i>
-                </div>
-                <div>
-                    <h3 class="text-sm font-bold">3. الطرد المركزي (Centrifuge)</h3>
-                    <p class="text-[11px] text-slate-400">فصل المصل والموازنة</p>
-                </div>
-            </button>
-
-            <!-- Live Performance Score Box -->
-            <div class="glass-panel rounded-xl p-4 mt-6">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-xs text-slate-400">سجل الأداء التعليمي</span>
-                    <i class="fa-solid fa-award text-yellow-400"></i>
-                </div>
-                <div class="text-2xl font-bold text-cyan-400" id="score-display">100%</div>
-                <p class="text-[11px] text-slate-400 mt-1" id="score-note">أداء ممتاز، بدون أخطاء إجرائية.</p>
-                <div class="mt-3 pt-3 border-t border-slate-700/50 flex justify-between text-[11px]">
-                    <span class="text-slate-400">الأخطاء الإجرائية:</span>
-                    <span class="text-rose-400 font-bold" id="error-count">0</span>
-                </div>
-            </div>
-        </aside>
-
-        <!-- Dynamic Interactive Area -->
-        <section class="lg:col-span-9">
-
-            <!-- 1. GRAM STAIN & REALISTIC MICROSCOPE SIMULATOR -->
-            <div id="exp-gram" class="glass-panel rounded-2xl p-4 md:p-6">
-                <div class="flex flex-col md:flex-row justify-between md:items-center gap-2 mb-4 pb-4 border-b border-slate-700/50">
-                    <div>
-                        <h2 class="text-lg font-bold text-cyan-300 flex items-center gap-2">
-                            <i class="fa-solid fa-microscope text-cyan-400"></i> محاكاة صبغة غرام والمجهر الضوئي المركب
-                        </h2>
-                        <p class="text-xs text-slate-400">اتبع خطوات التثبيت والصبغ بدقة، ثم افحص الشريحة باستخدام فيزياء العدسات وحركة المسرح الحقيقية.</p>
-                    </div>
-                    <button onclick="resetGramStain()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 border border-slate-700 self-start">
-                        <i class="fa-solid fa-rotate-left"></i> إعادة التجربة
-                    </button>
-                </div>
-
-                <!-- Step Navigator -->
-                <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-6 text-center text-xs">
-                    <div id="gstep-1" class="p-2 rounded-lg bg-cyan-950 border border-cyan-500/50 text-cyan-300 font-semibold">1. تثبيت حراري</div>
-                    <div id="gstep-2" class="p-2 rounded-lg bg-slate-800/50 border border-slate-700 text-slate-400">2. Crystal Violet</div>
-                    <div id="gstep-3" class="p-2 rounded-lg bg-slate-800/50 border border-slate-700 text-slate-400">3. Iodine</div>
-                    <div id="gstep-4" class="p-2 rounded-lg bg-slate-800/50 border border-slate-700 text-slate-400">4. Decolorizer</div>
-                    <div id="gstep-5" class="p-2 rounded-lg bg-slate-800/50 border border-slate-700 text-slate-400">5. Safranin</div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- Glass Slide & Reagents Area -->
-                    <div class="glass-card rounded-xl p-4 flex flex-col items-center justify-between min-h-[320px]">
-                        <span class="text-xs text-slate-400 self-start">منصة التفاعل والتثبيت</span>
-                        
-                        <div class="relative w-64 h-20 bg-slate-200/20 backdrop-blur border-2 border-slate-400/50 rounded-md flex items-center justify-center my-6 overflow-hidden shadow-inner">
-                            <div class="absolute left-2 text-[10px] text-slate-400 font-mono">Sample #A4</div>
-                            <div id="slide-smear" class="w-12 h-12 rounded-full bg-slate-400/20 border border-dashed border-slate-400 transition-all duration-700 flex items-center justify-center">
-                                <span id="smear-label" class="text-[9px] text-slate-300 opacity-70">مسحة</span>
-                            </div>
-                        </div>
-
-                        <div class="w-full grid grid-cols-2 sm:grid-cols-3 gap-2">
-                            <button onclick="applyGramStep('heat')" class="p-2 rounded-lg bg-orange-950/40 border border-orange-500/40 hover:bg-orange-900/50 text-orange-300 text-xs font-medium flex items-center justify-center gap-1.5 transition">
-                                <i class="fa-solid fa-fire"></i> موقد بنسن
-                            </button>
-                            <button onclick="applyGramStep('violet')" class="p-2 rounded-lg bg-purple-950/40 border border-purple-500/40 hover:bg-purple-900/50 text-purple-300 text-xs font-medium flex items-center justify-center gap-1.5 transition">
-                                <i class="fa-solid fa-vial"></i> Crystal Violet
-                            </button>
-                            <button onclick="applyGramStep('iodine')" class="p-2 rounded-lg bg-amber-950/40 border border-amber-500/40 hover:bg-amber-900/50 text-amber-300 text-xs font-medium flex items-center justify-center gap-1.5 transition">
-                                <i class="fa-solid fa-bottle-droplet"></i> Gram's Iodine
-                            </button>
-                            <button onclick="applyGramStep('decolor')" class="p-2 rounded-lg bg-sky-950/40 border border-sky-500/40 hover:bg-sky-900/50 text-sky-300 text-xs font-medium flex items-center justify-center gap-1.5 transition">
-                                <i class="fa-solid fa-whiskey-glass"></i> Alcohol (95%)
-                            </button>
-                            <button onclick="applyGramStep('safranin')" class="p-2 rounded-lg bg-rose-950/40 border border-rose-500/40 hover:bg-rose-900/50 text-rose-300 text-xs font-medium flex items-center justify-center gap-1.5 transition">
-                                <i class="fa-solid fa-eye-dropper"></i> Safranin
-                            </button>
-                            <button onclick="applyGramStep('wash')" class="p-2 rounded-lg bg-blue-950/40 border border-blue-500/40 hover:bg-blue-900/50 text-blue-300 text-xs font-medium flex items-center justify-center gap-1.5 transition">
-                                <i class="fa-solid fa-faucet-drip"></i> غسل بالماء
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Interactive Realistic Microscope Display -->
-                    <div class="glass-card rounded-xl p-5 flex flex-col items-center justify-between shadow-2xl border border-slate-700">
-                        <div class="w-full flex justify-between items-center text-xs text-slate-300 mb-3 border-b border-slate-700/50 pb-2">
-                            <span class="font-bold flex items-center gap-1.5 text-cyan-400"><i class="fa-solid fa-microscope"></i> المجهر الضوئي المركب</span>
-                            <span id="mag-level" class="bg-cyan-950 px-2.5 py-1 rounded-md text-cyan-300 border border-cyan-500/40 font-mono font-bold">العدسة الحالية: 4x</span>
-                        </div>
-
-                        <!-- Microscope Viewfield -->
-                        <div class="relative w-64 h-64 rounded-full border-8 border-slate-900 bg-slate-950 overflow-hidden flex items-center justify-center shadow-[inset_0_0_30px_rgba(0,0,0,0.9)] my-2">
-                            <div class="absolute inset-0 border border-cyan-500/10 rounded-full pointer-events-none"></div>
-                            <div class="absolute w-full h-[1px] bg-cyan-500/15 pointer-events-none"></div>
-                            <div class="absolute h-full w-[1px] bg-cyan-500/15 pointer-events-none"></div>
-
-                            <!-- Microscope Pan View -->
-                            <div id="microscope-view" class="absolute w-full h-full flex items-center justify-center transition-all duration-200" style="filter: blur(12px); transform: translate(0px, 0px);">
-                                <div id="bacteria-container" class="relative w-[400px] h-[400px]"></div>
-                            </div>
-
-                            <!-- Oil Warning for 100x -->
-                            <div id="oil-warning" class="absolute inset-0 bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center text-center p-4 hidden">
-                                <i class="fa-solid fa-triangle-exclamation text-amber-400 text-2xl mb-1"></i>
-                                <p class="text-[11px] text-amber-200 font-bold">تنبيه بؤري:</p>
-                                <p class="text-[10px] text-slate-300">العدسة الزيتية (100x) تتطلب إضافة قطرة زيت الغمر لتجنب انكسار الضوء وتشويش الصورة!</p>
-                            </div>
-                        </div>
-
-                        <!-- Physics Controls -->
-                        <div class="w-full space-y-3 mt-3 bg-slate-900/80 p-3.5 rounded-xl border border-slate-800">
-                            <div class="flex justify-between items-center text-xs text-slate-400">
-                                <span>العدسات الشيئية:</span>
-                                <div class="flex gap-1.5">
-                                    <button onclick="setObjectiveLens(4)" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-300 border border-slate-700 font-mono">4x</button>
-                                    <button onclick="setObjectiveLens(10)" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-300 border border-slate-700 font-mono">10x</button>
-                                    <button onclick="setObjectiveLens(40)" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-300 border border-slate-700 font-mono">40x</button>
-                                    <button onclick="setObjectiveLens(100)" class="px-2.5 py-1 rounded bg-cyan-950 border border-cyan-500/40 text-[10px] text-cyan-200 font-bold font-mono">100x Oil</button>
-                                </div>
-                            </div>
-
-                            <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-800">
-                                <span class="text-slate-400">زيت الغمر (Immersion Oil):</span>
-                                <button onclick="applyImmersionOil()" id="btn-oil" class="px-3 py-1 rounded-lg bg-amber-950/50 hover:bg-amber-900/60 text-amber-300 border border-amber-500/40 text-[11px] font-medium transition flex items-center gap-1.5">
-                                    <i class="fa-solid fa-droplet"></i> إضافة قطرة زيت
-                                </button>
-                            </div>
-
-                            <div class="grid grid-cols-2 gap-3 pt-1 border-t border-slate-800">
-                                <div class="space-y-1">
-                                    <div class="flex justify-between text-[10px] text-slate-400">
-                                        <span>الضبط الخشن:</span>
-                                        <span id="coarse-val" class="text-cyan-400 font-mono">0</span>
-                                    </div>
-                                    <input type="range" id="coarse-knob" min="0" max="100" value="0" oninput="adjustFocusPhysics()" class="w-full accent-cyan-500 h-1 bg-slate-800 rounded">
-                                </div>
-                                <div class="space-y-1">
-                                    <div class="flex justify-between text-[10px] text-slate-400">
-                                        <span>الضبط الدقيق:</span>
-                                        <span id="fine-val" class="text-emerald-400 font-mono">50</span>
-                                    </div>
-                                    <input type="range" id="fine-knob" min="0" max="100" value="50" oninput="adjustFocusPhysics()" class="w-full accent-emerald-500 h-1 bg-slate-800 rounded">
-                                </div>
-                            </div>
-
-                            <div class="flex justify-between items-center pt-2 border-t border-slate-800 text-xs">
-                                <span class="text-slate-400">حركة المسرح (Stage X/Y):</span>
-                                <div class="flex gap-1">
-                                    <button onclick="moveStage('up')" class="w-7 h-7 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded flex items-center justify-center"><i class="fa-solid fa-chevron-up text-[10px]"></i></button>
-                                    <button onclick="moveStage('down')" class="w-7 h-7 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded flex items-center justify-center"><i class="fa-solid fa-chevron-down text-[10px]"></i></button>
-                                    <button onclick="moveStage('left')" class="w-7 h-7 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded flex items-center justify-center"><i class="fa-solid fa-chevron-left text-[10px]"></i></button>
-                                    <button onclick="moveStage('right')" class="w-7 h-7 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded flex items-center justify-center"><i class="fa-solid fa-chevron-right text-[10px]"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-4 p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-xs flex flex-col md:flex-row items-center justify-between gap-3">
-                    <div id="gram-result-text" class="text-slate-300">
-                        <span class="text-amber-400 font-bold"><i class="fa-solid fa-circle-info"></i> الحالة:</span> يرجى إكمال خطوات التثبيت والصبغ والفحص لمشاهدة العينة بوضوح.
-                    </div>
-                    <button onclick="diagnoseGram()" class="px-4 py-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs whitespace-nowrap transition shadow-lg shadow-cyan-600/30">
-                        اعتماد النتيجة التشخيصية
+                <div class="no-print flex gap-2">
+                    <button onclick="window.print()" class="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs rounded-xl shadow transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-print"></i> طباعة التقرير
                     </button>
                 </div>
             </div>
 
-            <!-- 2. BLOOD TYPING SIMULATOR -->
-            <div id="exp-blood" class="glass-panel rounded-2xl p-4 md:p-6 hidden">
-                <div class="flex flex-col md:flex-row justify-between md:items-center gap-2 mb-4 pb-4 border-b border-slate-700/50">
-                    <div>
-                        <h2 class="text-lg font-bold text-red-400 flex items-center gap-2">
-                            <i class="fa-solid fa-droplet text-red-500"></i> محاكاة فحص فصائل الدم وتفاعل التلازن (ABO & Rh)
-                        </h2>
-                        <p class="text-xs text-slate-400">أضف الأجسام المضادة (Anti-A, Anti-B, Anti-D) واخلطها لتحديد الفصيلة</p>
-                    </div>
-                    <button onclick="resetBloodTyping()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 border border-slate-700 self-start">
-                        <i class="fa-solid fa-rotate-left"></i> عينة جديدة
-                    </button>
-                </div>
-
-                <div class="glass-card rounded-2xl p-6 mb-6">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="flex flex-col items-center bg-slate-900/60 p-4 rounded-xl border border-slate-800">
-                            <span class="text-xs font-bold text-blue-400 mb-2">مصل Anti-A (أزرق)</span>
-                            <div id="well-a" class="w-32 h-32 rounded-full border-2 border-slate-700 bg-slate-950 flex items-center justify-center relative overflow-hidden my-2 shadow-inner">
-                                <div id="blood-a" class="w-16 h-16 rounded-full bg-red-700/30 transition-all duration-500 flex items-center justify-center"></div>
-                            </div>
-                            <div class="flex gap-2 mt-2 w-full">
-                                <button onclick="addReagent('A')" class="w-1/2 py-1.5 rounded bg-blue-900/50 hover:bg-blue-800 border border-blue-500/30 text-[11px] text-blue-300 font-medium">قطرة Anti-A</button>
-                                <button onclick="mixWell('A')" class="w-1/2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-[11px] text-slate-300">خلط عود</button>
-                            </div>
-                        </div>
-
-                        <div class="flex flex-col items-center bg-slate-900/60 p-4 rounded-xl border border-slate-800">
-                            <span class="text-xs font-bold text-yellow-400 mb-2">مصل Anti-B (أصفر)</span>
-                            <div id="well-b" class="w-32 h-32 rounded-full border-2 border-slate-700 bg-slate-950 flex items-center justify-center relative overflow-hidden my-2 shadow-inner">
-                                <div id="blood-b" class="w-16 h-16 rounded-full bg-red-700/30 transition-all duration-500 flex items-center justify-center"></div>
-                            </div>
-                            <div class="flex gap-2 mt-2 w-full">
-                                <button onclick="addReagent('B')" class="w-1/2 py-1.5 rounded bg-yellow-900/50 hover:bg-yellow-800 border border-yellow-500/30 text-[11px] text-yellow-300 font-medium">قطرة Anti-B</button>
-                                <button onclick="mixWell('B')" class="w-1/2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-[11px] text-slate-300">خلط عود</button>
-                            </div>
-                        </div>
-
-                        <div class="flex flex-col items-center bg-slate-900/60 p-4 rounded-xl border border-slate-800">
-                            <span class="text-xs font-bold text-slate-300 mb-2">مصل Anti-D / Rh (شفاف)</span>
-                            <div id="well-d" class="w-32 h-32 rounded-full border-2 border-slate-700 bg-slate-950 flex items-center justify-center relative overflow-hidden my-2 shadow-inner">
-                                <div id="blood-d" class="w-16 h-16 rounded-full bg-red-700/30 transition-all duration-500 flex items-center justify-center"></div>
-                            </div>
-                            <div class="flex gap-2 mt-2 w-full">
-                                <button onclick="addReagent('D')" class="w-1/2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 border border-slate-600 text-[11px] text-slate-200 font-medium">قطرة Anti-D</button>
-                                <button onclick="mixWell('D')" class="w-1/2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-[11px] text-slate-300">خلط عود</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <div>
-                        <span class="text-xs text-slate-400">حدد فصيلة الدم المستنتجة بناءً على التلازن (Agglutination):</span>
-                        <div class="flex flex-wrap gap-2 mt-2" id="blood-type-selectors">
-                            <button onclick="checkBloodAnswer('A+')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-red-950 hover:border-red-500 border border-slate-700 text-xs font-bold text-slate-200">A+</button>
-                            <button onclick="checkBloodAnswer('A-')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-red-950 hover:border-red-500 border border-slate-700 text-xs font-bold text-slate-200">A-</button>
-                            <button onclick="checkBloodAnswer('B+')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-red-950 hover:border-red-500 border border-slate-700 text-xs font-bold text-slate-200">B+</button>
-                            <button onclick="checkBloodAnswer('B-')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-red-950 hover:border-red-500 border border-slate-700 text-xs font-bold text-slate-200">B-</button>
-                            <button onclick="checkBloodAnswer('AB+')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-red-950 hover:border-red-500 border border-slate-700 text-xs font-bold text-slate-200">AB+</button>
-                            <button onclick="checkBloodAnswer('AB-')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-red-950 hover:border-red-500 border border-slate-700 text-xs font-bold text-slate-200">AB-</button>
-                            <button onclick="checkBloodAnswer('O+')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-red-950 hover:border-red-500 border border-slate-700 text-xs font-bold text-slate-200">O+</button>
-                            <button onclick="checkBloodAnswer('O-')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-red-950 hover:border-red-500 border border-slate-700 text-xs font-bold text-slate-200">O-</button>
-                        </div>
-                    </div>
-                    <div id="blood-result-status" class="text-xs text-slate-400 font-semibold text-center md:text-left">
-                        في انتظار إجراء الاختبار...
-                    </div>
-                </div>
+            <!-- Parameters Table -->
+            <div class="overflow-x-auto rounded-2xl border border-slate-800">
+                <table class="w-full text-right text-xs">
+                    <thead class="bg-slate-950 text-teal-400 border-b border-slate-800 font-bold">
+                        <tr>
+                            <th class="p-3">المكون (Parameter)</th>
+                            <th class="p-3">النتيجة المقاسة (Result)</th>
+                            <th class="p-3">الوحدة (Unit)</th>
+                            <th class="p-3">المعدل الطبيعي (Reference Range)</th>
+                            <th class="p-3 text-center">الحالة السريرية (Flag)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cbc-table-rows" class="divide-y divide-slate-800/60 bg-slate-900/40">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
             </div>
 
-            <!-- 3. CENTRIFUGE SIMULATOR -->
-            <div id="exp-centrifuge" class="glass-panel rounded-2xl p-4 md:p-6 hidden">
-                <div class="flex flex-col md:flex-row justify-between md:items-center gap-2 mb-4 pb-4 border-b border-slate-700/50">
-                    <div>
-                        <h2 class="text-lg font-bold text-emerald-400 flex items-center gap-2">
-                            <i class="fa-solid fa-rotate text-emerald-500"></i> محاكاة جهاز الطرد المركزي (Centrifuge)
-                        </h2>
-                        <p class="text-xs text-slate-400">ضع أنبوب الدم مع أنبوب الموازنة وضبط السرعة لعملية فصل المصل</p>
+            <!-- Differential & RBC Morphology -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                <div class="p-4 rounded-2xl bg-slate-950/60 border border-slate-800 space-y-2">
+                    <h3 class="font-bold text-xs text-teal-400 flex items-center gap-1.5">
+                        <i class="fa-solid fa-chart-pie"></i> العد التفريقي لكريات الدم البيضاء (WBC Differential)
+                    </h3>
+                    <div id="diff-content" class="text-xs text-slate-300 space-y-1">
+                        <!-- Populated by JS -->
                     </div>
-                    <button onclick="resetCentrifuge()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 border border-slate-700 self-start">
-                        <i class="fa-solid fa-rotate-left"></i> إعادة التهيئة
-                    </button>
                 </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="glass-card rounded-xl p-6 flex flex-col items-center justify-center">
-                        <span class="text-xs text-slate-400 mb-4">دوار الطرد المركزي (Rotor)</span>
-                        
-                        <div class="relative w-56 h-56 rounded-full border-8 border-slate-700 bg-slate-950 flex items-center justify-center shadow-2xl">
-                            <div id="rotor-disk" class="w-48 h-48 rounded-full border-2 border-slate-800 bg-slate-900 flex items-center justify-center relative transition-all">
-                                <div class="absolute top-2 w-8 h-16 rounded-b-xl border border-red-500/40 bg-slate-800 flex flex-col items-center p-1">
-                                    <div id="rotor-tube-1" class="w-full h-full rounded-b-lg bg-red-600/80 transition-all"></div>
-                                </div>
-                                <div class="absolute bottom-2 w-8 h-16 rounded-b-xl border border-slate-600 bg-slate-800 flex flex-col items-center p-1">
-                                    <div id="rotor-tube-2" class="w-full h-full rounded-b-lg bg-transparent transition-all"></div>
-                                </div>
-                                <div class="w-12 h-12 rounded-full bg-slate-700 border-2 border-slate-500 flex items-center justify-center shadow-lg">
-                                    <i class="fa-solid fa-gear text-slate-400"></i>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mt-4 flex items-center gap-3">
-                            <label class="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
-                                <input type="checkbox" id="balance-check" onchange="toggleBalanceTube(this.checked)" class="rounded accent-emerald-500 w-4 h-4">
-                                إضافة أنبوب الموازنة (Balance Tube)
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="glass-card rounded-xl p-6 flex flex-col justify-between space-y-4">
-                        <div>
-                            <h3 class="text-sm font-bold text-slate-200 mb-3">إعدادات جهاز الطرد</h3>
-                            
-                            <div class="space-y-2 mb-4">
-                                <div class="flex justify-between text-xs text-slate-400">
-                                    <span>سرعة الدوران (RPM):</span>
-                                    <span id="rpm-val" class="text-emerald-400 font-bold">3500 RPM</span>
-                                </div>
-                                <input type="range" id="rpm-slider" min="1000" max="5000" step="500" value="3500" oninput="document.getElementById('rpm-val').innerText = this.value + ' RPM'" class="w-full accent-emerald-400">
-                            </div>
-
-                            <div class="space-y-2 mb-4">
-                                <div class="flex justify-between text-xs text-slate-400">
-                                    <span>زمن الطرد:</span>
-                                    <span id="time-val" class="text-emerald-400 font-bold">5 دقائق</span>
-                                </div>
-                                <input type="range" id="time-slider" min="1" max="15" value="5" oninput="document.getElementById('time-val').innerText = this.value + ' دقائق'" class="w-full accent-emerald-400">
-                            </div>
-
-                            <button id="btn-spin" onclick="startCentrifuge()" class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm transition shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-play"></i> بدء عملية الطرد المركزي
-                            </button>
-                        </div>
-
-                        <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between">
-                            <div class="text-xs space-y-1">
-                                <div class="text-amber-300 font-bold">نتيجة الفصل:</div>
-                                <div class="text-[11px] text-slate-400"><span class="inline-block w-2 h-2 rounded-full bg-yellow-400 ml-1"></span> البلازما (Plasma): ~55%</div>
-                                <div class="text-[11px] text-slate-400"><span class="inline-block w-2 h-2 rounded-full bg-slate-200 ml-1"></span> الكريات البيضاء (Buffy Coat): ~1%</div>
-                                <div class="text-[11px] text-slate-400"><span class="inline-block w-2 h-2 rounded-full bg-red-600 ml-1"></span> كريات الدم الحمراء (RBCs): ~45%</div>
-                            </div>
-                            <div id="result-tube" class="w-6 h-24 rounded-b-xl border border-slate-500 bg-slate-800 flex flex-col overflow-hidden shadow-md">
-                                <div id="layer-plasma" class="w-full h-full bg-red-600 transition-all duration-1000"></div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="p-4 rounded-2xl bg-slate-950/60 border border-slate-800 space-y-2">
+                    <h3 class="font-bold text-xs text-teal-400 flex items-center gap-1.5">
+                        <i class="fa-solid fa-eye"></i> وصف المسحة الدموية تحت المجهر (Peripheral Smear)
+                    </h3>
+                    <p id="smear-description" class="text-xs text-slate-300 leading-relaxed">
+                        <!-- Populated by JS -->
+                    </p>
                 </div>
             </div>
-
-        </section>
+        </div>
     </main>
 
-    <!-- JavaScript Link -->
-    <script src="./virtual-lab.js" defer></script>
+    <script>
+        function startAnalyzer() {
+            const box = document.getElementById('analyzer-box');
+            const report = document.getElementById('report-box');
+            const bar = document.getElementById('progress-bar');
+            const status = document.getElementById('analyzer-status');
+
+            box.classList.remove('hidden');
+            report.classList.add('hidden');
+            bar.style.width = '0%';
+            status.innerText = 'جارٍ سحب العينة (Aspiration)...';
+
+            setTimeout(() => { bar.style.width = '40%'; status.innerText = 'تحليل خلايا الدم عبر الليزر والمقاومة الكهربائية...'; }, 600);
+            setTimeout(() => { bar.style.width = '80%'; status.innerText = 'معالجة البيانات وحساب المؤشرات الحيوية...'; }, 1200);
+            setTimeout(() => { 
+                bar.style.width = '100%'; 
+                status.innerText = 'تم انجاز التحليل بنجاح!';
+                setTimeout(() => {
+                    box.classList.add('hidden');
+                    generateCBCReport();
+                    report.classList.remove('hidden');
+                }, 500);
+            }, 1800);
+        }
+
+        function generateCBCReport() {
+            const caseType = document.getElementById('patient-case').value;
+            const tbody = document.getElementById('cbc-table-rows');
+            const diffBox = document.getElementById('diff-content');
+            const smearBox = document.getElementById('smear-description');
+
+            let data = {};
+
+            if (caseType === 'normal') {
+                data = {
+                    wbc: { val: "7.2", unit: "10^3/µL", range: "4.0 - 11.0", flag: "طبيعي", status: "normal" },
+                    rbc: { val: "4.8", unit: "10^6/µL", range: "4.5 - 5.9", flag: "طبيعي", status: "normal" },
+                    hgb: { val: "14.5", unit: "g/dL", range: "13.5 - 17.5", flag: "طبيعي", status: "normal" },
+                    hct: { val: "43.0", unit: "%", range: "40.0 - 52.0", flag: "طبيعي", status: "normal" },
+                    mcv: { val: "88.0", unit: "fL", range: "80.0 - 100.0", flag: "طبيعي", status: "normal" },
+                    mch: { val: "30.1", unit: "pg", range: "27.0 - 33.0", flag: "طبيعي", status: "normal" },
+                    mchc: { val: "33.7", unit: "g/dL", range: "32.0 - 36.0", flag: "طبيعي", status: "normal" },
+                    plt: { val: "250", unit: "10^3/µL", range: "150 - 450", flag: "طبيعي", status: "normal" }
+                };
+                diffBox.innerHTML = `
+                    <div class="flex justify-between"><span>العدلات (Neutrophils):</span><span class="font-bold text-white">58% (2.1 - 7.7)</span></div>
+                    <div class="flex justify-between"><span>اللمفاويات (Lymphocytes):</span><span class="font-bold text-white">32% (1.0 - 3.0)</span></div>
+                    <div class="flex justify-between"><span>الوحيدات (Monocytes):</span><span class="font-bold text-white">6% (0.2 - 1.0)</span></div>
+                    <div class="flex justify-between"><span>الحمضات (Eosinophils):</span><span class="font-bold text-white">3% (0.0 - 0.5)</span></div>
+                    <div class="flex justify-between"><span>القاعدات (Basophils):</span><span class="font-bold text-white">1% (0.0 - 0.2)</span></div>
+                `;
+                smearBox.innerHTML = "خلايا الدم الحمراء طبيعية من حيث الحجم واللون (Normocytic Normochromic). خلايا الدم البيضاء والصفائح الدموية ضمن المعدلات الطبيعية ولا توجد خلايا غير طبيعية.";
+            } else if (caseType === 'anemia') {
+                data = {
+                    wbc: { val: "6.8", unit: "10^3/µL", range: "4.0 - 11.0", flag: "طبيعي", status: "normal" },
+                    rbc: { val: "3.5", unit: "10^6/µL", range: "4.5 - 5.9", flag: "منخفض (Low)", status: "low" },
+                    hgb: { val: "9.2", unit: "g/dL", range: "13.5 - 17.5", flag: "منخفض حاد (Low)", status: "low" },
+                    hct: { val: "29.0", unit: "%", range: "40.0 - 52.0", flag: "منخفض (Low)", status: "low" },
+                    mcv: { val: "68.0", unit: "fL", range: "80.0 - 100.0", flag: "صغير الحجم (Microcytic)", status: "low" },
+                    mch: { val: "22.1", unit: "pg", range: "27.0 - 33.0", flag: "منخفض (Hypochromic)", status: "low" },
+                    mchc: { val: "28.5", unit: "g/dL", range: "32.0 - 36.0", flag: "منخفض (Low)", status: "low" },
+                    plt: { val: "310", unit: "10^3/µL", range: "150 - 450", flag: "طبيعي", status: "normal" }
+                };
+                diffBox.innerHTML = `
+                    <div class="flex justify-between"><span>العدلات (Neutrophils):</span><span class="font-bold text-white">60%</span></div>
+                    <div class="flex justify-between"><span>اللمفاويات (Lymphocytes):</span><span class="font-bold text-white">30%</span></div>
+                    <div class="flex justify-between"><span>الوحيدات (Monocytes):</span><span class="font-bold text-white">7%</span></div>
+                    <div class="flex justify-between"><span>الحمضات (Eosinophils):</span><span class="font-bold text-white">2%</span></div>
+                    <div class="flex justify-between"><span>القاعدات (Basophils):</span><span class="font-bold text-white">1%</span></div>
+                `;
+                smearBox.innerHTML = "تظهر المسحة الدموية وجود نقص واضح في صباغ كريات الدم الحمراء (Hypochromia) مع صغر حجمها (Microcytosis) ووجود خلايا هدفية (Target cells) وأشكال مختلفة (Anisopoikilocytosis)، ما يتوافق مع فقر الدم بعوز الحديد.";
+            } else if (caseType === 'infection') {
+                data = {
+                    wbc: { val: "18.5", unit: "10^3/µL", range: "4.0 - 11.0", flag: "مرتفع جداً (High)", status: "high" },
+                    rbc: { val: "5.0", unit: "10^6/µL", range: "4.5 - 5.9", flag: "طبيعي", status: "normal" },
+                    hgb: { val: "15.0", unit: "g/dL", range: "13.5 - 17.5", flag: "طبيعي", status: "normal" },
+                    hct: { val: "45.0", unit: "%", range: "40.0 - 52.0", flag: "طبيعي", status: "normal" },
+                    mcv: { val: "90.0", unit: "fL", range: "80.0 - 100.0", flag: "طبيعي", status: "normal" },
+                    mch: { val: "30.0", unit: "pg", range: "27.0 - 33.0", flag: "طبيعي", status: "normal" },
+                    mchc: { val: "33.3", unit: "g/dL", range: "32.0 - 36.0", flag: "طبيعي", status: "normal" },
+                    plt: { val: "380", unit: "10^3/µL", range: "150 - 450", flag: "طبيعي", status: "normal" }
+                };
+                diffBox.innerHTML = `
+                    <div class="flex justify-between text-rose-400 font-bold"><span>العدلات (Neutrophils):</span><span>85% (Leukocytosis & Shift to left)</span></div>
+                    <div class="flex justify-between"><span>اللمفاويات (Lymphocytes):</span><span class="font-bold text-white">10%</span></div>
+                    <div class="flex justify-between"><span>الوحيدات (Monocytes):</span><span class="font-bold text-white">3%</span></div>
+                    <div class="flex justify-between"><span>الحمضات (Eosinophils):</span><span class="font-bold text-white">1%</span></div>
+                    <div class="flex justify-between"><span>القاعدات (Basophils):</span><span class="font-bold text-white">1%</span></div>
+                `;
+                smearBox.innerHTML = "وجود ارتفاع ملحوظ في العدد الكلي لخريات الدم البيضاء (Leukocytosis) مع سيادة خلايا العدلات (Neutrophilia) ووجود أشكال فتية (Band cells / Shift to the left)، مما يشير إلى وجود استجابة التهابية أو عدوى بكتيرية حادة.";
+            } else if (caseType === 'thrombocytopenia') {
+                data = {
+                    wbc: { val: "7.0", unit: "10^3/µL", range: "4.0 - 11.0", flag: "طبيعي", status: "normal" },
+                    rbc: { val: "4.7", unit: "10^6/µL", range: "4.5 - 5.9", flag: "طبيعي", status: "normal" },
+                    hgb: { val: "14.0", unit: "g/dL", range: "13.5 - 17.5", flag: "طبيعي", status: "normal" },
+                    hct: { val: "42.0", unit: "%", range: "40.0 - 52.0", flag: "طبيعي", status: "normal" },
+                    mcv: { val: "89.0", unit: "fL", range: "80.0 - 100.0", flag: "طبيعي", status: "normal" },
+                    mch: { val: "29.8", unit: "pg", range: "27.0 - 33.0", flag: "طبيعي", status: "normal" },
+                    mchc: { val: "33.5", unit: "g/dL", range: "32.0 - 36.0", flag: "طبيعي", status: "normal" },
+                    plt: { val: "65", unit: "10^3/µL", range: "150 - 450", flag: "منخفض حاد (Critical Low)", status: "low" }
+                };
+                diffBox.innerHTML = `
+                    <div class="flex justify-between"><span>العدلات (Neutrophils):</span><span class="font-bold text-white">59%</span></div>
+                    <div class="flex justify-between"><span>اللمفاويات (Lymphocytes):</span><span class="font-bold text-white">31%</span></div>
+                    <div class="flex justify-between"><span>الوحيدات (Monocytes):</span><span class="font-bold text-white">7%</span></div>
+                    <div class="flex justify-between"><span>الحمضات (Eosinophils):</span><span class="font-bold text-white">2%</span></div>
+                    <div class="flex justify-between"><span>القاعدات (Basophils):</span><span class="font-bold text-white">1%</span></div>
+                `;
+                smearBox.innerHTML = "تظهر المسحة الدموية انخفاضاً حاداً ونادراً في عدد الصفيحات الدموية (Thrombocytopenia) مع وجود صفيحات عملاقة أحياناً (Giant platelets). كريات الدم الحمراء والبيضاء ضمن المعدلات الطبيعية.";
+            }
+
+            let htmlRows = '';
+            for (let key in data) {
+                let item = data[key];
+                let flagClass = item.status === 'normal' ? 'text-teal-400 bg-teal-500/10 border-teal-500/30' : 'text-rose-400 bg-rose-500/10 border-rose-500/30';
+                htmlRows += `
+                    <tr>
+                        <td class="p-3 font-bold text-white uppercase">${key}</td>
+                        <td class="p-3 font-extrabold text-white text-sm">${item.val}</td>
+                        <td class="p-3 text-slate-400">${item.unit}</td>
+                        <td class="p-3 text-slate-400">${item.range}</td>
+                        <td class="p-3 text-center"><span class="px-2.5 py-1 rounded-full text-[10px] border font-black ${flagClass}">${item.flag}</span></td>
+                    </tr>
+                `;
+            }
+            tbody.innerHTML = htmlRows;
+        }
+    </script>
 </body>
 </html>
