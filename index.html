@@ -223,6 +223,51 @@
             </div>
         </section>
 
+                <!-- تطوير جديد: محاكاة فحص توافق فصائل الدم -->
+        <section id="blood-compatibility" class="glass-panel p-6 md:p-8 rounded-3xl border border-slate-800 space-y-6 shadow-xl">
+            <div class="border-b dark:border-slate-800 border-slate-200 pb-4">
+                <span class="text-teal-500 dark:text-teal-400 text-xs font-bold uppercase tracking-wider">Interactive Lab Tool</span>
+                <h3 class="text-xl font-black dark:text-white text-slate-900 mt-1"><i class="fa-solid fa-droplet text-rose-500 ml-2"></i>محاكاة فحص توافق فصائل الدم (Blood Bank Simulator)</h3>
+                <p class="text-xs dark:text-slate-400 text-slate-600 mt-1">اختبر توافق فصائل الدم بين المتبرع والمستلم لتفادي التراص الخلوي:</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                <div>
+                    <label class="block font-bold dark:text-slate-300 text-slate-700 mb-1">فصيلة دم المتبرع (Donor):</label>
+                    <select id="donor-type" class="w-full dark:bg-slate-950 dark:border-slate-800 bg-white border border-slate-300 rounded-xl px-4 py-2.5 dark:text-white text-slate-900 outline-none focus:border-teal-500">
+                        <option value="O-">O-</option>
+                        <option value="O+">O+</option>
+                        <option value="A-">A-</option>
+                        <option value="A+">A+</option>
+                        <option value="B-">B-</option>
+                        <option value="B+">B+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="AB+">AB+</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-bold dark:text-slate-300 text-slate-700 mb-1">فصيلة دم المستلم (Recipient):</label>
+                    <select id="recipient-type" class="w-full dark:bg-slate-950 dark:border-slate-800 bg-white border border-slate-300 rounded-xl px-4 py-2.5 dark:text-white text-slate-900 outline-none focus:border-teal-500">
+                        <option value="O-">O-</option>
+                        <option value="O+">O+</option>
+                        <option value="A-">A-</option>
+                        <option value="A+">A+</option>
+                        <option value="B-">B-</option>
+                        <option value="B+">B+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="AB+">AB+</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="button" onclick="checkBloodCompatibility()" class="w-full py-3 bg-rose-500 hover:bg-rose-400 text-slate-950 font-black text-xs rounded-xl shadow transition">
+                فحص التوافق السريري
+            </button>
+
+            <div id="compatibility-result" class="hidden p-4 rounded-xl text-xs font-bold text-center"></div>
+        </section>
+
+
         <!-- 5. حاسبة السعي الأكاديمي -->
         <section id="gpa-calculator" class="glass-panel p-6 md:p-8 rounded-3xl border border-slate-800 space-y-6 shadow-xl">
             <div class="border-b dark:border-slate-800 border-slate-200 pb-4">
@@ -502,6 +547,32 @@
                 localStorage.setItem('site_announcement', announcementText);
                 document.getElementById('ticker-text-display').innerText = announcementText;
                 alert('تم تحديث الإعلان بنجاح!');
+            }
+        }
+            // محاكاة توافق فصائل الدم
+        function checkBloodCompatibility() {
+            const donor = document.getElementById('donor-type').value;
+            const recipient = document.getElementById('recipient-type').value;
+            const resBox = document.getElementById('compatibility-result');
+            resBox.classList.remove('hidden');
+
+            const compatibilityMap = {
+                "O-": ["O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+"],
+                "O+": ["O+", "A+", "B+", "AB+"],
+                "A-": ["A-", "A+", "AB-", "AB+"],
+                "A+": ["A+", "AB+"],
+                "B-": ["B-", "B+", "AB-", "AB+"],
+                "B+": ["B+", "AB+"],
+                "AB-": ["AB-", "AB+"],
+                "AB+": ["AB+"]
+            };
+
+            if (compatibilityMap[donor].includes(recipient)) {
+                resBox.className = "p-4 rounded-xl text-xs font-bold text-center bg-emerald-500/10 text-emerald-500 border border-emerald-500/30";
+                resBox.innerHTML = '<i class="fa-solid fa-circle-check ml-1"></i> التوافق ناجح وآمن: يمكن نقل الدم من الفصيلة <span class="text-white">' + donor + '</span> إلى المستلم <span class="text-white">' + recipient + '</span> دون حدوث تراص.';
+            } else {
+                resBox.className = "p-4 rounded-xl text-xs font-bold text-center bg-rose-500/10 text-rose-500 border border-rose-500/30";
+                resBox.innerHTML = '<i class="fa-solid fa-triangle-exclamation ml-1"></i> خطر غير متوافق: حدوث تفاعل وتراص (Agglutination) خطير بين المتبرع <span class="text-white">' + donor + '</span> والمستلم <span class="text-white">' + recipient + '</span>!';
             }
         }
     </script>
