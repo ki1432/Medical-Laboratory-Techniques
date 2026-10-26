@@ -3,19 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المختبر الافتراضي السريري المتكامل — قسم تقنيات المختبرات الطبية</title>
+    <title>جناح المختبر الافتراضي السريري ثلاثي الأبعاد — قسم التحليلات المرضية</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Three.js Library for 3D Laboratory Rendering -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             darkMode: 'class',
-            theme: { extend: { colors: { brand: { 500: '#14b8a6', 600: '#0d9488' } } } }
+            theme: { extend: { colors: { brand: { 500: '#35D5F2', 600: '#0B2933' } } } }
         }
     </script>
     <style>
-        body { font-family: system-ui, -apple-system, sans-serif; }
-        .glass-panel { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); }
-        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(8px); }
+        body { font-family: 'Cairo', system-ui, -apple-system, sans-serif; background-color: #07111F; color: #F5F8FC; }
+        .glass-panel { background: rgba(11, 23, 40, 0.85); backdrop-filter: blur(14px); border: 1px solid rgba(53, 213, 242, 0.15); }
+        .glass-card { background: rgba(15, 31, 54, 0.75); backdrop-filter: blur(10px); border: 1px solid rgba(53, 213, 242, 0.1); }
+        canvas { display: block; outline: none; }
         @media print {
             .no-print { display: none !important; }
             body { background: white !important; color: black !important; }
@@ -23,207 +27,227 @@
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen p-4 md:p-6 transition-colors duration-300">
+<body class="min-h-screen p-4 md:p-6 selection:bg-cyan-500 selection:text-slate-950">
 
-    <!-- Header Section -->
-    <header class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between pb-6 mb-6 border-b border-slate-800 gap-4">
+    <!-- Header Navigation -->
+    <header class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between pb-6 mb-6 border-b border-slate-800/80 gap-4">
         <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-2xl bg-teal-500/10 border border-teal-500/30 flex items-center justify-center text-teal-400 text-2xl font-bold shadow-lg">
+            <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-2xl font-bold shadow-[0_0_20px_rgba(53,213,242,0.15)]">
                 <i class="fa-solid fa-flask-vial"></i>
             </div>
             <div>
-                <h1 class="text-lg font-black text-white leading-tight">جناح المختبرات الافتراضية السريرية المتكامل</h1>
-                <span class="text-xs text-slate-400 font-medium">Integrated Clinical Virtual Diagnostic Suite & Hematology Center</span>
+                <h1 class="text-base font-black text-white leading-tight">المختبر الافتراضي السريري التعليمي ثلاثي الأبعاد</h1>
+                <span class="text-xs text-cyan-400/80 font-mono">Ultra-Realistic 3D Clinical Pathology & Hematology Suite</span>
             </div>
         </div>
         <div class="flex items-center gap-3">
-            <a href="./index.html" class="px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white text-xs font-bold transition flex items-center gap-2 shadow">
+            <a href="./index.html" class="px-4 py-2 rounded-xl bg-slate-900/90 border border-slate-800 text-slate-300 hover:text-cyan-400 text-xs font-bold transition flex items-center gap-2 shadow">
                 <i class="fa-solid fa-house"></i> العودة للبوابة الرئيسية
             </a>
         </div>
     </header>
 
     <!-- Lab Modules Navigation Bar -->
-    <nav class="max-w-7xl mx-auto flex gap-3 overflow-x-auto pb-4 mb-6 text-xs font-bold scrollbar-thin">
-        <button onclick="switchLabModule('cbc')" id="nav-btn-cbc" class="px-5 py-3 rounded-2xl bg-teal-500 text-slate-950 shadow-lg transition flex items-center gap-2 shrink-0 font-black">
-            <i class="fa-solid fa-microscope text-sm"></i> مختبر أبحاث وصورة الدم (CBC Simulation)
+    <nav class="max-w-7xl mx-auto flex gap-2 overflow-x-auto pb-4 mb-6 text-xs font-bold scrollbar-thin">
+        <button onclick="switchModule('3dview')" id="nav-btn-3dview" class="px-5 py-3 rounded-2xl bg-cyan-500 text-slate-950 shadow-[0_0_15px_rgba(53,213,242,0.3)] transition flex items-center gap-2 shrink-0 font-black">
+            <i class="fa-solid fa-cube text-sm"></i> المشهد والمختبر ثلاثي الأبعاد (3D Lab)
         </button>
-        <button onclick="switchLabModule('biochem')" id="nav-btn-biochem" class="px-5 py-3 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white transition flex items-center gap-2 shrink-0">
-            <i class="fa-solid fa-vial text-sm"></i> 1. مختبر الكيمياء السريرية (Biochemistry)
+        <button onclick="switchModule('cbc')" id="nav-btn-cbc" class="px-5 py-3 rounded-2xl bg-slate-900/90 border border-slate-800 text-slate-300 hover:text-cyan-400 transition flex items-center gap-2 shrink-0">
+            <i class="fa-solid fa-microscope text-sm"></i> فحص صورة الدم (CBC Simulation)
         </button>
-        <button onclick="switchLabModule('microbio')" id="nav-btn-microbio" class="px-5 py-3 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white transition flex items-center gap-2 shrink-0">
-            <i class="fa-solid fa-bacterium text-sm"></i> 2. مختبر الأحياء المجهرية والأنسجة (Microbiology)
+        <button onclick="switchModule('biochem')" id="nav-btn-biochem" class="px-5 py-3 rounded-2xl bg-slate-900/90 border border-slate-800 text-slate-300 hover:text-cyan-400 transition flex items-center gap-2 shrink-0">
+            <i class="fa-solid fa-vial text-sm"></i> الكيمياء السريرية (Biochemistry)
         </button>
-        <button onclick="switchLabModule('bloodbank')" id="nav-btn-bloodbank" class="px-5 py-3 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white transition flex items-center gap-2 shrink-0">
-            <i class="fa-solid fa-droplet text-sm text-rose-500"></i> 3. مختبر بنك الدم المطابق (Blood Bank)
+        <button onclick="switchModule('microbio')" id="nav-btn-microbio" class="px-5 py-3 rounded-2xl bg-slate-900/90 border border-slate-800 text-slate-300 hover:text-cyan-400 transition flex items-center gap-2 shrink-0">
+            <i class="fa-solid fa-bacterium text-sm"></i> تصبيغ جرام والمجهر (Gram Stain)
+        </button>
+        <button onclick="switchModule('bloodbank')" id="nav-btn-bloodbank" class="px-5 py-3 rounded-2xl bg-slate-900/90 border border-slate-800 text-slate-300 hover:text-cyan-400 transition flex items-center gap-2 shrink-0">
+            <i class="fa-solid fa-droplet text-sm text-rose-500"></i> بنك الدم والتوافق (Blood Bank)
         </button>
     </nav>
 
-    <!-- Main Diagnostic Workstations Container -->
+    <!-- Main Workspace Container -->
     <main class="max-w-7xl mx-auto space-y-6">
 
-        <!-- ==================== MODULE 0: CBC ADVANCED SUITE ==================== -->
-        <div id="module-cbc" class="space-y-6">
-            <!-- Sample Preparation & Calibration -->
-            <div class="glass-panel p-6 rounded-3xl border border-slate-800 shadow-2xl space-y-4">
+        <!-- ==================== MODULE 1: 3D VIRTUAL LABORATORY (THREE.JS) ==================== -->
+        <div id="mod-3dview" class="space-y-4">
+            <div class="glass-panel p-6 rounded-3xl shadow-2xl relative overflow-hidden">
+                <div class="flex flex-col md:flex-row items-center justify-between pb-4 border-b border-slate-800 gap-3">
+                    <div>
+                        <h2 class="text-sm font-bold text-cyan-400 flex items-center gap-2">
+                            <i class="fa-solid fa-vr-cardboard"></i> محاكاة بيئة المختبر السريري ثلاثية الأبعاد (Interactive 3D Workstation)
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-0.5">انقر على العناصر أدناه أو تفاعل مع لوحة التحكم الثلاثية الأبعاد لاستكشاف محطة العمل.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="resetCameraView()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 border border-slate-700 transition">إعادة ضبط الكاميرا</button>
+                    </div>
+                </div>
+
+                <!-- Three.js Canvas Container -->
+                <div id="canvas-container" class="relative w-full h-[450px] md:h-[550px] rounded-2xl mt-4 bg-slate-950/90 border border-slate-800/80 overflow-hidden flex items-center justify-center shadow-inner">
+                    <!-- Loading Overlay -->
+                    <div id="loading-3d" class="absolute inset-0 bg-slate-950/80 backdrop-blur flex flex-col items-center justify-center gap-3 z-10">
+                        <div class="w-10 h-10 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin"></div>
+                        <span class="text-xs text-cyan-400 font-bold tracking-wider">جارٍ تحميل بيئة المختبر ثلاثية الأبعاد والأجهزة الطبية...</span>
+                    </div>
+                </div>
+
+                <!-- 3D Object Metadata & Info Footer -->
+                <div id="object-info-panel" class="mt-4 p-4 rounded-2xl glass-card text-xs flex flex-col md:flex-row items-center justify-between gap-3 border border-cyan-500/20">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-xl bg-cyan-500/20 flex items-center justify-center text-cyan-400">
+                            <i class="fa-solid fa-circle-info"></i>
+                        </div>
+                        <div>
+                            <span class="text-slate-400 font-bold">العنصر المحدد في المختبر:</span>
+                            <h4 id="selected-object-name" class="text-white font-extrabold text-sm">منضدة العمل المركزية ومعدات التحليل (Master Workbench)</h4>
+                        </div>
+                    </div>
+                    <p id="selected-object-desc" class="text-slate-300 max-w-xl text-right">تحتوي المحطة على حوامل أنابيب K2-EDTA، ومجهر بصري مركب، وجهاز عد كروي دقيق مخصص لطلاب التحليلات المرضية.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== MODULE 2: CBC AUTOMATION & SMEAR SUITE ==================== -->
+        <div id="mod-cbc" class="space-y-6 hidden">
+            <div class="glass-panel p-6 rounded-3xl shadow-2xl space-y-4">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800 pb-3 gap-2">
-                    <h2 class="text-sm font-bold text-teal-400 flex items-center gap-2">
-                        <span class="w-6 h-6 rounded-full bg-teal-500/20 flex items-center justify-center text-xs">1</span>
-                        إعداد العينة وتحديد النموذج المرضي (Pre-Analytical Phase)
+                    <h2 class="text-sm font-bold text-cyan-400 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center text-xs">1</span>
+                        تحديد الحالة السريرية ونموذج العينة (CBC Specimen Setup)
                     </h2>
-                    <span class="text-[11px] bg-purple-500/10 text-purple-400 border border-purple-500/20 px-2.5 py-1 rounded-lg font-mono">Anticoagulant: K2-EDTA (Lavender Tube)</span>
+                    <span class="text-[11px] bg-purple-500/10 text-purple-400 border border-purple-500/20 px-2.5 py-1 rounded-lg font-mono">Tube: K2-EDTA (Lavender Top)</span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
                     <div class="md:col-span-2">
-                        <label class="block font-bold text-slate-300 mb-1.5">اختر التشخيص السريري المطلوب محاكاته:</label>
-                        <select id="patient-case-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-white outline-none focus:border-teal-400 font-semibold">
-                            <option value="normal">العينة الضابطة — سليم (Normal Health Profile)</option>
+                        <label class="block font-bold text-slate-300 mb-1.5">اختر الحالة السريرية للمريض:</label>
+                        <select id="patient-case-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-white outline-none focus:border-cyan-400 font-semibold">
+                            <option value="normal">العينة الضابطة — سليم (Normal Control)</option>
                             <option value="anemia">فقر الدم بعوز الحديد (Iron Deficiency Anemia — Microcytic Hypochromic)</option>
-                            <option value="infection">استجابة التهابية بكتيرية حادة (Acute Bacterial Infection — Severe Leukocytosis)</option>
+                            <option value="infection">التهاب بكتيري حاد (Acute Bacterial Infection — Severe Leukocytosis)</option>
                             <option value="thrombocytopenia">قلة الصفيحات الدموية المناعية (Immune Thrombocytopenia — Critical Low PLT)</option>
-                            <option value="leukemia">اشتباه ابيضاض الدم الحاد (Acute Leukemia Profile — Blast Cells Suspicion)</option>
+                            <option value="leukemia">اشتباه ابيضاض الدم الحاد (Acute Leukemia Profile — Blast Cells)</option>
                         </select>
                     </div>
                     <div class="flex items-end">
-                        <button type="button" onclick="runCBCAnalyticalCycle()" class="w-full py-3 bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-400 hover:to-emerald-400 text-slate-950 font-black rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-xs">
-                            <i class="fa-solid fa-microchip text-sm"></i> بدء المعالجة الآلية (Run Automated Analyzer)
+                        <button type="button" onclick="runCBCSimulation()" class="w-full py-3 bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-400 hover:to-teal-400 text-slate-950 font-black rounded-xl shadow-[0_0_15px_rgba(53,213,242,0.3)] transition flex items-center justify-center gap-2 text-xs">
+                            <i class="fa-solid fa-microchip text-sm"></i> تشغيل جهاز التحليل الآلي (Run Analyzer)
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Automated Analyzer Real-time Impedance Engine -->
-            <div id="cbc-analyzer-workstation" class="glass-panel p-6 rounded-3xl border border-slate-800 shadow-2xl space-y-4 hidden">
+            <!-- Analyzer Progress Bar -->
+            <div id="cbc-progress-box" class="glass-panel p-6 rounded-3xl shadow-2xl space-y-4 hidden">
                 <div class="flex items-center justify-between border-b border-slate-800 pb-3">
                     <h2 class="text-sm font-bold text-amber-400 flex items-center gap-2">
                         <span class="w-6 h-6 rounded-full bg-amber-500/20 flex items-center justify-center text-xs">2</span>
-                        سحب وتقسيم العينة عبر تقنية Flow Cytometry & Hydrodynamic Focusing
+                        سحب عينة الدم وتحليلها عبر تقنية Laser Flow Cytometry
                     </h2>
-                    <span id="cbc-status-text" class="text-xs text-amber-400 font-bold animate-pulse">Aspirating 20µL Whole Blood...</span>
+                    <span id="cbc-status-text" class="text-xs text-amber-400 font-bold animate-pulse">Aspirating Sample...</span>
                 </div>
                 <div class="w-full bg-slate-900 rounded-full h-3.5 border border-slate-800 overflow-hidden">
-                    <div id="cbc-progress-bar" class="bg-gradient-to-r from-teal-500 to-amber-400 h-full w-0 transition-all duration-500"></div>
+                    <div id="cbc-progress-bar" class="bg-gradient-to-r from-cyan-500 to-amber-400 h-full w-0 transition-all duration-500"></div>
                 </div>
             </div>
 
-            <!-- Official Comprehensive Diagnostic Report -->
-            <div id="cbc-official-report" class="glass-panel p-6 md:p-8 rounded-3xl border border-slate-800 shadow-2xl space-y-6 hidden">
+            <!-- CBC Diagnostic Report -->
+            <div id="cbc-report-box" class="glass-panel p-6 md:p-8 rounded-3xl shadow-2xl space-y-6 hidden">
                 <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-800 pb-4 gap-4">
                     <div>
-                        <span class="text-teal-400 text-[10px] font-extrabold uppercase tracking-widest">Medical Laboratory Diagnostic Report</span>
-                        <h2 class="text-xl font-black text-white mt-1">تقرير صورة الدم الكاملة (Complete Blood Count Diagnostic Report)</h2>
-                        <p class="text-xs text-slate-400 mt-0.5">Automated Hematology Analyzer Multi-Angle Laser Scatter & Impedance</p>
+                        <span class="text-cyan-400 text-[10px] font-extrabold uppercase tracking-widest">Official Laboratory Diagnostic Report</span>
+                        <h2 class="text-xl font-black text-white mt-1">نتيجة فحص صورة الدم الكاملة (CBC Official Report)</h2>
                     </div>
                     <div class="no-print">
                         <button onclick="window.print()" class="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs rounded-xl shadow transition flex items-center gap-2">
-                            <i class="fa-solid fa-print"></i> طباعة التقرير الرسمي
+                            <i class="fa-solid fa-print"></i> طباعة التقرير
                         </button>
                     </div>
                 </div>
 
-                <!-- Complete Parameters Table -->
                 <div class="overflow-x-auto rounded-2xl border border-slate-800">
                     <table class="w-full text-right text-xs">
-                        <thead class="bg-slate-950 text-teal-400 border-b border-slate-800 font-bold">
+                        <thead class="bg-slate-950 text-cyan-400 border-b border-slate-800 font-bold">
                             <tr>
-                                <th class="p-3">المكون المختبري (Parameter)</th>
+                                <th class="p-3">المكون (Parameter)</th>
                                 <th class="p-3">النتيجة (Result)</th>
                                 <th class="p-3">الوحدة (Unit)</th>
-                                <th class="p-3">النطاق الطبيعي (Reference Interval)</th>
-                                <th class="p-3 text-center">التصنيف السريري (Flag)</th>
+                                <th class="p-3">النطاق الطبيعي (Reference Range)</th>
+                                <th class="p-3 text-center">التصنيف (Flag)</th>
                             </tr>
                         </thead>
-                        <tbody id="cbc-report-tbody" class="divide-y divide-slate-800/60 bg-slate-900/40 font-mono"></tbody>
+                        <tbody id="cbc-tbody" class="divide-y divide-slate-800/60 bg-slate-900/40 font-mono"></tbody>
                     </table>
                 </div>
 
-                <!-- Differential & Microscopic Scattergram Data -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-2">
-                        <h3 class="font-bold text-xs text-teal-400 flex items-center gap-2">
-                            <i class="fa-solid fa-chart-pie"></i> العد التفريقي لكريات الدم البيضاء (5-Part Differential)
-                        </h3>
-                        <div id="cbc-diff-box" class="text-xs text-slate-300 space-y-1.5 font-sans"></div>
+                    <div class="p-4 rounded-2xl glass-card space-y-2">
+                        <h3 class="font-bold text-xs text-cyan-400"><i class="fa-solid fa-chart-pie ml-1"></i> العد التفريقي (WBC Differential)</h3>
+                        <div id="cbc-diff-content" class="text-xs text-slate-300 space-y-1.5 font-sans"></div>
                     </div>
-                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-2">
-                        <h3 class="font-bold text-xs text-teal-400 flex items-center gap-2">
-                            <i class="fa-solid fa-eye"></i> الفحص المجهري للمسحة الدموية (Peripheral Smear Evaluation)
-                        </h3>
-                        <p id="cbc-smear-box" class="text-xs text-slate-300 leading-relaxed font-sans"></p>
+                    <div class="p-4 rounded-2xl glass-card space-y-2">
+                        <h3 class="font-bold text-xs text-cyan-400"><i class="fa-solid fa-eye ml-1"></i> فحص المسحة الدموية (Peripheral Smear)</h3>
+                        <p id="cbc-smear-content" class="text-xs text-slate-300 leading-relaxed font-sans"></p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ==================== MODULE 1: BIOCHEMISTRY ==================== -->
-        <div id="module-biochem" class="space-y-6 hidden">
-            <div class="glass-panel p-6 rounded-3xl border border-slate-800 space-y-4">
+        <!-- ==================== MODULE 3: BIOCHEMISTRY ==================== -->
+        <div id="mod-biochem" class="space-y-6 hidden">
+            <div class="glass-panel p-6 rounded-3xl shadow-2xl space-y-4">
                 <div class="border-b border-slate-800 pb-3">
-                    <h2 class="text-sm font-bold text-teal-400"><i class="fa-solid fa-vial ml-1"></i> وحدة الكيمياء السريرية والإنزيمات (Clinical Biochemistry)</h2>
-                    <p class="text-xs text-slate-400 mt-1">قياس مستويات السكر والوظائف الكلوية والكبدية عبر التحليل الطيفي:</p>
+                    <h2 class="text-sm font-bold text-cyan-400"><i class="fa-solid fa-vial ml-1"></i> مختبر الكيمياء السريرية والطيف الضوئي (Spectrophotometry)</h2>
+                    <p class="text-xs text-slate-400 mt-1">حساب تراكيز العناصر الحيوية بالدم عبر الامتصاص الضوئي:</p>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
                     <div>
-                        <label class="block font-bold text-slate-300 mb-1">نوع الاختبار:</label>
-                        <select id="biochem-test-type" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-white outline-none">
-                            <option value="glu">السكر العشوائي (RBS)</option>
+                        <label class="block font-bold text-slate-300 mb-1">اختر الاختبار:</label>
+                        <select id="bio-test" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-white outline-none">
+                            <option value="glu">سكر الدم الصائم (Glucose)</option>
                             <option value="urea">يوريا الدم (Blood Urea)</option>
-                            <option value="alt">إنزيم الكبد (ALT / SGPT)</option>
+                            <option value="alt">إنزيم الكبد (ALT/SGPT)</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block font-bold text-slate-300 mb-1">تركيز العينة (Absorbance):</label>
-                        <input type="number" id="biochem-abs" step="0.01" min="0" max="2" placeholder="0.35" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-white outline-none">
+                        <label class="block font-bold text-slate-300 mb-1">قراءة الامتصاص (Absorbance):</label>
+                        <input type="number" id="bio-abs" step="0.01" value="0.32" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-white outline-none font-mono">
                     </div>
                     <div class="flex items-end">
-                        <button onclick="runBiochemAnalysis()" class="w-full py-3 bg-teal-500 hover:bg-teal-400 text-slate-950 font-black rounded-xl transition">حساب التركيز السريري</button>
+                        <button onclick="calculateBiochem()" class="w-full py-3 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black rounded-xl transition shadow">حساب التركيز السريري</button>
                     </div>
                 </div>
-                <div id="biochem-result" class="hidden p-4 rounded-xl text-xs font-bold bg-slate-900/80 border border-slate-800 text-teal-300"></div>
+                <div id="bio-res" class="hidden p-4 rounded-xl text-xs font-bold glass-card text-cyan-300"></div>
             </div>
         </div>
 
-        <!-- ==================== MODULE 2: MICROBIOLOGY ==================== -->
-        <div id="module-microbio" class="space-y-6 hidden">
-            <div class="glass-panel p-6 rounded-3xl border border-slate-800 space-y-4">
+        <!-- ==================== MODULE 4: MICROBIOLOGY & GRAM STAIN ==================== -->
+        <div id="mod-microbio" class="space-y-6 hidden">
+            <div class="glass-panel p-6 rounded-3xl shadow-2xl space-y-4">
                 <div class="border-b border-slate-800 pb-3">
-                    <h2 class="text-sm font-bold text-teal-400"><i class="fa-solid fa-bacterium ml-1"></i> وحدة الأحياء المجهرية والأنسجة المرضية (Microbiology & Histology)</h2>
-                    <p class="text-xs text-slate-400 mt-1">فحص الشرائح النسيجية والبكتيرية تحت العدسات المكبرة:</p>
+                    <h2 class="text-sm font-bold text-cyan-400"><i class="fa-solid fa-bacterium ml-1"></i> محاكاة تصبيغ جرام (Gram Stain Simulation)</h2>
+                    <p class="text-xs text-slate-400 mt-1">طبق خطوات صبغ البكتيريا لتحديد نوع الجدار الخلوي:</p>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-                    <div>
-                        <label class="block font-bold text-slate-300 mb-1">اختر الشريحة:</label>
-                        <select id="microbio-slide" onchange="renderMicrobiologyView()" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-white outline-none">
-                            <option value="gram_pos">بكتيريا موجبة جرام (Staphylococcus aureus)</option>
-                            <option value="gram_neg">بكتيريا سالبة جرام (Escherichia coli)</option>
-                            <option value="histo_liver">نسيج كبد طبيعي (Normal Liver Histology)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block font-bold text-slate-300 mb-1">قوة التكبير:</label>
-                        <select id="microbio-power" onchange="renderMicrobiologyView()" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-white outline-none">
-                            <option value="100">100x</option>
-                            <option value="400" selected>400x</option>
-                            <option value="1000">1000x (Oil Lens)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block font-bold text-slate-300 mb-1">الوضوح (Focus Adjustment):</label>
-                        <input type="range" id="microbio-focus" min="1" max="10" value="5" oninput="renderMicrobiologyView()" class="w-full accent-teal-500 mt-3">
-                    </div>
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs">
+                    <button onclick="applyGram(1)" class="p-3 rounded-xl bg-slate-900 border border-slate-700 hover:border-cyan-400 text-white font-bold transition">1. Crystal Violet</button>
+                    <button onclick="applyGram(2)" class="p-3 rounded-xl bg-slate-900 border border-slate-700 hover:border-cyan-400 text-white font-bold transition">2. Iodine (المثبت)</button>
+                    <button onclick="applyGram(3)" class="p-3 rounded-xl bg-slate-900 border border-slate-700 hover:border-cyan-400 text-white font-bold transition">3. Decolorizer (الكحول)</button>
+                    <button onclick="applyGram(4)" class="p-3 rounded-xl bg-slate-900 border border-slate-700 hover:border-cyan-400 text-white font-bold transition">4. Safranin (الصبغة المعاكسة)</button>
                 </div>
-                <div class="relative w-full h-72 bg-slate-950 rounded-2xl border-2 border-slate-800 flex items-center justify-center overflow-hidden">
-                    <div id="microbio-viewport" class="text-center p-6 text-teal-300 font-bold transition-all duration-300"></div>
+                <div id="gram-box" class="p-5 rounded-2xl glass-card text-xs text-slate-300 space-y-2 border border-cyan-500/20">
+                    <h4 class="font-bold text-cyan-400">حالة الشريحة الحالية:</h4>
+                    <p id="gram-text">اضغط على الخطوات بالتسلسل لمشاهدة تأثير الصبغات على البكتيريا الموجبة والسالبة.</p>
                 </div>
             </div>
         </div>
 
-        <!-- ==================== MODULE 3: BLOOD BANK ==================== -->
-        <div id="module-bloodbank" class="space-y-6 hidden">
-            <div class="glass-panel p-6 rounded-3xl border border-slate-800 space-y-4">
+        <!-- ==================== MODULE 5: BLOOD BANK & CROSS-MATCH ==================== -->
+        <div id="mod-bloodbank" class="space-y-6 hidden">
+            <div class="glass-panel p-6 rounded-3xl shadow-2xl space-y-4">
                 <div class="border-b border-slate-800 pb-3">
-                    <h2 class="text-sm font-bold text-teal-400"><i class="fa-solid fa-droplet text-rose-500 ml-1"></i> وحدة بنك الدم وتوافق النقل (Blood Bank & Compatibility)</h2>
-                    <p class="text-xs text-slate-400 mt-1">مطابقة الفصائل واختبار التراص السريري:</p>
+                    <h2 class="text-sm font-bold text-cyan-400"><i class="fa-solid fa-droplet text-rose-500 ml-1"></i> وحدة بنك الدم وتوافق النقل السريري (Cross-Match)</h2>
+                    <p class="text-xs text-slate-400 mt-1">اختبار التراص والتوافق بين فصائل المتبرع والمستلم:</p>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                     <div>
@@ -237,7 +261,7 @@
                     </div>
                     <div>
                         <label class="block font-bold text-slate-300 mb-1">فصيلة المستلم (Recipient):</label>
-                        <select id="bb-recipient" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-white outline-none">
+                        <select id="bb-reci" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-white outline-none">
                             <option value="O-">O-</option><option value="O+">O+</option>
                             <option value="A-">A-</option><option value="A+">A+</option>
                             <option value="B-">B-</option><option value="B+">B+</option>
@@ -245,217 +269,323 @@
                         </select>
                     </div>
                 </div>
-                <button type="button" onclick="checkBloodBankMatch()" class="w-full py-3 bg-rose-500 hover:bg-rose-400 text-slate-950 font-black text-xs rounded-xl transition shadow">فحص توافق المصل والدم</button>
-                <div id="bb-result-box" class="hidden p-4 rounded-xl text-xs font-bold text-center"></div>
+                <button type="button" onclick="checkBloodCompatibility()" class="w-full py-3 bg-rose-500 hover:bg-rose-400 text-slate-950 font-black text-xs rounded-xl transition shadow">فحص توافق المصل والدم</button>
+                <div id="bb-res" class="hidden p-4 rounded-xl text-xs font-bold text-center"></div>
             </div>
         </div>
 
     </main>
 
+    <!-- JavaScript: Three.js 3D Lab & Clinical Simulations Engine -->
     <script>
-        // Module Switcher Engine
-        function switchLabModule(modId) {
-            ['cbc', 'biochem', 'microbio', 'bloodbank'].forEach(m => {
-                const modElem = document.getElementById(`module-${m}`);
-                const btnElem = document.getElementById(`nav-btn-${m}`);
-                if (modElem) modElem.classList.add('hidden');
-                if (btnElem) btnElem.className = "px-5 py-3 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white transition flex items-center gap-2 shrink-0";
+        // Module Switcher
+        function switchModule(mod) {
+            ['3dview', 'cbc', 'biochem', 'microbio', 'bloodbank'].forEach(m => {
+                const el = document.getElementById(`mod-${m}`);
+                const btn = document.getElementById(`nav-btn-${m}`);
+                if(el) el.classList.add('hidden');
+                if(btn) btn.className = "px-5 py-3 rounded-2xl bg-slate-900/90 border border-slate-800 text-slate-300 hover:text-cyan-400 transition flex items-center gap-2 shrink-0";
             });
-            const activeMod = document.getElementById(`module-${modId}`);
-            const activeBtn = document.getElementById(`nav-btn-${modId}`);
-            if (activeMod) activeMod.classList.remove('hidden');
-            if (activeBtn) activeBtn.className = "px-5 py-3 rounded-2xl bg-teal-500 text-slate-950 shadow-lg transition flex items-center gap-2 shrink-0 font-black";
+            document.getElementById(`mod-${mod}`).classList.remove('hidden');
+            document.getElementById(`nav-btn-${mod}`).className = "px-5 py-3 rounded-2xl bg-cyan-500 text-slate-950 shadow-[0_0_15px_rgba(53,213,242,0.3)] transition flex items-center gap-2 shrink-0 font-black";
             
-            if (modId === 'microbio') renderMicrobiologyView();
+            if(mod === '3dview' && !window.threeInitialized) {
+                initThreeJS Lab();
+            }
         }
 
-        // ================= CBC ENGINE =================
-        function runCBCAnalyticalCycle() {
-            const workstation = document.getElementById('cbc-analyzer-workstation');
-            const report = document.getElementById('cbc-official-report');
+        // ==================== THREE.JS 3D LABORATORY ENGINE ====================
+        let scene, camera, renderer, labGroup, raycaster, mouse;
+        let interactiveObjects = [];
+
+        function initThreeJS Lab() {
+            const container = document.getElementById('canvas-container');
+            document.getElementById('loading-3d').style.display = 'none';
+            window.threeInitialized = true;
+
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x07111F);
+            scene.fog = new THREE.FogExp2(0x07111F, 0.035);
+
+            camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.set(0, 4, 8);
+            camera.lookAt(0, 0, 0);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+            container.appendChild(renderer.domElement);
+
+            // Lighting setup
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+            scene.add(ambientLight);
+
+            const dirLight = new THREE.DirectionalLight(0x35D5F2, 1.2);
+            dirLight.position.set(5, 10, 7);
+            dirLight.castShadow = true;
+            scene.add(dirLight);
+
+            const pointLight = new THREE.PointLight(0x68E7DA, 2, 10);
+            pointLight.position.set(0, 3, 0);
+            scene.add(pointLight);
+
+            labGroup = new THREE.Group();
+            scene.add(labGroup);
+
+            // 1. Workbench (Medical Table)
+            const benchGeo = new THREE.BoxGeometry(7, 0.3, 3);
+            const benchMat = new THREE.MeshStandardMaterial({ color: 0x0f1f35, roughness: 0.3, metalness: 0.8 });
+            const bench = new THREE.Mesh(benchGeo, benchMat);
+            bench.position.set(0, -1, 0);
+            bench.receiveShadow = true;
+            labGroup.add(bench);
+
+            // 2. Automated Analyzer Machine
+            const analyzerGeo = new THREE.BoxGeometry(1.8, 1.5, 1.4);
+            const analyzerMat = new THREE.MeshStandardMaterial({ color: 0x142842, roughness: 0.2, metalness: 0.5 });
+            const analyzer = new THREE.Mesh(analyzerGeo, analyzerMat);
+            analyzer.position.set(-1.8, 0.05, -0.4);
+            analyzer.castShadow = true;
+            analyzer.userData = { name: "جهاز التحليل السريري الآلي (Hematology Analyzer)", desc: "جهاز متطور لقياس معلمات الدم عبر تقنية الليزر والمقاومة الكهربائية." };
+            labGroup.add(analyzer);
+            interactiveObjects.push(analyzer);
+
+            // Analyzer screen
+            const screenGeo = new THREE.PlaneGeometry(0.8, 0.6);
+            const screenMat = new THREE.MeshBasicMaterial({ color: 0x35D5F2 });
+            const screen = new THREE.Mesh(screenGeo, screenMat);
+            screen.position.set(-1.8, 0.3, 0.31);
+            labGroup.add(screen);
+
+            // 3. Microscope
+            const baseGeo = new THREE.CylinderGeometry(0.6, 0.7, 0.2, 32);
+            const metalMat = new THREE.MeshStandardMaterial({ color: 0x8898aa, metalness: 0.9, roughness: 0.1 });
+            const micBase = new THREE.Mesh(baseGeo, metalMat);
+            micBase.position.set(1.5, -0.8, 0);
+            labGroup.add(micBase);
+
+            const armGeo = new THREE.BoxGeometry(0.3, 1.5, 0.5);
+            const micArm = new THREE.Mesh(armGeo, metalMat);
+            micArm.position.set(1.3, 0, 0);
+            micArm.userData = { name: "المجهر البصري المركب (Compound Microscope)", desc: "مجهر عالي الدقة لفحص المسحات الدموية والشرائح النسيجية بدقة 1000x." };
+            labGroup.add(micArm);
+            interactiveObjects.push(micArm);
+
+            // 4. Test Tube Rack & Tubes (K2-EDTA Samples)
+            for (let i = 0; i < 4; i++) {
+                const tubeGroup = new THREE.Group();
+                
+                // Tube body
+                const tubeGeo = new THREE.CylinderGeometry(0.1, 0.1, 1.1, 16);
+                const glassMat = new THREE.MeshPhysicalMaterial({ color: 0xffffff, transparent: true, opacity: 0.4, roughness: 0.1, transmission: 0.9 });
+                const tube = new THREE.Mesh(tubeGeo, glassMat);
+
+                // Blood liquid inside
+                const bloodGeo = new THREE.CylinderGeometry(0.09, 0.09, 0.7, 16);
+                const bloodMat = new THREE.MeshStandardMaterial({ color: i === 0 ? 0x990022 : (i === 1 ? 0xd83b4e : 0xe9ad4d) });
+                const blood = new THREE.Mesh(bloodGeo, bloodMat);
+                blood.position.y = -0.2;
+                tubeGroup.add(tube);
+                tubeGroup.add(blood);
+
+                // Cap
+                const capGeo = new THREE.CylinderGeometry(0.11, 0.11, 0.3, 16);
+                const capMat = new THREE.MeshStandardMaterial({ color: i < 2 ? 0x8b5cf6 : 0x3b82f6 });
+                const cap = new THREE.Mesh(capGeo, capMat);
+                cap.position.y = 0.6;
+                tubeGroup.add(cap);
+
+                tubeGroup.position.set(0.1 * i - 0.2, -0.35, 0.5);
+                tubeGroup.userData = { name: `أنبوب سحب الدم K2-EDTA #${i+1}`, desc: "أنبوب تفريغ مزود بمانع التخثر EDTA مخصص لفحوصات CBC والعد الدموي." };
+                labGroup.add(tubeGroup);
+                interactiveObjects.push(tubeGroup);
+            }
+
+            // Raycaster for interactivity
+            raycaster = new THREE.Raycaster();
+            mouse = new THREE.Vector2();
+
+            window.addEventListener('click', onDocumentClick, false);
+
+            // Animation Loop
+            function animate() {
+                requestAnimationFrame(animate);
+                labGroup.rotation.y += 0.0015; // Gentle rotation
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            });
+        }
+
+        function onDocumentClick(event) {
+            const container = document.getElementById('canvas-container');
+            const rect = container.getBoundingClientRect();
+            if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) return;
+
+            mouse.x = ((event.clientX - rect.left) / container.clientWidth) * 2 - 1;
+            mouse.y = -((event.clientY - rect.top) / container.clientHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(scene.children, true);
+
+            if (intersects.length > 0) {
+                let obj = intersects[0].object;
+                while (obj.parent && !obj.userData.name) {
+                    obj = obj.parent;
+                }
+                if (obj.userData && obj.userData.name) {
+                    document.getElementById('selected-object-name').innerText = obj.userData.name;
+                    document.getElementById('selected-object-desc').innerText = obj.userData.desc;
+                }
+            }
+        }
+
+        function resetCameraView() {
+            if(camera) {
+                camera.position.set(0, 4, 8);
+                camera.lookAt(0, 0, 0);
+            }
+        }
+
+        // ==================== CBC SIMULATION ENGINE ====================
+        function runCBCSimulation() {
+            const box = document.getElementById('cbc-progress-box');
+            const report = document.getElementById('cbc-report-box');
             const bar = document.getElementById('cbc-progress-bar');
             const status = document.getElementById('cbc-status-text');
 
-            workstation.classList.remove('hidden');
+            box.classList.remove('hidden');
             report.classList.add('hidden');
             bar.style.width = '0%';
-            status.innerText = 'Aspirating Whole Blood Sample (20µL)...';
+            status.innerText = 'Aspirating Whole Blood Sample...';
 
-            setTimeout(() => { bar.style.width = '35%'; status.innerText = 'Laser Hydrodynamic Flow Cytometry Analysis...'; }, 500);
-            setTimeout(() => { bar.style.width = '75%'; status.innerText = 'Measuring HGB Spectrophotometry & Cell Counting...'; }, 1100);
-            setTimeout(() => { 
-                bar.style.width = '100%'; 
-                status.innerText = 'Data Processed Successfully!';
+            setTimeout(() => { bar.style.width = '40%'; status.innerText = 'Laser Flow Cytometry & Impedance Counting...'; }, 600);
+            setTimeout(() => { bar.style.width = '80%'; status.innerText = 'Calculating Hemoglobin & Hematocrit Indices...'; }, 1200);
+            setTimeout(() => {
+                bar.style.width = '100%';
+                status.innerText = 'Diagnostic Completed Successfully!';
                 setTimeout(() => {
-                    workstation.classList.add('hidden');
-                    renderCBCReportData();
+                    box.classList.add('hidden');
+                    renderCBCReport();
                     report.classList.remove('hidden');
                 }, 400);
-            }, 1600);
+            }, 1700);
         }
 
-        function renderCBCReportData() {
-            const caseVal = document.getElementById('patient-case-select').value;
-            const tbody = document.getElementById('cbc-report-tbody');
-            const diffBox = document.getElementById('cbc-diff-box');
-            const smearBox = document.getElementById('cbc-smear-box');
+        function renderCBCReport() {
+            const val = document.getElementById('patient-case-select').value;
+            const tbody = document.getElementById('cbc-tbody');
+            const diffBox = document.getElementById('cbc-diff-content');
+            const smearBox = document.getElementById('cbc-smear-content');
+            let data = {};
 
-            let cbcData = {};
-
-            if (caseVal === 'normal') {
-                cbcData = {
-                    "WBC (White Blood Cells)": { val: "7.40", unit: "x10^3 / µL", range: "4.00 - 11.00", flag: "Normal", status: "ok" },
-                    "RBC (Red Blood Cells)": { val: "4.85", unit: "x10^6 / µL", range: "4.50 - 5.90", flag: "Normal", status: "ok" },
-                    "HGB (Hemoglobin)": { val: "14.60", unit: "g / dL", range: "13.50 - 17.50", flag: "Normal", status: "ok" },
-                    "HCT (Hematocrit)": { val: "43.50", unit: "%", range: "40.00 - 52.00", flag: "Normal", status: "ok" },
-                    "MCV (Mean Corpuscular Vol)": { val: "89.60", unit: "fL", range: "80.00 - 100.00", flag: "Normal", status: "ok" },
-                    "MCH (Mean Corpuscular Hgb)": { val: "30.10", unit: "pg", range: "27.00 - 33.00", flag: "Normal", status: "ok" },
-                    "MCHC (MCH Concentration)": { val: "33.50", unit: "g / dL", range: "32.00 - 36.00", flag: "Normal", status: "ok" },
-                    "PLT (Platelet Count)": { val: "265.00", unit: "x10^3 / µL", range: "150.00 - 450.00", flag: "Normal", status: "ok" }
+            if (val === 'normal') {
+                data = {
+                    "WBC (White Blood Cells)": { v: "7.20", u: "x10^3 / µL", r: "4.00 - 11.00", f: "Normal", s: "ok" },
+                    "RBC (Red Blood Cells)": { v: "4.80", u: "x10^6 / µL", r: "4.50 - 5.90", f: "Normal", s: "ok" },
+                    "HGB (Hemoglobin)": { v: "14.50", u: "g / dL", r: "13.50 - 17.50", f: "Normal", s: "ok" },
+                    "HCT (Hematocrit)": { v: "43.00", u: "%", r: "40.00 - 52.00", f: "Normal", s: "ok" },
+                    "MCV (Mean Corp Vol)": { v: "88.00", u: "fL", r: "80.00 - 100.00", f: "Normal", s: "ok" },
+                    "PLT (Platelet Count)": { v: "250.00", u: "x10^3 / µL", r: "150.00 - 450.00", f: "Normal", s: "ok" }
                 };
-                diffBox.innerHTML = `
-                    <div class="flex justify-between border-b border-slate-800/60 pb-1"><span>العدلات (Neutrophils):</span><span class="font-bold text-teal-300">59.0% (2.0 - 7.5)</span></div>
-                    <div class="flex justify-between border-b border-slate-800/60 pb-1"><span>اللمفاويات (Lymphocytes):</span><span class="font-bold text-teal-300">31.0% (1.0 - 3.5)</span></div>
-                    <div class="flex justify-between border-b border-slate-800/60 pb-1"><span>الوحيدات (Monocytes):</span><span class="font-bold text-teal-300">6.5% (0.2 - 1.0)</span></div>
-                    <div class="flex justify-between"><span>الحمضات/القاعدات (Eos/Baso):</span><span class="font-bold text-teal-300">3.5%</span></div>
-                `;
-                smearBox.innerText = "المسحة الدموية الطبيعية: كريات الدم الحمراء طبيعية الحجم والصبغة (Normocytic Normochromic). أعداد وشكل كريات الدم البيضاء والصفيحات ضمن المعدلات السريرية الطبيعية.";
-            } else if (caseVal === 'anemia') {
-                cbcData = {
-                    "WBC (White Blood Cells)": { val: "6.20", unit: "x10^3 / µL", range: "4.00 - 11.00", flag: "Normal", status: "ok" },
-                    "RBC (Red Blood Cells)": { val: "3.20", unit: "x10^6 / µL", range: "4.50 - 5.90", flag: "Low", status: "warn" },
-                    "HGB (Hemoglobin)": { val: "8.40", unit: "g / dL", range: "13.50 - 17.50", flag: "Critical Low", status: "danger" },
-                    "HCT (Hematocrit)": { val: "26.10", unit: "%", range: "40.00 - 52.00", flag: "Low", status: "warn" },
-                    "MCV (Mean Corpuscular Vol)": { val: "64.20", unit: "fL", range: "80.00 - 100.00", flag: "Microcytic", status: "warn" },
-                    "MCH (Mean Corpuscular Hgb)": { val: "20.10", unit: "pg", range: "27.00 - 33.00", flag: "Hypochromic", status: "warn" },
-                    "MCHC (MCH Concentration)": { val: "27.50", unit: "g / dL", range: "32.00 - 36.00", flag: "Low", status: "warn" },
-                    "PLT (Platelet Count)": { val: "390.00", unit: "x10^3 / µL", range: "150.00 - 450.00", flag: "Normal", status: "ok" }
+                diffBox.innerHTML = "العدلات: 58% | اللمفاويات: 32% | الوحيدات: 6% | الحمضات: 3% | القاعدات: 1%";
+                smearBox.innerText = "خلايا الدم الحمراء والبيضاء والصفائح الدموية ضمن المعدلات الطبيعية (Normocytic Normochromic).";
+            } else if (val === 'anemia') {
+                data = {
+                    "WBC (White Blood Cells)": { v: "6.80", u: "x10^3 / µL", r: "4.00 - 11.00", f: "Normal", s: "ok" },
+                    "RBC (Red Blood Cells)": { v: "3.50", u: "x10^6 / µL", r: "4.50 - 5.90", f: "Low", s: "warn" },
+                    "HGB (Hemoglobin)": { v: "9.20", u: "g / dL", r: "13.50 - 17.50", f: "Critical Low", s: "danger" },
+                    "HCT (Hematocrit)": { v: "29.00", u: "%", r: "40.00 - 52.00", f: "Low", s: "warn" },
+                    "MCV (Mean Corp Vol)": { v: "68.00", u: "fL", r: "80.00 - 100.00", f: "Microcytic", s: "warn" },
+                    "PLT (Platelet Count)": { v: "310.00", u: "x10^3 / µL", r: "150.00 - 450.00", f: "Normal", s: "ok" }
                 };
-                diffBox.innerHTML = `
-                    <div class="flex justify-between border-b border-slate-800/60 pb-1"><span>العدلات (Neutrophils):</span><span class="font-bold text-teal-300">62.0%</span></div>
-                    <div class="flex justify-between border-b border-slate-800/60 pb-1"><span>اللمفاويات (Lymphocytes):</span><span class="font-bold text-teal-300">28.0%</span></div>
-                    <div class="flex justify-between"><span>الوحيدات والغيرها:</span><span class="font-bold text-teal-300">10.0%</span></div>
-                `;
-                smearBox.innerText = "فقر دم صغر الخلايا ونقص الصباغ (Microcytic Hypochromic Anemia): تظهر الكريات الحمراء بحجم صغير وشاحبة المركز مع تفاوت الحجم (Anisocytosis) وأشكال هدفية (Target Cells)، وهي حالة نموذجية لفقر الدم بعوز الحديد.";
-            } else if (caseVal === 'infection') {
-                cbcData = {
-                    "WBC (White Blood Cells)": { val: "21.50", unit: "x10^3 / µL", range: "4.00 - 11.00", flag: "High Alert", status: "danger" },
-                    "RBC (Red Blood Cells)": { val: "4.90", unit: "x10^6 / µL", range: "4.50 - 5.90", flag: "Normal", status: "ok" },
-                    "HGB (Hemoglobin)": { val: "15.10", unit: "g / dL", range: "13.50 - 17.50", flag: "Normal", status: "ok" },
-                    "HCT (Hematocrit)": { val: "45.00", unit: "%", range: "40.00 - 52.00", flag: "Normal", status: "ok" },
-                    "MCV (Mean Corpuscular Vol)": { val: "91.00", unit: "fL", range: "80.00 - 100.00", flag: "Normal", status: "ok" },
-                    "MCH (Mean Corpuscular Hgb)": { val: "30.80", unit: "pg", range: "27.00 - 33.00", flag: "Normal", status: "ok" },
-                    "MCHC (MCH Concentration)": { val: "33.50", unit: "g / dL", range: "32.00 - 36.00", flag: "Normal", status: "ok" },
-                    "PLT (Platelet Count)": { val: "410.00", unit: "x10^3 / µL", range: "150.00 - 450.00", flag: "Normal", status: "ok" }
+                diffBox.innerHTML = "العدلات: 60% | اللمفاويات: 30% | الوحيدات: 7% | الحمضات: 2% | القاعدات: 1%";
+                smearBox.innerText = "فقر دم صغر الخلايا ونقص الصباغ (Microcytic Hypochromic Anemia) مع وجود خلايا هدفية وأشكال مختلفة متوافقة مع عوز الحديد.";
+            } else if (val === 'infection') {
+                data = {
+                    "WBC (White Blood Cells)": { v: "18.50", u: "x10^3 / µL", r: "4.00 - 11.00", f: "High Alert", s: "danger" },
+                    "RBC (Red Blood Cells)": { v: "5.00", u: "x10^6 / µL", r: "4.50 - 5.90", f: "Normal", s: "ok" },
+                    "HGB (Hemoglobin)": { v: "15.00", u: "g / dL", r: "13.50 - 17.50", f: "Normal", s: "ok" },
+                    "HCT (Hematocrit)": { v: "45.00", u: "%", r: "40.00 - 52.00", f: "Normal", s: "ok" },
+                    "MCV (Mean Corp Vol)": { v: "90.00", u: "fL", r: "80.00 - 100.00", f: "Normal", s: "ok" },
+                    "PLT (Platelet Count)": { v: "380.00", u: "x10^3 / µL", r: "150.00 - 450.00", f: "Normal", s: "ok" }
                 };
-                diffBox.innerHTML = `
-                    <div class="flex justify-between border-b border-slate-800/60 pb-1 text-rose-400 font-bold"><span>العدلات (Neutrophils):</span><span>88.0% (Neutrophilia)</span></div>
-                    <div class="flex justify-between border-b border-slate-800/60 pb-1"><span>اللمفاويات (Lymphocytes):</span><span>8.0%</span></div>
-                    <div class="flex justify-between"><span>الخلايا الشريطية (Band Cells):</span><span class="text-amber-400 font-bold">4.0% (Shift to Left)</span></div>
-                `;
-                smearBox.innerText = "ارتفاع حاد في الكريات البيضاء (Leukocytosis) مع انزياح لليسار (Shift to the Left) وحبيبات سامة (Toxic Granulations) داخل خلايا العدلات، مما يدعم وجود عدوى بكتيرية حادة.";
-            } else if (caseVal === 'thrombocytopenia') {
-                cbcData = {
-                    "WBC (White Blood Cells)": { val: "6.90", unit: "x10^3 / µL", range: "4.00 - 11.00", flag: "Normal", status: "ok" },
-                    "RBC (Red Blood Cells)": { val: "4.70", unit: "x10^6 / µL", range: "4.50 - 5.90", flag: "Normal", status: "ok" },
-                    "HGB (Hemoglobin)": { val: "14.20", unit: "g / dL", range: "13.50 - 17.50", flag: "Normal", status: "ok" },
-                    "HCT (Hematocrit)": { val: "42.10", unit: "%", range: "40.00 - 52.00", flag: "Normal", status: "ok" },
-                    "MCV (Mean Corpuscular Vol)": { val: "89.50", unit: "fL", range: "80.00 - 100.00", flag: "Normal", status: "ok" },
-                    "MCH (Mean Corpuscular Hgb)": { val: "30.20", unit: "pg", range: "27.00 - 33.00", flag: "Normal", status: "ok" },
-                    "MCHC (MCH Concentration)": { val: "33.70", unit: "g / dL", range: "32.00 - 36.00", flag: "Normal", status: "ok" },
-                    "PLT (Platelet Count)": { val: "32.00", unit: "x10^3 / µL", range: "150.00 - 450.00", flag: "Critical Low", status: "danger" }
+                diffBox.innerHTML = "<span class='text-rose-400 font-bold'>العدلات: 85% (Leukocytosis & Shift to Left)</span> | اللمفاويات: 10%";
+                smearBox.innerText = "ارتفاع حاد في الكريات البيضاء مع سيادة العدلات ووجود أشكال فتية تشير لعدوى بكتيرية حادة.";
+            } else if (val === 'thrombocytopenia') {
+                data = {
+                    "WBC (White Blood Cells)": { v: "7.00", u: "x10^3 / µL", r: "4.00 - 11.00", f: "Normal", s: "ok" },
+                    "RBC (Red Blood Cells)": { v: "4.70", u: "x10^6 / µL", r: "4.50 - 5.90", f: "Normal", s: "ok" },
+                    "HGB (Hemoglobin)": { v: "14.00", u: "g / dL", r: "13.50 - 17.50", f: "Normal", s: "ok" },
+                    "HCT (Hematocrit)": { v: "42.00", u: "%", r: "40.00 - 52.00", f: "Normal", s: "ok" },
+                    "MCV (Mean Corp Vol)": { v: "89.00", u: "fL", r: "80.00 - 100.00", f: "Normal", s: "ok" },
+                    "PLT (Platelet Count)": { v: "65.00", u: "x10^3 / µL", r: "150.00 - 450.00", f: "Critical Low", s: "danger" }
                 };
-                diffBox.innerHTML = `
-                    <div class="flex justify-between border-b border-slate-800/60 pb-1"><span>العدلات (Neutrophils):</span><span class="font-bold text-teal-300">58.0%</span></div>
-                    <div class="flex justify-between border-b border-slate-800/60 pb-1"><span>اللمفاويات (Lymphocytes):</span><span class="font-bold text-teal-300">32.0%</span></div>
-                    <div class="flex justify-between"><span>باقي الخلايا:</span><span class="font-bold text-teal-300">10.0%</span></div>
-                `;
-                smearBox.innerText = "انخفاض حرج في عدد الصفيحات الدموية (Thrombocytopenia) مع ندرتها في حقول الفحص المجهري وظهور صفيحات عملاقة (Giant Platelets)، مما يتطلب الحذر من مخاطر النزيف السريري.";
-            } else if (caseVal === 'leukemia') {
-                cbcData = {
-                    "WBC (White Blood Cells)": { val: "68.40", unit: "x10^3 / µL", range: "4.00 - 11.00", flag: "Critical High", status: "danger" },
-                    "RBC (Red Blood Cells)": { val: "2.80", unit: "x10^6 / µL", range: "4.50 - 5.90", flag: "Severe Low", status: "danger" },
-                    "HGB (Hemoglobin)": { val: "7.10", unit: "g / dL", range: "13.50 - 17.50", flag: "Critical Low", status: "danger" },
-                    "HCT (Hematocrit)": { val: "22.00", unit: "%", range: "40.00 - 52.00", flag: "Severe Low", status: "danger" },
-                    "MCV (Mean Corpuscular Vol)": { val: "94.00", unit: "fL", range: "80.00 - 100.00", flag: "Normal", status: "ok" },
-                    "MCH (Mean Corpuscular Hgb)": { val: "31.00", unit: "pg", range: "27.00 - 33.00", flag: "Normal", status: "ok" },
-                    "MCHC (MCH Concentration)": { val: "33.00", unit: "g / dL", range: "32.00 - 36.00", flag: "Normal", status: "ok" },
-                    "PLT (Platelet Count)": { val: "22.00", unit: "x10^3 / µL", range: "150.00 - 450.00", flag: "Critical Low", status: "danger" }
+                diffBox.innerHTML = "العدلات: 59% | اللمفاويات: 31% | الوحيدات: 7% | الحمضات: 2% | القاعدات: 1%";
+                smearBox.innerText = "انخفاض حاد في عدد الصفيحات الدموية (Thrombocytopenia) مع صفيحات عملاقة أحياناً.";
+            } else if (val === 'leukemia') {
+                data = {
+                    "WBC (White Blood Cells)": { v: "65.00", u: "x10^3 / µL", r: "4.00 - 11.00", f: "Critical High", s: "danger" },
+                    "RBC (Red Blood Cells)": { v: "2.90", u: "x10^6 / µL", r: "4.50 - 5.90", f: "Severe Low", s: "danger" },
+                    "HGB (Hemoglobin)": { v: "7.50", u: "g / dL", r: "13.50 - 17.50", f: "Critical Low", s: "danger" },
+                    "HCT (Hematocrit)": { v: "23.00", u: "%", r: "40.00 - 52.00", f: "Severe Low", s: "danger" },
+                    "MCV (Mean Corp Vol)": { v: "92.00", u: "fL", r: "80.00 - 100.00", f: "Normal", s: "ok" },
+                    "PLT (Platelet Count)": { v: "30.00", u: "x10^3 / µL", r: "150.00 - 450.00", f: "Critical Low", s: "danger" }
                 };
-                diffBox.innerHTML = `
-                    <div class="flex justify-between border-b border-slate-800/60 pb-1 text-rose-400 font-black"><span>خلايا أوليّة أروميّة (Blasts):</span><span>65.0% (Abnormal)</span></div>
-                    <div class="flex justify-between border-b border-slate-800/60 pb-1"><span>العدلات المتبقية:</span><span>15.0%</span></div>
-                    <div class="flex justify-between"><span>اللمفاويات المتبقية:</span><span>20.0%</span></div>
-                `;
-                smearBox.innerText = "وجود نسبة مرتفعة جداً من الخلايا غير الناضجة (Blast Cells) ذات النوى الكبيرة مع فقر دم حاد ونقص صفيحات شديد، مما يتطلب إحالة العينة الفورية لخزعة النخاع العظمي (Bone Marrow Aspirate).";
+                diffBox.innerHTML = "<span class='text-rose-400 font-bold'>خلايا أوليّة أروميّة (Blasts): 60%</span> | العدلات المتبقية: 20%";
+                smearBox.innerText = "وجود خلايا أولية غير ناضجة (Blast Cells) بنسبة عالية مع فقر دم شديد وانخفاض الصفيحات، يستدعي فحص النخاع العظمي.";
             }
 
             let rows = '';
-            for (let k in cbcData) {
-                let obj = cbcData[k];
-                let fClass = obj.status === 'ok' ? 'text-teal-400 bg-teal-500/10 border-teal-500/30' : (obj.status === 'warn' ? 'text-amber-400 bg-amber-500/10 border-amber-500/30' : 'text-rose-400 bg-rose-500/10 border-rose-500/30 font-bold');
+            for (let k in data) {
+                let d = data[k];
+                let fClass = d.s === 'ok' ? 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30' : (d.s === 'warn' ? 'text-amber-400 bg-amber-500/10 border-amber-500/30' : 'text-rose-400 bg-rose-500/10 border-rose-500/30 font-bold');
                 rows += `
                     <tr>
                         <td class="p-3 font-bold text-white font-sans">${k}</td>
-                        <td class="p-3 font-extrabold text-white text-sm">${obj.val}</td>
-                        <td class="p-3 text-slate-400">${obj.unit}</td>
-                        <td class="p-3 text-slate-400">${obj.range}</td>
-                        <td class="p-3 text-center"><span class="px-2.5 py-1 rounded-full text-[10px] border font-black ${fClass}">${obj.flag}</span></td>
+                        <td class="p-3 font-extrabold text-white text-sm">${d.v}</td>
+                        <td class="p-3 text-slate-400">${d.u}</td>
+                        <td class="p-3 text-slate-400">${d.r}</td>
+                        <td class="p-3 text-center"><span class="px-2.5 py-1 rounded-full text-[10px] border font-black ${fClass}">${d.f}</span></td>
                     </tr>
                 `;
             }
             tbody.innerHTML = rows;
         }
 
-        // ================= BIOCHEMISTRY ENGINE =================
-        function runBiochemAnalysis() {
-            const type = document.getElementById('biochem-test-type').value;
-            const abs = parseFloat(document.getElementById('biochem-abs').value) || 0;
-            const resBox = document.getElementById('biochem-result');
-            resBox.classList.remove('hidden');
-
-            let conc = 0;
-            let text = '';
-            if (type === 'glu') {
-                conc = abs * 300;
-                text = `تركيز سكر الدم (Glucose): ${conc.toFixed(1)} mg/dL — ${conc > 140 ? 'مرتفع عن الحد الطبيعي' : 'ضمن الحدود الطبيعية'}`;
-            } else if (type === 'urea') {
-                conc = abs * 80;
-                text = `مستوى يوريا الدم (Blood Urea): ${conc.toFixed(1)} mg/dL — ${conc > 45 ? 'ارتفاع يوريا (High Urea)' : 'مستوى طبيعي'}`;
-            } else {
-                conc = abs * 120;
-                text = `نشاط إنزيم الكبد (ALT/SGPT): ${conc.toFixed(1)} U/L — ${conc > 55 ? 'ارتفاع إنزيمي كبدي' : 'طبيعي'}`;
-            }
-            resBox.innerText = text;
+        // ==================== BIOCHEMISTRY ====================
+        function calculateBiochem() {
+            const t = document.getElementById('bio-test').value;
+            const abs = parseFloat(document.getElementById('bio-abs').value) || 0;
+            const res = document.getElementById('bio-res');
+            res.classList.remove('hidden');
+            let c = t === 'glu' ? abs * 300 : (t === 'urea' ? abs * 80 : abs * 110);
+            res.innerText = `النتيجة المحسوبة: ${c.toFixed(1)} mg/dL — ${c > 140 ? 'مرتفع عن المعدل الطبيعي' : 'ضمن الحدود الطبيعية'}`;
         }
 
-        // ================= MICROBIOLOGY VIEWPORT =================
-        function renderMicrobiologyView() {
-            const slide = document.getElementById('microbio-slide').value;
-            const power = document.getElementById('microbio-power').value;
-            const focus = document.getElementById('microbio-focus').value;
-            const viewport = document.getElementById('microbio-viewport');
-
-            const blurVal = Math.abs(focus - 5) * 1.5;
-            viewport.style.filter = `blur(${blurVal}px)`;
-
-            if (slide === 'gram_pos') {
-                viewport.innerHTML = `<div class="space-y-2"><i class="fa-solid fa-braille text-purple-400 text-4xl animate-pulse"></i><p class="text-xs">عنقوديات كروية موجبة جرام (Gram-Positive Staphylococci) باللون البنفسجي تحت تكبير ${power}x.</p></div>`;
-            } else if (slide === 'gram_neg') {
-                viewport.innerHTML = `<div class="space-y-2"><i class="fa-solid fa-bacterium text-rose-400 text-4xl animate-bounce"></i><p class="text-xs">عصيات سالبة جرام (Gram-Negative Bacilli) باللون الوردي الأحمر تحت تكبير ${power}x.</p></div>`;
-            } else {
-                viewport.innerHTML = `<div class="space-y-2"><i class="fa-solid fa-disease text-amber-400 text-4xl"></i><p class="text-xs">قطاع نسيجي للكبد يظهر الخلايا الكبدية (Hepatocytes) مع الأوردة المركزية تحت تكبير ${power}x.</p></div>`;
-            }
+        // ==================== GRAM STAIN ====================
+        function applyGram(step) {
+            const text = document.getElementById('gram-text');
+            if(step === 1) text.innerHTML = '<span class="text-purple-400 font-bold">1. إضافة Crystal Violet:</span> تلونت جميع الخلايا البكتيرية (موجبة وسالبة) باللون البنفسجي.';
+            else if(step === 2) text.innerHTML = '<span class="text-amber-400 font-bold">2. تثبيت اليود (Iodine):</span> تكون مركب معقد داخل الجدار الخلوي وثبت اللون.';
+            else if(step === 3) text.innerHTML = '<span class="text-sky-400 font-bold">3. مزيل اللون (الكحول):</span> احتفظت بكتيريا الموجب باللون البنفسجي بينما فقدته بكتيريا السالب.';
+            else if(step === 4) text.innerHTML = '<span class="text-rose-400 font-bold">4. الصبغة المعاكسة (Safranin):</span> ظهرت بكتيريا سالب جرام باللون الوردي/الأحمر، وبقي الموجب بالبنفسجي!';
         }
 
-        // ================= BLOOD BANK ENGINE =================
-        function checkBloodBankMatch() {
-            const donor = document.getElementById('bb-donor').value;
-            const recipient = document.getElementById('bb-recipient').value;
-            const resBox = document.getElementById('bb-result-box');
-            resBox.classList.remove('hidden');
+        // ==================== BLOOD BANK ====================
+        function checkBloodCompatibility() {
+            const d = document.getElementById('bb-donor').value;
+            const r = document.getElementById('bb-reci').value;
+            const box = document.getElementById('bb-res');
+            box.classList.remove('hidden');
 
-            const map = {
+            const m = {
                 "O-": ["O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+"],
                 "O+": ["O+", "A+", "B+", "AB+"],
                 "A-": ["A-", "A+", "AB-", "AB+"],
@@ -466,12 +596,12 @@
                 "AB+": ["AB+"]
             };
 
-            if (map[donor].includes(recipient)) {
-                resBox.className = "p-4 rounded-xl text-xs font-bold text-center bg-emerald-500/10 text-emerald-400 border border-emerald-500/30";
-                resBox.innerHTML = `<i class="fa-solid fa-circle-check ml-1"></i> توافق نقل الدم آمن تماماً: لا يوجد تفاعل تراص مصلّي بين المتبرع (${donor}) والمستلم (${recipient}).`;
+            if(m[d].includes(r)) {
+                box.className = "p-4 rounded-xl text-xs font-bold text-center bg-emerald-500/10 text-emerald-400 border border-emerald-500/30";
+                box.innerHTML = `التوافق ناجح وآمن: نقل الدم من (${d}) إلى (${r}) يتم دون أي تفاعل تراص (Agglutination).`;
             } else {
-                resBox.className = "p-4 rounded-xl text-xs font-bold text-center bg-rose-500/10 text-rose-400 border border-rose-500/30";
-                resBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation ml-1"></i> خطر غير متوافق: حدوث تفاعل وتراص مناعي (Hemagglutination) عند النقل من (${donor}) إلى (${recipient})!`;
+                box.className = "p-4 rounded-xl text-xs font-bold text-center bg-rose-500/10 text-rose-400 border border-rose-500/30";
+                box.innerHTML = `خطر غير متوافق: حدوث تراص مناعي خطير وانحلاب في الدم بين المتبرع (${d}) والمستلم (${r})!`;
             }
         }
     </script>
