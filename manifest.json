@@ -1,16 +1,13 @@
 {
   "name": "قسم تقنيات المختبرات الطبية",
   "short_name": "تقنيات المختبرات",
-  "description": "منصة تعليمية متقدمة لمحاكاة الفحوصات المختبرية الطبية والمجهر الضوئي المركب خاصة بقسم تقنيات المختبرات الطبية",
+  "description": "المنصة التعليمية والمختبرية الافتراضية المتقدمة",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#020617",
   "theme_color": "#0f172a",
-  "lang": "ar",
-  "dir": "rtl",
-  "categories": ["education", "medical", "science"],
   "icons": [
     {
       "src": "./icon-192.png",

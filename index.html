@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>قسم تقنيات المختبرات الطبية - البوابة الرسمية</title>
+    <title>قسم تقنيات المختبرات الطبية - البوابة المركزية المتكاملة</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="manifest" href="./manifest.json">
@@ -26,45 +26,42 @@
         body { font-family: system-ui, -apple-system, sans-serif; }
         .glass-panel { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(12px); }
         .dark .glass-panel { background: rgba(15, 23, 42, 0.85); }
-        html:not(.dark) .glass-panel { background: rgba(255, 255, 255, 0.85); border-color: rgba(203, 213, 225, 0.6); }
+        html:not(.dark) .glass-panel { background: rgba(255, 255, 255, 0.9); border-color: rgba(203, 213, 225, 0.8); }
         @media print {
             .no-print { display: none !important; }
             body { background: white !important; color: black !important; }
-            .glass-panel { background: white !important; border: none !important; }
+            .glass-panel { background: white !important; border: none !important; shadow: none !important; }
         }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 dark:bg-slate-950 dark:text-slate-100 bg-slate-50 text-slate-900 min-h-screen transition-colors duration-300">
-    <div id="falling-drops-container" class="fixed inset-0 pointer-events-none z-0 overflow-hidden"></div>
 
     <!-- ==================== الهيدر والشريط العلوي ==================== -->
-    <header class="sticky top-0 z-40 w-full border-b border-slate-800 dark:border-slate-800 border-slate-200 bg-slate-950/80 dark:bg-slate-950/80 bg-white/80 backdrop-blur-md transition-colors duration-300">
+    <header class="sticky top-0 z-40 w-full border-b dark:border-slate-800 border-slate-200 dark:bg-slate-950/80 bg-white/80 backdrop-blur-md transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
-
-            <!-- الشعار واسم القسم -->
+            <!-- الشعار -->
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/30 flex items-center justify-center text-teal-500 dark:text-teal-400 text-xl font-bold">
                     <i class="fa-solid fa-microscope"></i>
                 </div>
                 <div>
                     <h1 class="text-sm font-black dark:text-white text-slate-900 leading-tight">تقنيات المختبرات الطبية</h1>
-                    <span class="text-[10px] text-slate-400 tracking-wider uppercase block">Medical Labs Department</span>
+                    <span class="text-[10px] text-slate-400 tracking-wider uppercase block">Medical Labs Central Portal</span>
                 </div>
             </div>
 
-            <!-- شريط التنقل الرئيسي للزوار -->
-            <nav class="hidden md:flex items-center gap-6 text-xs font-bold dark:text-slate-300 text-slate-600">
+            <!-- التنقل -->
+            <nav class="hidden lg:flex items-center gap-5 text-xs font-bold dark:text-slate-300 text-slate-600">
                 <a href="#hero" class="hover:text-teal-500 dark:hover:text-teal-400 transition">الرئيسية</a>
                 <a href="#department-identity" class="hover:text-teal-500 dark:hover:text-teal-400 transition">عن القسم</a>
-                <a href="#announcements" class="hover:text-teal-500 dark:hover:text-teal-400 transition">الإعلانات</a>
+                <a href="#clinical-guide" class="hover:text-teal-500 dark:hover:text-teal-400 transition">دليل الفحوصات</a>
+                <a href="#quiz-section" class="hover:text-teal-500 dark:hover:text-teal-400 transition">بنك الأسئلة</a>
+                <a href="#digital-library" class="hover:text-teal-500 dark:hover:text-teal-400 transition">المكتبة</a>
                 <a href="#gpa-calculator" class="hover:text-teal-500 dark:hover:text-teal-400 transition">حاسبة السعي</a>
             </nav>
 
-            <!-- أزرار الإجراءات (زر الثيم وزر الإدارة والمختبر الافتراضي) -->
+            <!-- الأزرار الإضافية -->
             <div class="flex items-center gap-2">
-                <a href="./virtual-lab.html" class="px-3.5 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white text-xs font-medium transition flex items-center gap-1.5 shadow">
-                    <i class="fa-solid fa-flask-vial"></i> <span>المختبر الافتراضي</span>
-                </a>
                 <button type="button" onclick="toggleTheme()" class="p-2.5 rounded-xl dark:bg-slate-900 dark:border-slate-800 dark:text-amber-400 bg-slate-200 border border-slate-300 text-amber-600 hover:opacity-80 transition shadow-sm" title="تبديل المظهر">
                     <i id="theme-icon" class="fa-solid fa-moon"></i>
                 </button>
@@ -81,118 +78,162 @@
         <div class="max-w-7xl mx-auto px-4 flex items-center gap-3 text-xs font-bold text-teal-600 dark:text-teal-300">
             <span class="bg-teal-500 text-slate-950 px-2 py-0.5 rounded text-[10px] uppercase font-black shrink-0"><i class="fa-solid fa-bullhorn ml-1"></i>تنويه هام:</span>
             <div class="overflow-hidden whitespace-nowrap w-full">
-                <span id="ticker-text-display" class="announcement-ticker-text inline-block">أهلاً بكم في البوابة الرسمية لقسم تقنيات المختبرات الطبية للعام الدراسي 2026-2027.</span>
+                <span id="ticker-text-display" class="inline-block animate-pulse">أهلاً بكم في البوابة المركزية لقسم تقنيات المختبرات الطبية للعام الدراسي 2026-2027.</span>
             </div>
         </div>
     </div>
 
-    <!-- ==================== المحتوى الرئيسي للزوار ==================== -->
-    <main class="max-w-7xl mx-auto px-4 py-8 space-y-12">
+    <!-- ==================== المحتوى الرئيسي ==================== -->
+    <main class="max-w-7xl mx-auto px-4 py-8 space-y-16">
 
-        <!-- القسم الترحيبي -->
-        <section id="hero" class="text-center py-10 space-y-4">
-            <span class="inline-block px-3 py-1 dark:bg-slate-900 dark:border-slate-800 dark:text-teal-400 bg-slate-200 border border-slate-300 text-teal-700 rounded-full text-xs font-bold">
+        <!-- 1. القسم الترحيبي -->
+        <section id="hero" class="text-center py-12 space-y-4">
+            <span class="inline-block px-3.5 py-1 dark:bg-slate-900 dark:border-slate-800 dark:text-teal-400 bg-slate-200 border border-slate-300 text-teal-700 rounded-full text-xs font-bold shadow-sm">
                 <i class="fa-solid fa-graduation-cap ml-1.5"></i>كلية التقنيات الصحية والطبية - 2026/2027
             </span>
             <h2 class="text-3xl md:text-5xl font-black dark:text-white text-slate-900 leading-tight">
-                البوابة الرسمية لقسم <span class="text-teal-500 dark:text-teal-400">تقنيات المختبرات الطبية</span>
+                البوابة الرقمية المتقدمة لقسم <span class="text-teal-500 dark:text-teal-400">تقنيات المختبرات الطبية</span>
             </h2>
             <p class="text-xs md:text-sm dark:text-slate-400 text-slate-600 max-w-2xl mx-auto leading-relaxed">
-                منظومة إلكترونية متكاملة للتعريف بالقسم، دليل الفحوصات السريرية والمختبرية، وأدوات الحساب الأكاديمي للطلبة.
+                منظومة تعليمية تفاعلية متكاملة تضم أدلة الفحوصات السريرية، الاختبارات الذاتية، المكتبة الرقمية، وحسابات السعي الأكاديمي.
             </p>
-            <div>
-                <a href="./student-portal.html" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold transition shadow-lg">
-                    <i class="fa-solid fa-book-open" aria-hidden="true"></i> دخول بوابة الطالب — المواد والمصادر والمختبر الافتراضي
-                </a>
-            </div>
         </section>
 
-        <!-- ==================== رؤية ورسالة وأهداف وقيم القسم ==================== -->
-        <section id="department-identity" class="glass-panel p-6 md:p-8 rounded-3xl border border-slate-800 space-y-8">
+        <!-- 2. رؤية ورسالة وأهداف القسم -->
+        <section id="department-identity" class="glass-panel p-6 md:p-8 rounded-3xl border border-slate-800 space-y-6 shadow-xl">
             <div class="border-b dark:border-slate-800 border-slate-200 pb-4">
-                <span class="text-teal-500 dark:text-teal-400 text-xs font-bold uppercase tracking-wider">Strategic Framework 2026-2027</span>
+                <span class="text-teal-500 dark:text-teal-400 text-xs font-bold uppercase tracking-wider">Strategic Framework</span>
                 <h3 class="text-2xl font-black dark:text-white text-slate-900 mt-1">رؤية ورسالة وأهداف القسم</h3>
-                <p class="text-xs dark:text-slate-400 text-slate-600 mt-1">الإطار الاستراتيجي المؤسسي لقسم تقنيات المختبرات الطبية:</p>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- الرؤية -->
-                <div class="p-5 rounded-2xl dark:bg-slate-950/60 dark:border-slate-800 bg-white border border-slate-200 space-y-3 shadow-sm">
-                    <div class="flex items-center gap-2.5 text-teal-500 dark:text-teal-400 font-bold text-sm">
-                        <i class="fa-solid fa-eye text-lg"></i>
-                        <h4>أولاً: رؤية القسم</h4>
-                    </div>
-                    <p class="text-xs dark:text-slate-300 text-slate-700 leading-relaxed">
-                        الريادة والتميز في التعليم التقني والبحث العلمي في مجال تقنيات المختبرات الطبية، وإعداد ملاكات مؤهلة علمياً ومهنياً، قادرة على مواكبة التطورات الحديثة في التشخيص المختبري، والإسهام في تعزيز جودة الخدمات الصحية وخدمة المجتمع.
-                    </p>
+                <div class="p-5 rounded-2xl dark:bg-slate-950/60 dark:border-slate-800 bg-white border border-slate-200 space-y-2 shadow-sm">
+                    <h4 class="text-teal-500 dark:text-teal-400 font-bold text-sm flex items-center gap-2"><i class="fa-solid fa-eye"></i> أولاً: رؤية القسم</h4>
+                    <p class="text-xs dark:text-slate-300 text-slate-700 leading-relaxed">الريادة والتميز في التعليم التقني والبحث العلمي في مجال تقنيات المختبرات الطبية، وإعداد ملاكات مؤهلة علمياً ومهنياً لمواكبة التطورات الحديثة.</p>
                 </div>
-
-                <!-- الرسالة -->
-                <div class="p-5 rounded-2xl dark:bg-slate-950/60 dark:border-slate-800 bg-white border border-slate-200 space-y-3 shadow-sm">
-                    <div class="flex items-center gap-2.5 text-teal-500 dark:text-teal-400 font-bold text-sm">
-                        <i class="fa-solid fa-paper-plane text-lg"></i>
-                        <h4>ثانياً: رسالة القسم</h4>
-                    </div>
-                    <p class="text-xs dark:text-slate-300 text-slate-700 leading-relaxed">
-                        تقديم تعليم أكاديمي وتدريب عملي عالي الجودة في تقنيات المختبرات الطبية، من خلال تطوير المناهج والمهارات التطبيقية، وتعزيز البحث العلمي والتعلم المستمر، وترسيخ أخلاقيات المهنة ومتطلبات السلامة وضمان الجودة، بما يؤهل الخريجين للإسهام بكفاءة ومسؤولية في المؤسسات الصحية، وفق المعايير العلمية والمهنية المعتمدة.
-                    </p>
-                </div>
-            </div>
-
-            <!-- الأهداف الاستراتيجية -->
-            <div class="p-5 rounded-2xl dark:bg-slate-950/60 dark:border-slate-800 bg-white border border-slate-200 space-y-4 shadow-sm">
-                <div class="flex items-center gap-2.5 text-teal-500 dark:text-teal-400 font-bold text-sm">
-                    <i class="fa-solid fa-crosshairs text-lg"></i>
-                    <h4>ثالثاً: الأهداف الاستراتيجية للقسم</h4>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs dark:text-slate-300 text-slate-700">
-                    <div class="flex items-start gap-2 dark:bg-slate-900/40 dark:border-slate-800/60 bg-slate-50 border border-slate-200 p-3 rounded-xl">
-                        <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-500 dark:text-teal-400 flex items-center justify-center shrink-0 font-bold text-[10px]">1</span>
-                        <p>إعداد خريجين يمتلكون المعرفة العلمية والكفاءة العملية اللازمة في مجالات تقنيات المختبرات الطبية.</p>
-                    </div>
-                    <div class="flex items-start gap-2 dark:bg-slate-900/40 dark:border-slate-800/60 bg-slate-50 border border-slate-200 p-3 rounded-xl">
-                        <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-500 dark:text-teal-400 flex items-center justify-center shrink-0 font-bold text-[10px]">2</span>
-                        <p>تطوير المناهج والبرامج التعليمية بما يواكب المستجدات العلمية والتقنية واحتياجات سوق العمل.</p>
-                    </div>
-                    <div class="flex items-start gap-2 dark:bg-slate-900/40 dark:border-slate-800/60 bg-slate-50 border border-slate-200 p-3 rounded-xl">
-                        <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-500 dark:text-teal-400 flex items-center justify-center shrink-0 font-bold text-[10px]">3</span>
-                        <p>تعزيز التدريب العملي والسريري بالتعاون والتنسيق الفعال مع المؤسسات الصحية المعتمدة.</p>
-                    </div>
-                    <div class="flex items-start gap-2 dark:bg-slate-900/40 dark:border-slate-800/60 bg-slate-50 border border-slate-200 p-3 rounded-xl">
-                        <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-500 dark:text-teal-400 flex items-center justify-center shrink-0 font-bold text-[10px]">4</span>
-                        <p>ترسيخ مبادئ ضمان الجودة والسلامة الأحيائية والأخلاقيات المهنية في التعليم والممارسة المختبرية.</p>
-                    </div>
+                <div class="p-5 rounded-2xl dark:bg-slate-950/60 dark:border-slate-800 bg-white border border-slate-200 space-y-2 shadow-sm">
+                    <h4 class="text-teal-500 dark:text-teal-400 font-bold text-sm flex items-center gap-2"><i class="fa-solid fa-paper-plane"></i> ثانياً: رسالة القسم</h4>
+                    <p class="text-xs dark:text-slate-300 text-slate-700 leading-relaxed">تقديم تعليم أكاديمي وتدريب عملي عالي الجودة، وترسيخ أخلاقيات المهنة ومتطلبات السلامة الأحيائية بما يؤهل الخريجين للإسهام بكفاءة في المؤسسات الصحية.</p>
                 </div>
             </div>
         </section>
 
-        <!-- ==================== حاسبة السعي النهائي (من 40) ==================== -->
-        <section id="gpa-calculator" class="glass-panel p-6 md:p-8 rounded-3xl border border-slate-800 space-y-6">
+        <!-- 3. تطوير جديد: دليل الفحوصات السريرية (Clinical Lab Reference) -->
+        <section id="clinical-guide" class="glass-panel p-6 md:p-8 rounded-3xl border border-slate-800 space-y-6 shadow-xl">
+            <div class="border-b dark:border-slate-800 border-slate-200 pb-4 flex items-center justify-between">
+                <div>
+                    <span class="text-teal-500 dark:text-teal-400 text-xs font-bold uppercase tracking-wider">Medical Database</span>
+                    <h3 class="text-xl font-black dark:text-white text-slate-900 mt-1"><i class="fa-solid fa-flask text-teal-500 ml-2"></i>دليل الفحوصات المختبرية السريعة</h3>
+                </div>
+                <input type="text" id="lab-search" onkeyup="filterLabTests()" placeholder="ابحث عن فحص..." class="px-3 py-1.5 dark:bg-slate-950 dark:border-slate-700 bg-white border border-slate-300 rounded-xl text-xs dark:text-white text-slate-900 outline-none focus:border-teal-500">
+            </div>
+
+            <div id="lab-tests-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="lab-card p-4 rounded-2xl dark:bg-slate-950/60 dark:border-slate-800 bg-white border border-slate-200 space-y-2 shadow-sm" data-name="cbc صورة الدم الكاملة">
+                    <span class="text-[10px] bg-teal-500/10 text-teal-500 dark:text-teal-400 px-2 py-0.5 rounded font-bold">Hematology</span>
+                    <h4 class="font-bold text-sm dark:text-white text-slate-900">صورة الدم الكاملة (CBC)</h4>
+                    <p class="text-[11px] dark:text-slate-400 text-slate-600">قياس خلايا الدم الحمراء، البيضاء، والصفائح.</p>
+                    <div class="text-[10px] dark:text-teal-300 text-teal-700 font-semibold pt-1 border-t dark:border-slate-800 border-slate-100">القيمة الطبيعية: Hb (12-16 g/dL)</div>
+                </div>
+                <div class="lab-card p-4 rounded-2xl dark:bg-slate-950/60 dark:border-slate-800 bg-white border border-slate-200 space-y-2 shadow-sm" data-name="lft فحص وظائف الكبد">
+                    <span class="text-[10px] bg-teal-500/10 text-teal-500 dark:text-teal-400 px-2 py-0.5 rounded font-bold">Biochemistry</span>
+                    <h4 class="font-bold text-sm dark:text-white text-slate-900">وظائف الكبد (LFT)</h4>
+                    <p class="text-[11px] dark:text-slate-400 text-slate-600">فحص الإنزيمات البيليروبين والالتهابات الكبدية.</p>
+                    <div class="text-[10px] dark:text-teal-300 text-teal-700 font-semibold pt-1 border-t dark:border-slate-800 border-slate-100">ALT: 7-56 U/L | AST: 10-40 U/L</div>
+                </div>
+                <div class="lab-card p-4 rounded-2xl dark:bg-slate-950/60 dark:border-slate-800 bg-white border border-slate-200 space-y-2 shadow-sm" data-name="kft وظائف الكلى اليوريا الكرياتينين">
+                    <span class="text-[10px] bg-teal-500/10 text-teal-500 dark:text-teal-400 px-2 py-0.5 rounded font-bold">Biochemistry</span>
+                    <h4 class="font-bold text-sm dark:text-white text-slate-900">وظائف الكلى (KFT)</h4>
+                    <p class="text-[11px] dark:text-slate-400 text-slate-600">تقييم كفاءة التصفية الكلوية عبر اليوريا والكرياتينين.</p>
+                    <div class="text-[10px] dark:text-teal-300 text-teal-700 font-semibold pt-1 border-t dark:border-slate-800 border-slate-100">Creatinine: 0.6-1.2 mg/dL</div>
+                </div>
+                <div class="lab-card p-4 rounded-2xl dark:bg-slate-950/60 dark:border-slate-800 bg-white border border-slate-200 space-y-2 shadow-sm" data-name="lipid profile الدهون الكوليسترول">
+                    <span class="text-[10px] bg-teal-500/10 text-teal-500 dark:text-teal-400 px-2 py-0.5 rounded font-bold">Lipid Panel</span>
+                    <h4 class="font-bold text-sm dark:text-white text-slate-900">دهون الدم (Lipid Profile)</h4>
+                    <p class="text-[11px] dark:text-slate-400 text-slate-600">فحص الكوليسترول الكلي، الدهون الثلاثية، والنافعة والضارة.</p>
+                    <div class="text-[10px] dark:text-teal-300 text-teal-700 font-semibold pt-1 border-t dark:border-slate-800 border-slate-100">Cholesterol: < 200 mg/dL</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. تطوير جديد: بنك الأسئلة والاختبارات التفاعلية (MCQs Quiz) -->
+        <section id="quiz-section" class="glass-panel p-6 md:p-8 rounded-3xl border border-slate-800 space-y-6 shadow-xl">
+            <div class="border-b dark:border-slate-800 border-slate-200 pb-4">
+                <span class="text-teal-500 dark:text-teal-400 text-xs font-bold uppercase tracking-wider">Self Assessment</span>
+                <h3 class="text-xl font-black dark:text-white text-slate-900 mt-1"><i class="fa-solid fa-clipboard-question text-teal-500 ml-2"></i>بنك الأسئلة التدريبي (اختبار سريع)</h3>
+            </div>
+
+            <div id="quiz-container" class="space-y-4 max-w-2xl mx-auto p-6 rounded-2xl dark:bg-slate-950/60 bg-slate-50 border dark:border-slate-800 border-slate-200">
+                <h4 id="quiz-question" class="font-bold text-sm dark:text-white text-slate-900">1. ما هو المانع التخثري (Anticoagulant) المستخدم عادة لفحوصات صورة الدم (CBC)؟</h4>
+                <div class="space-y-2 text-xs">
+                    <label class="block p-3 rounded-xl dark:bg-slate-900 bg-white border dark:border-slate-800 border-slate-200 cursor-pointer hover:border-teal-500 transition">
+                        <input type="radio" name="q1" value="wrong" class="ml-2"> أ) Sodium Citrate
+                    </label>
+                    <label class="block p-3 rounded-xl dark:bg-slate-900 bg-white border dark:border-slate-800 border-slate-200 cursor-pointer hover:border-teal-500 transition">
+                        <input type="radio" name="q1" value="correct" class="ml-2"> ب) EDTA (Ethylenediaminetetraacetic acid)
+                    </label>
+                    <label class="block p-3 rounded-xl dark:bg-slate-900 bg-white border dark:border-slate-800 border-slate-200 cursor-pointer hover:border-teal-500 transition">
+                        <input type="radio" name="q1" value="wrong" class="ml-2"> ج) Heparin
+                    </label>
+                </div>
+                <button type="button" onclick="checkQuizAnswer()" class="w-full py-2.5 bg-teal-500 hover:bg-teal-400 text-slate-950 font-black text-xs rounded-xl shadow transition">
+                    تحقق من الإجابة
+                </button>
+                <div id="quiz-feedback" class="hidden text-center text-xs font-bold p-2 rounded-lg"></div>
+            </div>
+        </section>
+
+        <!-- 5. تطوير جديد: المكتبة الرقمية (Digital Library) -->
+        <section id="digital-library" class="glass-panel p-6 md:p-8 rounded-3xl border border-slate-800 space-y-6 shadow-xl">
+            <div class="border-b dark:border-slate-800 border-slate-200 pb-4">
+                <span class="text-teal-500 dark:text-teal-400 text-xs font-bold uppercase tracking-wider">Digital Library</span>
+                <h3 class="text-xl font-black dark:text-white text-slate-900 mt-1"><i class="fa-solid fa-book-bookmark text-teal-500 ml-2"></i>المكتبة الرقمية والملازم الأكاديمية</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                <div class="p-5 rounded-2xl dark:bg-slate-950/60 dark:border-slate-800 bg-white border border-slate-200 space-y-3 shadow-sm">
+                    <span class="text-[10px] text-teal-500 dark:text-teal-400 font-bold uppercase">المرحلة الأولى</span>
+                    <h4 class="font-bold dark:text-white text-slate-900 text-sm">أساسيات الكيمياء العامة والأحياء</h4>
+                    <p class="dark:text-slate-400 text-slate-600 text-[11px]">ملازم المحاضرات النظرية والعملية لمادة الكيمياء والأحياء المجهرية العامة.</p>
+                    <a href="#" onclick="alert('جارٍ تحميل الملزمة...')" class="inline-flex items-center gap-1.5 text-teal-500 dark:text-teal-400 font-bold hover:underline"><i class="fa-solid fa-download"></i> تحميل PDF</a>
+                </div>
+                <div class="p-5 rounded-2xl dark:bg-slate-950/60 dark:border-slate-800 bg-white border border-slate-200 space-y-3 shadow-sm">
+                    <span class="text-[10px] text-teal-500 dark:text-teal-400 font-bold uppercase">المرحلة الثانية</span>
+                    <h4 class="font-bold dark:text-white text-slate-900 text-sm">علم الدم (Hematology I)</h4>
+                    <p class="dark:text-slate-400 text-slate-600 text-[11px]">دليل خلايا الدم وتخطيط فصائل الدم والمؤشرات الحيوية.</p>
+                    <a href="#" onclick="alert('جارٍ تحميل الملزمة...')" class="inline-flex items-center gap-1.5 text-teal-500 dark:text-teal-400 font-bold hover:underline"><i class="fa-solid fa-download"></i> تحميل PDF</a>
+                </div>
+                <div class="p-5 rounded-2xl dark:bg-slate-950/60 dark:border-slate-800 bg-white border border-slate-200 space-y-3 shadow-sm">
+                    <span class="text-[10px] text-teal-500 dark:text-teal-400 font-bold uppercase">المرحلة الثالثة</span>
+                    <h4 class="font-bold dark:text-white text-slate-900 text-sm">الأحياء المجهرية السريرية</h4>
+                    <p class="dark:text-slate-400 text-slate-600 text-[11px]">طرق الاستزراع البكتيري، الفطريات، واختبارات الحساسية للمضادات.</p>
+                    <a href="#" onclick="alert('جارٍ تحميل الملزمة...')" class="inline-flex items-center gap-1.5 text-teal-500 dark:text-teal-400 font-bold hover:underline"><i class="fa-solid fa-download"></i> تحميل PDF</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. حاسبة السعي الأكاديمي -->
+        <section id="gpa-calculator" class="glass-panel p-6 md:p-8 rounded-3xl border border-slate-800 space-y-6 shadow-xl">
             <div class="border-b dark:border-slate-800 border-slate-200 pb-4">
                 <span class="text-teal-500 dark:text-teal-400 text-xs font-bold uppercase tracking-wider">Assessment System</span>
                 <h3 class="text-xl font-black dark:text-white text-slate-900 mt-1"><i class="fa-solid fa-calculator text-teal-500 dark:text-teal-400 ml-2"></i>حاسبة الدرجة النهائية (السعي من 40)</h3>
-                <p class="text-xs dark:text-slate-400 text-slate-600 mt-1">أدخل درجاتك التقييمية لاحتساب السعي النهائي التلقائي:</p>
             </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
                 <div>
-                    <label class="block text-xs font-bold dark:text-slate-300 text-slate-700 mb-1">امتحان الميد (من 20):</label>
-                    <input type="number" id="calc-mid-input" min="0" max="20" placeholder="0 - 20" class="w-full dark:bg-slate-950 dark:border-slate-800 bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-xs dark:text-white text-slate-900 outline-none focus:border-teal-500">
+                    <label class="block font-bold dark:text-slate-300 text-slate-700 mb-1">امتحان الميد (من 20):</label>
+                    <input type="number" id="calc-mid-input" min="0" max="20" placeholder="0 - 20" class="w-full dark:bg-slate-950 dark:border-slate-800 bg-white border border-slate-300 rounded-xl px-4 py-2.5 dark:text-white text-slate-900 outline-none focus:border-teal-500">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold dark:text-slate-300 text-slate-700 mb-1">الكوزات واليومي (من 10):</label>
-                    <input type="number" id="calc-daily-input" min="0" max="10" placeholder="0 - 10" class="w-full dark:bg-slate-950 dark:border-slate-800 bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-xs dark:text-white text-slate-900 outline-none focus:border-teal-500">
+                    <label class="block font-bold dark:text-slate-300 text-slate-700 mb-1">الكوزات واليومي (من 10):</label>
+                    <input type="number" id="calc-daily-input" min="0" max="10" placeholder="0 - 10" class="w-full dark:bg-slate-950 dark:border-slate-800 bg-white border border-slate-300 rounded-xl px-4 py-2.5 dark:text-white text-slate-900 outline-none focus:border-teal-500">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold dark:text-slate-300 text-slate-700 mb-1">الحضور والالتزام (من 10):</label>
-                    <input type="number" id="calc-attendance-input" min="0" max="10" placeholder="0 - 10" class="w-full dark:bg-slate-950 dark:border-slate-800 bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-xs dark:text-white text-slate-900 outline-none focus:border-teal-500">
+                    <label class="block font-bold dark:text-slate-300 text-slate-700 mb-1">الحضور والالتزام (من 10):</label>
+                    <input type="number" id="calc-attendance-input" min="0" max="10" placeholder="0 - 10" class="w-full dark:bg-slate-950 dark:border-slate-800 bg-white border border-slate-300 rounded-xl px-4 py-2.5 dark:text-white text-slate-900 outline-none focus:border-teal-500">
                 </div>
             </div>
-
             <button type="button" onclick="calculateFinalCourseGrade()" class="w-full py-3 bg-teal-500 hover:bg-teal-400 text-slate-950 font-black text-xs rounded-xl shadow transition">
                 احتساب السعي النهائي
             </button>
-
             <div id="gpa-result-box" class="hidden p-4 rounded-xl dark:bg-slate-950 dark:border-slate-800 bg-white border border-slate-300 text-xs font-bold text-teal-600 dark:text-teal-300 text-center"></div>
         </section>
 
@@ -202,25 +243,25 @@
     <div id="admin-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/90 backdrop-blur-md hidden">
         <div class="glass-panel p-6 md:p-8 rounded-3xl border border-rose-500/30 dark:bg-slate-900 bg-white max-w-5xl w-full mx-4 space-y-6 shadow-2xl overflow-y-auto max-h-[90vh]">
 
-            <!-- شاشة تسجيل الدخول للمشرفين -->
+            <!-- شاشة تسجيل دخول المشرفين -->
             <div id="admin-login-screen" class="space-y-4 max-w-md mx-auto py-6">
                 <div class="flex items-center justify-between border-b dark:border-slate-800 border-slate-200 pb-4">
-                    <div class="flex items-center gap-2 text-rose-500 dark:text-rose-400 font-bold">
+                    <div class="flex items-center gap-2 text-rose-500 dark:text-rose-400 font-bold text-sm">
                         <i class="fa-solid fa-shield-halved text-xl"></i>
-                        <h3>تسجيل دخول المشرفين - قسم المختبرات</h3>
+                        <h3>تسجيل دخول المشرفين</h3>
                     </div>
-                    <button type="button" onclick="closeAdminModal()" class="text-slate-400 hover:text-slate-700 dark:hover:text-white p-1"><i class="fa-solid fa-xmark"></i></button>
+                    <button type="button" onclick="closeAdminModal()" class="text-slate-400 hover:text-white p-1"><i class="fa-solid fa-xmark"></i></button>
                 </div>
-                <form onsubmit="handleAdminLogin(event)" class="space-y-4 pt-2">
+                <form onsubmit="handleAdminLogin(event)" class="space-y-4 pt-2 text-xs">
                     <div>
-                        <label class="block text-xs font-bold dark:text-slate-300 text-slate-700 mb-1">اسم المشرف / البريد:</label>
-                        <input type="text" id="admin-username" required class="w-full dark:bg-slate-950 dark:border-slate-700 bg-slate-50 border border-slate-300 rounded-xl p-3 text-xs dark:text-slate-200 text-slate-900 outline-none focus:border-rose-500" placeholder="أدخل اسم المشرف (مثال: admin)">
+                        <label class="block font-bold dark:text-slate-300 text-slate-700 mb-1">اسم المشرف:</label>
+                        <input type="text" id="admin-username" required class="w-full dark:bg-slate-950 dark:border-slate-700 bg-slate-50 border border-slate-300 rounded-xl p-3 dark:text-slate-200 text-slate-900 outline-none focus:border-rose-500" placeholder="admin">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold dark:text-slate-300 text-slate-700 mb-1">رمز الحماية (PIN):</label>
-                        <input type="password" id="admin-password" required class="w-full dark:bg-slate-950 dark:border-slate-700 bg-slate-50 border border-slate-300 rounded-xl p-3 text-xs dark:text-slate-200 text-slate-900 outline-none focus:border-rose-500" placeholder="•••••••• (مثال: 1234)">
+                        <label class="block font-bold dark:text-slate-300 text-slate-700 mb-1">رمز الحماية (PIN):</label>
+                        <input type="password" id="admin-password" required class="w-full dark:bg-slate-950 dark:border-slate-700 bg-slate-50 border border-slate-300 rounded-xl p-3 dark:text-slate-200 text-slate-900 outline-none focus:border-rose-500" placeholder="1234">
                     </div>
-                    <button type="submit" class="w-full py-3 bg-gradient-to-r from-rose-500 to-amber-500 text-slate-950 font-black text-xs rounded-xl shadow-lg hover:opacity-95 transition">
+                    <button type="submit" class="w-full py-3 bg-gradient-to-r from-rose-500 to-amber-500 text-slate-950 font-black rounded-xl shadow-lg hover:opacity-95 transition">
                         تأكيد الدخول
                     </button>
                 </form>
@@ -229,173 +270,66 @@
             <!-- لوحة التحكم الإدارية الداخلية -->
             <div id="admin-dashboard-screen" class="space-y-6 hidden">
                 <div class="flex items-center justify-between border-b dark:border-slate-800 border-slate-200 pb-4">
-                    <div class="flex items-center gap-2 text-rose-500 dark:text-rose-400 font-bold">
+                    <div class="flex items-center gap-2 text-rose-500 dark:text-rose-400 font-bold text-sm">
                         <i class="fa-solid fa-user-shield text-xl"></i>
-                        <h3>لوحة الإدارة - <span id="current-admin-name" class="text-teal-500 dark:text-teal-400">المدير</span></h3>
+                        <h3>لوحة الإدارة المركزية - <span id="current-admin-name" class="text-teal-500 dark:text-teal-400">المدير</span></h3>
                     </div>
                     <div class="flex items-center gap-2">
-                        <button type="button" onclick="logoutAdmin()" class="px-3 py-1.5 dark:bg-slate-800 bg-slate-200 hover:bg-rose-500/20 text-rose-500 dark:text-rose-400 text-xs font-bold rounded-lg border border-rose-500/30">خروج</button>
-                        <button type="button" onclick="closeAdminModal()" class="text-slate-400 hover:text-slate-700 dark:hover:text-white p-1"><i class="fa-solid fa-xmark"></i></button>
+                        <button type="button" onclick="logoutAdmin()" class="px-3 py-1.5 dark:bg-slate-800 bg-slate-200 text-rose-500 dark:text-rose-400 text-xs font-bold rounded-lg border border-rose-500/30">خروج</button>
+                        <button type="button" onclick="closeAdminModal()" class="text-slate-400 hover:text-white p-1"><i class="fa-solid fa-xmark"></i></button>
                     </div>
                 </div>
 
-                <!-- شريط التبويبات الداخلية -->
-                <div class="flex border-b dark:border-slate-800 border-slate-200 gap-4 text-xs font-bold overflow-x-auto pb-1">
-                    <button type="button" id="tab-btn-registration" onclick="switchAdminTab('registration')" class="pb-2 border-b-2 border-teal-500 dark:border-teal-400 text-teal-500 dark:text-teal-400">إدارة وتسجيل الطلبة</button>
-                    <button type="button" id="tab-btn-supervisors" onclick="switchAdminTab('supervisors')" class="pb-2 text-slate-400 hover:text-slate-700 dark:hover:text-white">إدارة المشرفين والصلاحيات</button>
-                    <button type="button" id="tab-btn-announcement" onclick="switchAdminTab('announcement')" class="pb-2 text-slate-400 hover:text-slate-700 dark:hover:text-white">الشريط الإعلاني</button>
+                <!-- التبويبات -->
+                <div class="flex border-b dark:border-slate-800 border-slate-200 gap-4 text-xs font-bold pb-1">
+                    <button type="button" id="tab-btn-registration" onclick="switchAdminTab('registration')" class="pb-2 border-b-2 border-teal-500 dark:border-teal-400 text-teal-500 dark:text-teal-400">إدارة الطلبة</button>
+                    <button type="button" id="tab-btn-announcement" onclick="switchAdminTab('announcement')" class="pb-2 text-slate-400 hover:text-white">الشريط الإعلاني</button>
                 </div>
 
-                <!-- تبويب تسجيل وإدارة الطلبة -->
-                <div id="admin-tab-registration" class="space-y-6">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b dark:border-slate-800/60 border-slate-200 pb-3">
-                        <div>
-                            <span class="text-rose-500 dark:text-rose-400 text-[10px] font-bold uppercase tracking-wider">Restricted Area</span>
-                            <h4 class="text-lg font-black dark:text-white text-slate-900">سجل طلبة المرحلة الأولى (2026-2027)</h4>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <button type="button" onclick="printRegistrationPDF()" class="px-3 py-2 bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs rounded-xl shadow transition flex items-center gap-1.5">
-                                <i class="fa-solid fa-print"></i> طباعة PDF
-                            </button>
-                            <button type="button" onclick="exportToExactExcel()" class="px-3 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-xl shadow transition flex items-center gap-1.5">
-                                <i class="fa-solid fa-file-excel"></i> تصدير Excel
-                            </button>
+                <!-- تبويب الطلبة -->
+                <div id="admin-tab-registration" class="space-y-6 text-xs">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-black text-sm dark:text-white text-slate-900">سجل طلبة المرحلة الأولى</h4>
+                        <div class="flex gap-2">
+                            <button type="button" onclick="printRegistrationPDF()" class="px-3 py-1.5 bg-sky-600 text-white font-bold rounded-lg shadow"><i class="fa-solid fa-print"></i> طباعة PDF</button>
+                            <button type="button" onclick="exportToExactExcel()" class="px-3 py-1.5 bg-emerald-500 text-slate-950 font-bold rounded-lg shadow"><i class="fa-solid fa-file-excel"></i> تصدير Excel</button>
                         </div>
                     </div>
 
-                    <!-- نموذج تسجيل الطالب -->
-                    <form id="student-reg-form" onsubmit="addStudentRecord(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 p-4 dark:bg-slate-950/80 dark:border-slate-800 bg-slate-50 border border-slate-200 rounded-2xl">
-                        <div>
-                            <label class="block text-[11px] font-bold dark:text-slate-300 text-slate-700 mb-1">اسم الطالب:</label>
-                            <input type="text" id="reg-name" required class="w-full dark:bg-slate-900 dark:border-slate-700 bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs dark:text-slate-200 text-slate-900 outline-none focus:border-rose-500" placeholder="الاسم الثلاثي واللقب">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-bold dark:text-slate-300 text-slate-700 mb-1">نوع الدراسة:</label>
-                            <select id="reg-study-type" class="w-full dark:bg-slate-900 dark:border-slate-700 bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs dark:text-slate-200 text-slate-900 outline-none focus:border-rose-500">
-                                <option value="صباحي">صباحي</option>
-                                <option value="مسائي">مسائي</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-bold dark:text-slate-300 text-slate-700 mb-1">الجنس:</label>
-                            <select id="reg-gender" class="w-full dark:bg-slate-900 dark:border-slate-700 bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs dark:text-slate-200 text-slate-900 outline-none focus:border-rose-500">
-                                <option value="ذكر">ذكر</option>
-                                <option value="أنثى">أنثى</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-bold dark:text-slate-300 text-slate-700 mb-1">قناة القبول:</label>
-                            <select id="reg-channel" class="w-full dark:bg-slate-900 dark:border-slate-700 bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs dark:text-slate-200 text-slate-900 outline-none focus:border-rose-500">
-                                <option value="عامة">عامة</option>
-                                <option value="ذوي الشهداء">ذوي الشهداء</option>
-                                <option value="ذوي الإعاقة">ذوي الإعاقة</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-bold dark:text-slate-300 text-slate-700 mb-1">الدراسة السابقة:</label>
-                            <input type="text" id="reg-prev-study" class="w-full dark:bg-slate-900 dark:border-slate-700 bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs dark:text-slate-200 text-slate-900 outline-none focus:border-rose-500" placeholder="إحيائي / تطبيقي">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-bold dark:text-slate-300 text-slate-700 mb-1">المعدل:</label>
-                            <input type="number" step="0.01" min="50" max="100" id="reg-gpa" class="w-full dark:bg-slate-900 dark:border-slate-700 bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs dark:text-slate-200 text-slate-900 outline-none focus:border-rose-500" placeholder="المعدل">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-bold dark:text-slate-300 text-slate-700 mb-1">فصيلة الدم:</label>
-                            <select id="reg-blood" class="w-full dark:bg-slate-900 dark:border-slate-700 bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs dark:text-slate-200 text-slate-900 outline-none focus:border-rose-500">
-                                <option value="O+">O+</option><option value="O-">O-</option>
-                                <option value="A+">A+</option><option value="A-">A-</option>
-                                <option value="B+">B+</option><option value="B-">B-</option>
-                                <option value="AB+">AB+</option><option value="AB-">AB-</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-bold dark:text-slate-300 text-slate-700 mb-1">الحالة المرضية:</label>
-                            <select id="reg-medical" onchange="toggleMedicalInput(this.value)" class="w-full dark:bg-slate-900 dark:border-slate-700 bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs dark:text-slate-200 text-slate-900 outline-none focus:border-rose-500">
-                                <option value="سليم">سليم</option>
-                                <option value="أخرى">أخرى</option>
-                            </select>
-                            <input type="text" id="reg-medical-other" class="w-full dark:bg-slate-900 dark:border-slate-700 bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs dark:text-slate-200 text-slate-900 outline-none focus:border-rose-500 mt-1.5 hidden" placeholder="اكتب الحالة المرضية...">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-bold dark:text-slate-300 text-slate-700 mb-1">تاريخ التولد:</label>
-                            <input type="date" id="reg-dob" class="w-full dark:bg-slate-900 dark:border-slate-700 bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs dark:text-slate-200 text-slate-900 outline-none focus:border-rose-500">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-bold dark:text-slate-300 text-slate-700 mb-1">عنوان السكن:</label>
-                            <input type="text" id="reg-address" class="w-full dark:bg-slate-900 dark:border-slate-700 bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs dark:text-slate-200 text-slate-900 outline-none focus:border-rose-500" placeholder="المحافظة - المنطقة">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-bold dark:text-slate-300 text-slate-700 mb-1">الهاتف:</label>
-                            <input type="text" id="reg-phone" class="w-full dark:bg-slate-900 dark:border-slate-700 bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs dark:text-slate-200 text-slate-900 outline-none focus:border-rose-500" placeholder="رقم هاتف الطالب">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-bold dark:text-slate-300 text-slate-700 mb-1">هاتف ولي الامر:</label>
-                            <input type="text" id="reg-guardian-phone" class="w-full dark:bg-slate-900 dark:border-slate-700 bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs dark:text-slate-200 text-slate-900 outline-none focus:border-rose-500" placeholder="رقم ولي الأمر">
-                        </div>
-                        <div class="sm:col-span-2 lg:col-span-4 flex items-center justify-between pt-2 gap-3">
-                            <input type="text" id="reg-receipt" class="w-48 dark:bg-slate-900 dark:border-slate-700 bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs dark:text-slate-200 text-slate-900 outline-none focus:border-rose-500" placeholder="رقم الوصل">
-                            <button type="submit" class="px-6 py-2.5 bg-rose-500 hover:bg-rose-400 text-slate-950 font-black text-xs rounded-xl shadow-lg transition">
-                                حفظ الطالب في قاعدة البيانات
-                            </button>
-                        </div>
+                    <!-- نموذج التسجيل -->
+                    <form id="student-reg-form" onsubmit="addStudentRecord(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 dark:bg-slate-950/80 bg-slate-50 rounded-2xl border dark:border-slate-800 border-slate-200">
+                        <input type="text" id="reg-name" required placeholder="اسم الطالب الثلاثي" class="dark:bg-slate-900 bg-white border dark:border-slate-700 border-slate-300 rounded-lg p-2 dark:text-white text-slate-900 outline-none">
+                        <select id="reg-study-type" class="dark:bg-slate-900 bg-white border dark:border-slate-700 border-slate-300 rounded-lg p-2 dark:text-white text-slate-900 outline-none">
+                            <option value="صباحي">صباحي</option>
+                            <option value="مسائي">مسائي</option>
+                        </select>
+                        <input type="number" step="0.01" id="reg-gpa" required placeholder="المعدل" class="dark:bg-slate-900 bg-white border dark:border-slate-700 border-slate-300 rounded-lg p-2 dark:text-white text-slate-900 outline-none">
+                        <button type="submit" class="sm:col-span-3 py-2 bg-rose-500 text-slate-950 font-black rounded-lg shadow">حفظ الطالب في القاعدة</button>
                     </form>
 
-                    <!-- جدول بيانات الطلبة المسجلين -->
+                    <!-- الجدول -->
                     <div class="overflow-x-auto rounded-xl border dark:border-slate-800 border-slate-200">
-                        <table class="w-full text-right text-xs dark:text-slate-300 text-slate-700 printable-table">
+                        <table class="w-full text-right">
                             <thead class="dark:bg-slate-950 bg-slate-100 text-rose-500 dark:text-rose-400 border-b dark:border-slate-800 border-slate-200 font-bold">
                                 <tr>
                                     <th class="p-2.5">ت</th>
-                                    <th class="p-2.5">اسم الطالب</th>
-                                    <th class="p-2.5">نوع الدراسة</th>
-                                    <th class="p-2.5">الجنس</th>
-                                    <th class="p-2.5">قناة القبول</th>
-                                    <th class="p-2.5">الدراسة السابقة</th>
+                                    <th class="p-2.5">الاسم</th>
+                                    <th class="p-2.5">الدراسة</th>
                                     <th class="p-2.5">المعدل</th>
-                                    <th class="p-2.5">فصيلة الدم</th>
-                                    <th class="p-2.5">الحالة المرضية</th>
-                                    <th class="p-2.5">تاريخ التولد</th>
-                                    <th class="p-2.5">عنوان السكن</th>
-                                    <th class="p-2.5">الهاتف</th>
-                                    <th class="p-2.5">ولي الأمر</th>
-                                    <th class="p-2.5">الوصل</th>
                                     <th class="p-2.5 text-center no-print">إجراء</th>
                                 </tr>
                             </thead>
-                            <tbody id="students-reg-rows" class="divide-y dark:divide-slate-800/60 divide-slate-200 dark:bg-slate-950/30 bg-white">
-                                <!-- يتم تعبئتها تلقائياً عبر الجافاسكريبت -->
-                            </tbody>
+                            <tbody id="students-reg-rows" class="divide-y dark:divide-slate-800 divide-slate-200"></tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- تبويب إدارة المشرفين والصلاحيات -->
-                <div id="admin-tab-supervisors" class="space-y-4 hidden">
-                    <form onsubmit="addNewSupervisor(event)" class="p-4 dark:bg-slate-950/60 dark:border-slate-800 bg-slate-50 border border-slate-200 rounded-2xl space-y-3">
-                        <h4 class="text-xs font-bold text-teal-500 dark:text-teal-400"><i class="fa-solid fa-user-plus ml-1"></i> إضافة مشرف جديد وتحديد الـ PIN:</h4>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <input type="text" id="new-sup-name" required placeholder="اسم المشرف" class="dark:bg-slate-900 dark:border-slate-700 bg-white border border-slate-300 rounded-lg p-2.5 text-xs dark:text-slate-200 text-slate-900 outline-none focus:border-teal-500">
-                            <input type="email" id="new-sup-email" placeholder="البريد الإلكتروني (اختياري)" class="dark:bg-slate-900 dark:border-slate-700 bg-white border border-slate-300 rounded-lg p-2.5 text-xs dark:text-slate-200 text-slate-900 outline-none focus:border-teal-500">
-                            <input type="password" id="new-sup-pin" required placeholder="رمز الدخول (PIN)" class="dark:bg-slate-900 dark:border-slate-700 bg-white border border-slate-300 rounded-lg p-2.5 text-xs dark:text-slate-200 text-slate-900 outline-none focus:border-teal-500">
-                            <select id="new-sup-role" class="dark:bg-slate-900 dark:border-slate-700 bg-white border border-slate-300 rounded-lg p-2.5 text-xs dark:text-slate-200 text-slate-900 outline-none focus:border-teal-500">
-                                <option value="مشرف إعلانات وتسجيل">مشرف إعلانات وتسجيل</option>
-                                <option value="مدير نظام كامل">مدير نظام كامل</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="w-full py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs rounded-xl shadow transition">
-                            إضافة المشرف الجديد
-                        </button>
-                    </form>
-                </div>
-
-                <!-- تبويب الشريط الإعلاني -->
-                <div id="admin-tab-announcement" class="space-y-4 hidden">
-                    <form onsubmit="updateAnnouncement(event)" class="p-4 dark:bg-slate-950/60 dark:border-slate-800 bg-slate-50 border border-slate-200 rounded-2xl space-y-3">
-                        <h4 class="text-xs font-bold text-teal-500 dark:text-teal-400"><i class="fa-solid fa-bullhorn ml-1"></i> تحديث نص الشريط الإعلاني المتحرك:</h4>
-                        <textarea id="announcement-input-field" rows="3" class="w-full dark:bg-slate-900 dark:border-slate-700 bg-white border border-slate-300 rounded-xl p-3 text-xs dark:text-slate-200 text-slate-900 outline-none focus:border-teal-500" placeholder="اكتب الإعلان الجديد هنا..."></textarea>
-                        <button type="submit" class="w-full py-2.5 bg-teal-500 hover:bg-teal-400 text-slate-950 font-black text-xs rounded-xl shadow transition">
-                            حفظ وتحديث الإعلان في الموقع
-                        </button>
+                <!-- تبويب الإعلان -->
+                <div id="admin-tab-announcement" class="space-y-4 hidden text-xs">
+                    <form onsubmit="updateAnnouncement(event)" class="p-4 dark:bg-slate-950/60 bg-slate-50 rounded-2xl border dark:border-slate-800 border-slate-200 space-y-3">
+                        <label class="font-bold dark:text-slate-300 text-slate-700 block">نص الشريط الإعلاني الجديد:</label>
+                        <textarea id="announcement-input-field" rows="3" class="w-full dark:bg-slate-900 bg-white border dark:border-slate-700 border-slate-300 rounded-xl p-3 dark:text-white text-slate-900 outline-none"></textarea>
+                        <button type="submit" class="w-full py-2 bg-teal-500 text-slate-950 font-black rounded-xl">تحديث الإعلان</button>
                     </form>
                 </div>
 
@@ -405,12 +339,11 @@
 
     <!-- ==================== البرمجة التفاعلية (JavaScript) ==================== -->
     <script>
-        // التخزين المحلي والبيانات الأولية
+        // التخزين والبيانات
         let studentsData = JSON.parse(localStorage.getItem('medical_students_db')) || [];
-        let announcementText = localStorage.getItem('site_announcement') || "أهلاً بكم في البوابة الرسمية لقسم تقنيات المختبرات الطبية للعام الدراسي 2026-2027.";
+        let announcementText = localStorage.getItem('site_announcement') || "أهلاً بكم في البوابة المركزية لقسم تقنيات المختبرات الطبية للعام الدراسي 2026-2027.";
 
         document.addEventListener('DOMContentLoaded', () => {
-            // تهيئة الثيم المحفوظ مسبقاً
             const savedTheme = localStorage.getItem('site_theme') || 'dark';
             const html = document.documentElement;
             const icon = document.getElementById('theme-icon');
@@ -427,7 +360,7 @@
             renderStudentsTable();
         });
 
-        // تبديل المظهر (Dark / Light) مع الحفظ التلقائي في الذاكرة
+        // تبديل المظهر
         function toggleTheme() {
             const html = document.documentElement;
             const icon = document.getElementById('theme-icon');
@@ -442,26 +375,63 @@
             }
         }
 
-        // فتح وإغلاق لوحة الإدارة
-        function openAdminModal() {
-            document.getElementById('admin-modal').classList.remove('hidden');
-        }
-        function closeAdminModal() {
-            document.getElementById('admin-modal').classList.add('hidden');
+        // فلترة الفحوصات المختبرية
+        function filterLabTests() {
+            const query = document.getElementById('lab-search').value.toLowerCase();
+            const cards = document.querySelectorAll('.lab-card');
+            cards.forEach(card => {
+                const name = card.getAttribute('data-name').toLowerCase();
+                if (name.includes(query)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
         }
 
-        // تسجيل دخول المشرف
+        // فحص اختبار بنك الأسئلة
+        function checkQuizAnswer() {
+            const selected = document.querySelector('input[name="q1"]:checked');
+            const feedback = document.getElementById('quiz-feedback');
+            feedback.classList.remove('hidden');
+            if (!selected) {
+                feedback.className = "text-center text-xs font-bold p-2 rounded-lg bg-amber-500/10 text-amber-500";
+                feedback.innerText = "الرجاء اختيار إجابة أولاً!";
+                return;
+            }
+            if (selected.value === 'correct') {
+                feedback.className = "text-center text-xs font-bold p-2 rounded-lg bg-emerald-500/10 text-emerald-500";
+                feedback.innerText = "إجابة صحيحة! EDTA هو المانع المستخدم لفحوصات CBC لمنع التخثر بالارتباط بالكالسيوم.";
+            } else {
+                feedback.className = "text-center text-xs font-bold p-2 rounded-lg bg-rose-500/10 text-rose-500";
+                feedback.innerText = "إجابة خاطئة. الإجابة الصحيحة هي EDTA.";
+            }
+        }
+
+        // حاسبة السعي
+        function calculateFinalCourseGrade() {
+            const mid = parseFloat(document.getElementById('calc-mid-input').value) || 0;
+            const daily = parseFloat(document.getElementById('calc-daily-input').value) || 0;
+            const attendance = parseFloat(document.getElementById('calc-attendance-input').value) || 0;
+            const total = mid + daily + attendance;
+            const resBox = document.getElementById('gpa-result-box');
+            resBox.classList.remove('hidden');
+            resBox.innerHTML = `نتيجة السعي النهائي: <span class="dark:text-white text-slate-900 text-base font-black">${total.toFixed(1)} / 40</span> — ${total >= 20 ? 'مستحق لدخول الامتحان النهائي' : 'يحتاج مراجعة القسم'}`;
+        }
+
+        // إدارة لوحة الإدارة
+        function openAdminModal() { document.getElementById('admin-modal').classList.remove('hidden'); }
+        function closeAdminModal() { document.getElementById('admin-modal').classList.add('hidden'); }
+
         function handleAdminLogin(event) {
             event.preventDefault();
             const user = document.getElementById('admin-username').value.trim();
             const pass = document.getElementById('admin-password').value.trim();
-            
-            if ((user === 'admin' && pass === '1234') || (user && pass.length >= 3)) {
-                document.getElementById('current-admin-name').innerText = user;
+            if (user === 'admin' && pass === '1234') {
                 document.getElementById('admin-login-screen').classList.add('hidden');
                 document.getElementById('admin-dashboard-screen').classList.remove('hidden');
             } else {
-                alert('اسم المشرف أو رمز الحماية (PIN) غير صحيح!');
+                alert('خطأ في اسم المشرف أو رمز PIN!');
             }
         }
 
@@ -470,9 +440,8 @@
             document.getElementById('admin-login-screen').classList.remove('hidden');
         }
 
-        // تبديل التبويبات داخل لوحة الإدارة
         function switchAdminTab(tabName) {
-            ['registration', 'supervisors', 'announcement'].forEach(t => {
+            ['registration', 'announcement'].forEach(t => {
                 document.getElementById(`admin-tab-${t}`).classList.add('hidden');
                 document.getElementById(`tab-btn-${t}`).className = "pb-2 text-slate-400 hover:text-white";
             });
@@ -480,125 +449,63 @@
             document.getElementById(`tab-btn-${tabName}`).className = "pb-2 border-b-2 border-teal-500 dark:border-teal-400 text-teal-500 dark:text-teal-400 font-bold";
         }
 
-        // حاسبة السعي النهائي
-        function calculateFinalCourseGrade() {
-            const mid = parseFloat(document.getElementById('calc-mid-input').value) || 0;
-            const daily = parseFloat(document.getElementById('calc-daily-input').value) || 0;
-            const attendance = parseFloat(document.getElementById('calc-attendance-input').value) || 0;
-            
-            const total = mid + daily + attendance;
-            const resBox = document.getElementById('gpa-result-box');
-            resBox.classList.remove('hidden');
-            resBox.innerHTML = `نتيجة السعي النهائي من 40: <span class="dark:text-white text-slate-900 text-base font-black">${total.toFixed(1)} / 40</span> — ${total >= 20 ? 'استحقاق دخول الامتحان النهائي (ناجح بالسعي)' : 'يحتاج مراجعة القسم'}`;
-        }
-
-        // إدارة الحالة المرضية في التسجيل
-        function toggleMedicalInput(val) {
-            const otherInput = document.getElementById('reg-medical-other');
-            if (val === 'أخرى') {
-                otherInput.classList.remove('hidden');
-            } else {
-                otherInput.classList.add('hidden');
-                otherInput.value = '';
-            }
-        }
-
-        // إضافة طالب جديد
         function addStudentRecord(event) {
             event.preventDefault();
-            const medicalVal = document.getElementById('reg-medical').value;
-            const medicalFinal = medicalVal === 'أخرى' ? document.getElementById('reg-medical-other').value : 'سليم';
-
             const newStudent = {
                 name: document.getElementById('reg-name').value,
                 studyType: document.getElementById('reg-study-type').value,
-                gender: document.getElementById('reg-gender').value,
-                channel: document.getElementById('reg-channel').value,
-                prevStudy: document.getElementById('reg-prev-study').value,
-                gpa: document.getElementById('reg-gpa').value,
-                blood: document.getElementById('reg-blood').value,
-                medical: medicalFinal,
-                dob: document.getElementById('reg-dob').value,
-                address: document.getElementById('reg-address').value,
-                phone: document.getElementById('reg-phone').value,
-                guardianPhone: document.getElementById('reg-guardian-phone').value,
-                receipt: document.getElementById('reg-receipt').value
+                gpa: document.getElementById('reg-gpa').value
             };
-
             studentsData.push(newStudent);
             localStorage.setItem('medical_students_db', JSON.stringify(studentsData));
             renderStudentsTable();
             document.getElementById('student-reg-form').reset();
-            alert('تم تسجيل الطالب بنجاح في قاعدة البيانات!');
+            alert('تم تسجيل الطالب بنجاح!');
         }
 
-        // عرض جدول الطلبة
         function renderStudentsTable() {
             const tbody = document.getElementById('students-reg-rows');
             tbody.innerHTML = '';
             if (studentsData.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="15" class="p-4 text-center text-slate-500">لا توجد سجلات طلّاب مدخلة حتى الآن.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500">لا توجد سجلات.</td></tr>`;
                 return;
             }
-            studentsData.forEach((s, index) => {
+            studentsData.forEach((s, idx) => {
                 tbody.innerHTML += `
-                    <tr>
-                        <td class="p-2.5">${index + 1}</td>
+                    <tr class="border-b dark:border-slate-800/60 border-slate-100">
+                        <td class="p-2.5">${idx + 1}</td>
                         <td class="p-2.5 font-bold dark:text-white text-slate-900">${s.name}</td>
                         <td class="p-2.5">${s.studyType}</td>
-                        <td class="p-2.5">${s.gender}</td>
-                        <td class="p-2.5">${s.channel}</td>
-                        <td class="p-2.5">${s.prevStudy}</td>
                         <td class="p-2.5 text-teal-500 dark:text-teal-400 font-bold">${s.gpa}</td>
-                        <td class="p-2.5">${s.blood}</td>
-                        <td class="p-2.5">${s.medical}</td>
-                        <td class="p-2.5">${s.dob}</td>
-                        <td class="p-2.5">${s.address}</td>
-                        <td class="p-2.5">${s.phone}</td>
-                        <td class="p-2.5">${s.guardianPhone}</td>
-                        <td class="p-2.5">${s.receipt}</td>
                         <td class="p-2.5 text-center no-print">
-                            <button onclick="deleteStudent(${index})" class="text-rose-500 dark:text-rose-400 hover:opacity-75 p-1"><i class="fa-solid fa-trash"></i></button>
+                            <button onclick="deleteStudent(${idx})" class="text-rose-500 hover:opacity-75"><i class="fa-solid fa-trash"></i></button>
                         </td>
                     </tr>
                 `;
             });
         }
 
-        function deleteStudent(index) {
-            if (confirm('هل أنت متأكد من حذف سجل هذا الطالب؟')) {
-                studentsData.splice(index, 1);
+        function deleteStudent(idx) {
+            if (confirm('حذف هذا السجل؟')) {
+                studentsData.splice(idx, 1);
                 localStorage.setItem('medical_students_db', JSON.stringify(studentsData));
                 renderStudentsTable();
             }
         }
 
-        // طباعة وتصدير
-        function printRegistrationPDF() {
-            window.print();
-        }
+        function printRegistrationPDF() { window.print(); }
 
         function exportToExactExcel() {
-            let csv = '\uFEFFالاسم,نوع الدراسة,الجنس,قناة القبول,الدراسة السابقة,المعدل,فصيلة الدم,الحالة المرضية,تاريخ التولد,السكن,الهاتف,ولي الأمر,الوصل\n';
-            studentsData.forEach(s => {
-                csv += `"${s.name}","${s.studyType}","${s.gender}","${s.channel}","${s.prevStudy}","${s.gpa}","${s.blood}","${s.medical}","${s.dob}","${s.address}","${s.phone}","${s.guardianPhone}","${s.receipt}"\n`;
-            });
+            let csv = '\uFEFFالاسم,نوع الدراسة,المعدل\n';
+            studentsData.forEach(s => { csv += `"${s.name}","${s.studyType}","${s.gpa}"\n`; });
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'Medical_Labs_Students_2026.csv';
+            a.download = 'Students_Data.csv';
             a.click();
         }
 
-        // إضافة مشرف جديد
-        function addNewSupervisor(event) {
-            event.preventDefault();
-            alert('تم حفظ المشرف وصلاحياته بنجاح!');
-            event.target.reset();
-        }
-
-        // تحديث الإعلان
         function updateAnnouncement(event) {
             event.preventDefault();
             const text = document.getElementById('announcement-input-field').value.trim();
@@ -606,7 +513,7 @@
                 announcementText = text;
                 localStorage.setItem('site_announcement', announcementText);
                 document.getElementById('ticker-text-display').innerText = announcementText;
-                alert('تم تحديث الشريط الإعلاني بنجاح!');
+                alert('تم تحديث الإعلان بنجاح!');
             }
         }
     </script>
