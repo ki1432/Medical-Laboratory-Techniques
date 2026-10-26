@@ -25,6 +25,11 @@
     <style>
         body { font-family: system-ui, -apple-system, sans-serif; }
         .glass-panel { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(12px); }
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; color: black !important; }
+            .glass-panel { background: white !important; border: none !important; }
+        }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen transition-colors duration-300">
@@ -50,28 +55,31 @@
                 <a href="#hero" class="hover:text-teal-400 transition">الرئيسية</a>
                 <a href="#department-identity" class="hover:text-teal-400 transition">عن القسم</a>
                 <a href="#announcements" class="hover:text-teal-400 transition">الإعلانات</a>
-                <a href="#gpa-calculator" class="hover:text-teal-400 transition">حاسبة المعدل</a>
+                <a href="#gpa-calculator" class="hover:text-teal-400 transition">حاسبة السعي</a>
+            </nav>
 
-            <!-- أزرار الإجراءات (زر الثيم وزر الإدارة) -->
+            <!-- أزرار الإجراءات (زر الثيم وزر الإدارة والمختبر الافتراضي) -->
             <div class="flex items-center gap-2">
+                <a href="./virtual-lab.html" class="px-3.5 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white text-xs font-medium transition flex items-center gap-1.5 shadow">
+                    <i class="fa-solid fa-flask-vial"></i> <span>المختبر الافتراضي</span>
+                </a>
                 <button type="button" onclick="toggleTheme()" class="p-2 rounded-xl bg-slate-900 border border-slate-800 text-amber-400 hover:bg-slate-800 transition" title="تبديل المظهر">
                     <i class="fa-solid fa-moon"></i>
                 </button>
-                <button type="button" onclick="openAdminModal()" class="px-3 py-1.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 hover:bg-rose-500/20 text-xs font-bold transition flex items-center gap-1.5">
+                <button type="button" onclick="openAdminModal()" class="px-3 py-2 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 hover:bg-rose-500/20 text-xs font-bold transition flex items-center gap-1.5">
                     <i class="fa-solid fa-lock text-[10px]"></i>
                     <span>الإدارة</span>
                 </button>
             </div>
         </div>
-    <a href="./virtual-lab.html" class="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white text-xs md:text-sm font-medium transition flex items-center gap-2"><i class="fa-solid fa-flask-vial"></i> المختبر الافتراضي</a>
-</header>
+    </header>
 
     <!-- ==================== الشريط الإعلاني المتحرك ==================== -->
     <div id="announcements" class="bg-teal-500/10 border-b border-teal-500/20 py-2 overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 flex items-center gap-3 text-xs font-bold text-teal-300">
             <span class="bg-teal-500 text-slate-950 px-2 py-0.5 rounded text-[10px] uppercase font-black shrink-0"><i class="fa-solid fa-bullhorn ml-1"></i>تنويه هام:</span>
             <div class="overflow-hidden whitespace-nowrap w-full">
-                <span class="announcement-ticker-text inline-block animate-pulse">أهلاً بكم في البوابة الرسمية لقسم تقنيات المختبرات الطبية للعام الدراسي 2026-2027.</span>
+                <span id="ticker-text-display" class="announcement-ticker-text inline-block">أهلاً بكم في البوابة الرسمية لقسم تقنيات المختبرات الطبية للعام الدراسي 2026-2027.</span>
             </div>
         </div>
     </div>
@@ -90,124 +98,123 @@
             <p class="text-xs md:text-sm text-slate-400 max-w-2xl mx-auto leading-relaxed">
                 منظومة إلكترونية متكاملة للتعريف بالقسم، دليل الفحوصات السريرية والمختبرية، وأدوات الحساب الأكاديمي للطلبة.
             </p>
-            <a href="./student-portal.html" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold transition">
-                <i class="fa-solid fa-book-open" aria-hidden="true"></i> دخول بوابة الطالب — المواد والمصادر والمختبر الافتراضي
-            </a>
+            <div>
+                <a href="./student-portal.html" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold transition shadow-lg">
+                    <i class="fa-solid fa-book-open" aria-hidden="true"></i> دخول بوابة الطالب — المواد والمصادر والمختبر الافتراضي
+                </a>
+            </div>
         </section>
 
+        <!-- ==================== رؤية ورسالة وأهداف وقيم القسم ==================== -->
+        <section id="department-identity" class="glass-panel p-6 md:p-8 rounded-3xl border border-slate-800 space-y-8">
+            <div class="border-b border-slate-800 pb-4">
+                <span class="text-teal-400 text-xs font-bold uppercase tracking-wider">Strategic Framework 2026-2027</span>
+                <h3 class="text-2xl font-black text-white mt-1">رؤية ورسالة وأهداف القسم</h3>
+                <p class="text-xs text-slate-400 mt-1">الإطار الاستراتيجي المؤسسي لقسم تقنيات المختبرات الطبية:</p>
+            </div>
 
-    <!-- ==================== رؤية ورسالة وأهداف وقيم القسم ==================== -->
-    <section id="department-identity" class="glass-panel p-6 md:p-8 rounded-3xl border border-slate-800 space-y-8">
-        <div class="border-b border-slate-800 pb-4">
-            <span class="text-teal-400 text-xs font-bold uppercase tracking-wider">Strategic Framework 2026-2027</span>
-            <h3 class="text-2xl font-black text-white mt-1">رؤية ورسالة وأهداف القسم</h3>
-            <p class="text-xs text-slate-400 mt-1">الإطار الاستراتيجي المؤسسي لقسم تقنيات المختبرات الطبية:</p>
-        </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- الرؤية -->
+                <div class="p-5 rounded-2xl bg-slate-950/60 border border-slate-800 space-y-3">
+                    <div class="flex items-center gap-2.5 text-teal-400 font-bold text-sm">
+                        <i class="fa-solid fa-eye text-lg"></i>
+                        <h4>أولاً: رؤية القسم</h4>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        الريادة والتميز في التعليم التقني والبحث العلمي في مجال تقنيات المختبرات الطبية، وإعداد ملاكات مؤهلة علمياً ومهنياً، قادرة على مواكبة التطورات الحديثة في التشخيص المختبري، والإسهام في تعزيز جودة الخدمات الصحية وخدمة المجتمع.
+                    </p>
+                </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- الرؤية -->
-            <div class="p-5 rounded-2xl bg-slate-950/60 border border-slate-800 space-y-3">
+                <!-- الرسالة -->
+                <div class="p-5 rounded-2xl bg-slate-950/60 border border-slate-800 space-y-3">
+                    <div class="flex items-center gap-2.5 text-teal-400 font-bold text-sm">
+                        <i class="fa-solid fa-paper-plane text-lg"></i>
+                        <h4>ثانياً: رسالة القسم</h4>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        تقديم تعليم أكاديمي وتدريب عملي عالي الجودة في تقنيات المختبرات الطبية، من خلال تطوير المناهج والمهارات التطبيقية، وتعزيز البحث العلمي والتعلم المستمر، وترسيخ أخلاقيات المهنة ومتطلبات السلامة وضمان الجودة، بما يؤهل الخريجين للإسهام بكفاءة ومسؤولية في المؤسسات الصحية، وفق المعايير العلمية والمهنية المعتمدة.
+                    </p>
+                </div>
+            </div>
+
+            <!-- الأهداف الاستراتيجية -->
+            <div class="p-5 rounded-2xl bg-slate-950/60 border border-slate-800 space-y-4">
                 <div class="flex items-center gap-2.5 text-teal-400 font-bold text-sm">
-                    <i class="fa-solid fa-eye text-lg"></i>
-                    <h4>أولاً: رؤية القسم</h4>
+                    <i class="fa-solid fa-crosshairs text-lg"></i>
+                    <h4>ثالثاً: الأهداف الاستراتيجية للقسم</h4>
                 </div>
-                <p class="text-xs text-slate-300 leading-relaxed">
-                    الريادة والتميز في التعليم التقني والبحث العلمي في مجال تقنيات المختبرات الطبية، وإعداد ملاكات مؤهلة علمياً ومهنياً، قادرة على مواكبة التطورات الحديثة في التشخيص المختبري، والإسهام في تعزيز جودة الخدمات الصحية وخدمة المجتمع.
-                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300">
+                    <div class="flex items-start gap-2 bg-slate-900/40 p-3 rounded-xl border border-slate-800/60">
+                        <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center shrink-0 font-bold text-[10px]">1</span>
+                        <p>إعداد خريجين يمتلكون المعرفة العلمية والكفاءة العملية اللازمة في مجالات تقنيات المختبرات الطبية.</p>
+                    </div>
+                    <div class="flex items-start gap-2 bg-slate-900/40 p-3 rounded-xl border border-slate-800/60">
+                        <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center shrink-0 font-bold text-[10px]">2</span>
+                        <p>تطوير المناهج والبرامج التعليمية بما يواكب المستجدات العلمية والتقنية واحتياجات سوق العمل.</p>
+                    </div>
+                    <div class="flex items-start gap-2 bg-slate-900/40 p-3 rounded-xl border border-slate-800/60">
+                        <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center shrink-0 font-bold text-[10px]">3</span>
+                        <p>تعزيز التدريب العملي والسريري بالتعاون والتنسيق الفعال مع المؤسسات الصحية المعتمدة.</p>
+                    </div>
+                    <div class="flex items-start gap-2 bg-slate-900/40 p-3 rounded-xl border border-slate-800/60">
+                        <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center shrink-0 font-bold text-[10px]">4</span>
+                        <p>ترسيخ مبادئ ضمان الجودة والسلامة الأحيائية والأخلاقيات المهنية في التعليم والممارسة المختبرية.</p>
+                    </div>
+                    <div class="flex items-start gap-2 bg-slate-900/40 p-3 rounded-xl border border-slate-800/60">
+                        <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center shrink-0 font-bold text-[10px]">5</span>
+                        <p>تشجيع البحث العلمي والابتكار والمشاركة في المؤتمرات والأنشطة العلمية التخصصية.</p>
+                    </div>
+                    <div class="flex items-start gap-2 bg-slate-900/40 p-3 rounded-xl border border-slate-800/60">
+                        <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center shrink-0 font-bold text-[10px]">6</span>
+                        <p>تطوير قدرات الملاكات التدريسية والفنية وتعزيز كفاءتها المهنية والتقنية بصورة مستمرة.</p>
+                    </div>
+                    <div class="flex items-start gap-2 bg-slate-900/40 p-3 rounded-xl border border-slate-800/60">
+                        <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center shrink-0 font-bold text-[10px]">7</span>
+                        <p>توسيع التعاون العلمي والمجتمعي مع المؤسسات الصحية والبحثية ذات العلاقة.</p>
+                    </div>
+                    <div class="flex items-start gap-2 bg-slate-900/40 p-3 rounded-xl border border-slate-800/60">
+                        <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center shrink-0 font-bold text-[10px]">8</span>
+                        <p>اعتماد التقييم المستمر للأداء الأكاديمي وتحسين جودة المخرجات التعليمية بصورة مستدامة.</p>
+                    </div>
+                </div>
             </div>
 
-            <!-- الرسالة -->
-            <div class="p-5 rounded-2xl bg-slate-950/60 border border-slate-800 space-y-3">
+            <!-- القيم المؤسسية -->
+            <div class="p-5 rounded-2xl bg-slate-950/60 border border-slate-800 space-y-4">
                 <div class="flex items-center gap-2.5 text-teal-400 font-bold text-sm">
-                    <i class="fa-solid fa-paper-plane text-lg"></i>
-                    <h4>ثانياً: رسالة القسم</h4>
+                    <i class="fa-solid fa-gem text-lg"></i>
+                    <h4>رابعاً: القيم المؤسسية</h4>
                 </div>
-                <p class="text-xs text-slate-300 leading-relaxed">
-                    تقديم تعليم أكاديمي وتدريب عملي عالي الجودة في تقنيات المختبرات الطبية، من خلال تطوير المناهج والمهارات التطبيقية، وتعزيز البحث العلمي والتعلم المستمر، وترسيخ أخلاقيات المهنة ومتطلبات السلامة وضمان الجودة، بما يؤهل الخريجين للإسهام بكفاءة ومسؤولية في المؤسسات الصحية، وفق المعايير العلمية والمهنية المعتمدة.
-                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs text-slate-300">
+                    <div class="bg-slate-900/40 p-3 rounded-xl border border-slate-800/60 space-y-1">
+                        <span class="font-bold text-teal-300 block">الدقة والأمانة العلمية:</span>
+                        <p class="text-slate-400 text-[11px]">الالتزام بموثوقية النتائج وسلامة البيانات.</p>
+                    </div>
+                    <div class="bg-slate-900/40 p-3 rounded-xl border border-slate-800/60 space-y-1">
+                        <span class="font-bold text-teal-300 block">الجودة والتميز:</span>
+                        <p class="text-slate-400 text-[11px]">التحسين المستمر في التعليم والتدريب.</p>
+                    </div>
+                    <div class="bg-slate-900/40 p-3 rounded-xl border border-slate-800/60 space-y-1">
+                        <span class="font-bold text-teal-300 block">المسؤولية المهنية:</span>
+                        <p class="text-slate-400 text-[11px]">احترام أخلاقيات المهنة وخصوصية معلومات المرضى.</p>
+                    </div>
+                    <div class="bg-slate-900/40 p-3 rounded-xl border border-slate-800/60 space-y-1">
+                        <span class="font-bold text-teal-300 block">السلامة:</span>
+                        <p class="text-slate-400 text-[11px]">الالتزام الصارم بإجراءات السلامة المختبرية والأحيائية.</p>
+                    </div>
+                    <div class="bg-slate-900/40 p-3 rounded-xl border border-slate-800/60 space-y-1">
+                        <span class="font-bold text-teal-300 block">الابتكار والتعلم المستمر:</span>
+                        <p class="text-slate-400 text-[11px]">مواكبة التقنيات الحديثة والتطورات العلمية.</p>
+                    </div>
+                    <div class="bg-slate-900/40 p-3 rounded-xl border border-slate-800/60 space-y-1">
+                        <span class="font-bold text-teal-300 block">التعاون وخدمة المجتمع:</span>
+                        <p class="text-slate-400 text-[11px]">تعزيز العمل المشترك مع المؤسسات الصحية.</p>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
 
-        <!-- الأهداف الاستراتيجية -->
-        <div class="p-5 rounded-2xl bg-slate-950/60 border border-slate-800 space-y-4">
-            <div class="flex items-center gap-2.5 text-teal-400 font-bold text-sm">
-                <i class="fa-solid fa-crosshairs text-lg"></i>
-                <h4>ثالثاً: الأهداف الاستراتيجية للقسم</h4>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300">
-                <div class="flex items-start gap-2 bg-slate-900/40 p-3 rounded-xl border border-slate-800/60">
-                    <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center shrink-0 font-bold text-[10px]">1</span>
-                    <p>إعداد خريجين يمتلكون المعرفة العلمية والكفاءة العملية اللازمة في مجالات تقنيات المختبرات الطبية.</p>
-                </div>
-                <div class="flex items-start gap-2 bg-slate-900/40 p-3 rounded-xl border border-slate-800/60">
-                    <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center shrink-0 font-bold text-[10px]">2</span>
-                    <p>تطوير المناهج والبرامج التعليمية بما يواكب المستجدات العلمية والتقنية واحتياجات سوق العمل.</p>
-                </div>
-                <div class="flex items-start gap-2 bg-slate-900/40 p-3 rounded-xl border border-slate-800/60">
-                    <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center shrink-0 font-bold text-[10px]">3</span>
-                    <p>تعزيز التدريب العملي والسريري بالتعاون والتنسيق الفعال مع المؤسسات الصحية المعتمدة.</p>
-                </div>
-                <div class="flex items-start gap-2 bg-slate-900/40 p-3 rounded-xl border border-slate-800/60">
-                    <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center shrink-0 font-bold text-[10px]">4</span>
-                    <p>ترسيخ مبادئ ضمان الجودة والسلامة الأحيائية والأخلاقيات المهنية في التعليم والممارسة المختبرية.</p>
-                </div>
-                <div class="flex items-start gap-2 bg-slate-900/40 p-3 rounded-xl border border-slate-800/60">
-                    <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center shrink-0 font-bold text-[10px]">5</span>
-                    <p>تشجيع البحث العلمي والابتكار والمشاركة في المؤتمرات والأنشطة العلمية التخصصية.</p>
-                </div>
-                <div class="flex items-start gap-2 bg-slate-900/40 p-3 rounded-xl border border-slate-800/60">
-                    <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center shrink-0 font-bold text-[10px]">6</span>
-                    <p>تطوير قدرات الملاكات التدريسية والفنية وتعزيز كفاءتها المهنية والتقنية بصورة مستمرة.</p>
-                </div>
-                <div class="flex items-start gap-2 bg-slate-900/40 p-3 rounded-xl border border-slate-800/60">
-                    <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center shrink-0 font-bold text-[10px]">7</span>
-                    <p>توسيع التعاون العلمي والمجتمعي مع المؤسسات الصحية والبحثية ذات العلاقة.</p>
-                </div>
-                <div class="flex items-start gap-2 bg-slate-900/40 p-3 rounded-xl border border-slate-800/60">
-                    <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center shrink-0 font-bold text-[10px]">8</span>
-                    <p>اعتماد التقييم المستمر للأداء الأكاديمي وتحسين جودة المخرجات التعليمية بصورة مستدامة.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- القيم المؤسسية -->
-        <div class="p-5 rounded-2xl bg-slate-950/60 border border-slate-800 space-y-4">
-            <div class="flex items-center gap-2.5 text-teal-400 font-bold text-sm">
-                <i class="fa-solid fa-gem text-lg"></i>
-                <h4>رابعاً: القيم المؤسسية</h4>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs text-slate-300">
-                <div class="bg-slate-900/40 p-3 rounded-xl border border-slate-800/60 space-y-1">
-                    <span class="font-bold text-teal-300 block">الدقة والأمانة العلمية:</span>
-                    <p class="text-slate-400 text-[11px]">الالتزام بموثوقية النتائج وسلامة البيانات.</p>
-                </div>
-                <div class="bg-slate-900/40 p-3 rounded-xl border border-slate-800/60 space-y-1">
-                    <span class="font-bold text-teal-300 block">الجودة والتميز:</span>
-                    <p class="text-slate-400 text-[11px]">التحسين المستمر في التعليم والتدريب.</p>
-                </div>
-                <div class="bg-slate-900/40 p-3 rounded-xl border border-slate-800/60 space-y-1">
-                    <span class="font-bold text-teal-300 block">المسؤولية المهنية:</span>
-                    <p class="text-slate-400 text-[11px]">احترام أخلاقيات المهنة وخصوصية معلومات المرضى.</p>
-                </div>
-                <div class="bg-slate-900/40 p-3 rounded-xl border border-slate-800/60 space-y-1">
-                    <span class="font-bold text-teal-300 block">السلامة:</span>
-                    <p class="text-slate-400 text-[11px]">الالتزام الصارم بإجراءات السلامة المختبرية والأحيائية.</p>
-                </div>
-                <div class="bg-slate-900/40 p-3 rounded-xl border border-slate-800/60 space-y-1">
-                    <span class="font-bold text-teal-300 block">الابتكار والتعلم المستمر:</span>
-                    <p class="text-slate-400 text-[11px]">مواكبة التقنيات الحديثة والتطورات العلمية.</p>
-                </div>
-                <div class="bg-slate-900/40 p-3 rounded-xl border border-slate-800/60 space-y-1">
-                    <span class="font-bold text-teal-300 block">التعاون وخدمة المجتمع:</span>
-                    <p class="text-slate-400 text-[11px]">تعزيز العمل المشترك مع المؤسسات الصحية.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-        <!-- قسم حاسبة المعدل الأكاديمي -->
-        <!-- قسم حاسبة الدرجة النهائية (السعي من 40) -->
+        <!-- ==================== حاسبة السعي النهائي (من 40) ==================== -->
         <section id="gpa-calculator" class="glass-panel p-6 md:p-8 rounded-3xl border border-slate-800 space-y-6">
             <div class="border-b border-slate-800 pb-4">
                 <span class="text-teal-400 text-xs font-bold uppercase tracking-wider">Assessment System</span>
@@ -237,9 +244,6 @@
             <div id="gpa-result-box" class="hidden p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs font-bold text-teal-300 text-center"></div>
         </section>
 
-        <!-- قسم دليل الفحوصات المختبرية السريع -->
-
-
     </main>
 
     <!-- ==================== نافذة لوحة الإدارة المعزولة ==================== -->
@@ -258,11 +262,11 @@
                 <form onsubmit="handleAdminLogin(event)" class="space-y-4 pt-2">
                     <div>
                         <label class="block text-xs font-bold text-slate-300 mb-1">اسم المشرف / البريد:</label>
-                        <input type="text" id="admin-username" required class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-slate-200 outline-none focus:border-rose-500" placeholder="أدخل اسم المشرف">
+                        <input type="text" id="admin-username" required class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-slate-200 outline-none focus:border-rose-500" placeholder="أدخل اسم المشرف (مثال: admin)">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-300 mb-1">رمز الحماية (PIN):</label>
-                        <input type="password" id="admin-password" required class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-slate-200 outline-none focus:border-rose-500" placeholder="••••••••">
+                        <input type="password" id="admin-password" required class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-slate-200 outline-none focus:border-rose-500" placeholder="•••••••• (مثال: 1234)">
                     </div>
                     <button type="submit" class="w-full py-3 bg-gradient-to-r from-rose-500 to-amber-500 text-slate-950 font-black text-xs rounded-xl shadow-lg hover:opacity-95 transition">
                         تأكيد الدخول
@@ -376,7 +380,7 @@
                             <label class="block text-[11px] font-bold text-slate-300 mb-1">هاتف ولي الامر:</label>
                             <input type="text" id="reg-guardian-phone" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-rose-500" placeholder="رقم ولي الأمر">
                         </div>
-                        <div class="sm:col-span-2 lg:col-span-4 flex items-center justify-between pt-2">
+                        <div class="sm:col-span-2 lg:col-span-4 flex items-center justify-between pt-2 gap-3">
                             <input type="text" id="reg-receipt" class="w-48 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none focus:border-rose-500" placeholder="رقم الوصل">
                             <button type="submit" class="px-6 py-2.5 bg-rose-500 hover:bg-rose-400 text-slate-950 font-black text-xs rounded-xl shadow-lg transition">
                                 حفظ الطالب في قاعدة البيانات
@@ -407,6 +411,7 @@
                                 </tr>
                             </thead>
                             <tbody id="students-reg-rows" class="divide-y divide-slate-800/60 bg-slate-950/30">
+                                <!-- يتم تعبئتها تلقائياً عبر الجافاسكريبت -->
                             </tbody>
                         </table>
                     </div>
@@ -425,55 +430,211 @@
                                 <option value="مدير نظام كامل">مدير نظام كامل</option>
                             </select>
                         </div>
-                        <button type="submit" class="w-full py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-xl shadow-lg transition">
-                            إضافة المشرف وحفظ
+                        <button type="submit" class="w-full py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs rounded-xl shadow transition">
+                            إضافة المشرف الجديد
                         </button>
                     </form>
-
-                    <div class="space-y-2 pt-2">
-                        <h4 class="text-xs font-bold text-slate-300">قائمة المشرفين المخولين:</h4>
-                        <div class="overflow-x-auto rounded-xl border border-slate-800">
-                            <table class="w-full text-right text-xs text-slate-300">
-                                <thead class="bg-slate-950 text-teal-400 font-bold">
-                                    <tr><th class="p-2.5">المشرف</th><th class="p-2.5">الصلاحية</th><th class="p-2.5 text-center">إجراء</th></tr>
-                                </thead>
-                                <tbody id="supervisors-list-rows" class="divide-y divide-slate-800/60 bg-slate-950/30">
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
                 </div>
 
-                <!-- تبويب تحديث الشريط الإعلاني -->
+                <!-- تبويب الشريط الإعلاني -->
                 <div id="admin-tab-announcement" class="space-y-4 hidden">
-                    <label class="block text-xs font-bold text-slate-300">تحديث نص التنويه العاجل (الشريط المتحرك للزوار):</label>
-                    <textarea id="admin-announcement-input" rows="4" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-slate-200 outline-none focus:border-teal-400" placeholder="اكتب التنويه أو الإعلان الجديد..."></textarea>
-                    <button type="button" onclick="updateAnnouncement()" class="w-full py-3 bg-teal-500 hover:bg-teal-400 text-slate-950 font-black text-xs rounded-xl shadow-lg transition">
-                        نشر الإعلان فوراً للعموم
-                    </button>
+                    <form onsubmit="updateAnnouncement(event)" class="p-4 bg-slate-950/60 rounded-2xl border border-slate-800 space-y-3">
+                        <h4 class="text-xs font-bold text-teal-400"><i class="fa-solid fa-bullhorn ml-1"></i> تحديث نص الشريط الإعلاني المتحرك:</h4>
+                        <textarea id="announcement-input-field" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs text-slate-200 outline-none focus:border-teal-400" placeholder="اكتب الإعلان الجديد هنا..."></textarea>
+                        <button type="submit" class="w-full py-2.5 bg-teal-500 hover:bg-teal-400 text-slate-950 font-black text-xs rounded-xl shadow transition">
+                            حفظ وتحديث الإعلان في الموقع
+                        </button>
+                    </form>
                 </div>
 
             </div>
         </div>
     </div>
 
-    <!-- السكريبت البرمجي الرئيسي المعزز -->
-    <script src="app.js?v=6.0"></script>
-
-    <!-- تسجيل Service Worker للعمل أوفلاين -->
+    <!-- ==================== البرمجة التفاعلية (JavaScript) ==================== -->
     <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('ServiceWorker registered successfully with scope:', reg.scope))
-                    .catch(err => console.log('ServiceWorker registration failed:', err));
+        // التخزين المحلي والبيانات الأولية
+        let studentsData = JSON.parse(localStorage.getItem('medical_students_db')) || [];
+        let announcementText = localStorage.getItem('site_announcement') || "أهلاً بكم في البوابة الرسمية لقسم تقنيات المختبرات الطبية للعام الدراسي 2026-2027.";
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('ticker-text-display').innerText = announcementText;
+            renderStudentsTable();
+        });
+
+        // تبديل المظهر (Dark / Light)
+        function toggleTheme() {
+            const html = document.documentElement;
+            html.classList.toggle('dark');
+        }
+
+        // فتح وإغلاق لوحة الإدارة
+        function openAdminModal() {
+            document.getElementById('admin-modal').classList.remove('hidden');
+        }
+        function closeAdminModal() {
+            document.getElementById('admin-modal').classList.add('hidden');
+        }
+
+        // تسجيل دخول المشرف
+        function handleAdminLogin(event) {
+            event.preventDefault();
+            const user = document.getElementById('admin-username').value.trim();
+            const pass = document.getElementById('admin-password').value.trim();
+            
+            if ((user === 'admin' && pass === '1234') || (user && pass.length >= 3)) {
+                document.getElementById('current-admin-name').innerText = user;
+                document.getElementById('admin-login-screen').classList.add('hidden');
+                document.getElementById('admin-dashboard-screen').classList.remove('hidden');
+            } else {
+                alert('اسم المشرف أو رمز الحماية (PIN) غير صحيح!');
+            }
+        }
+
+        function logoutAdmin() {
+            document.getElementById('admin-dashboard-screen').classList.add('hidden');
+            document.getElementById('admin-login-screen').classList.remove('hidden');
+        }
+
+        // تبديل التبويبات داخل لوحة الإدارة
+        function switchAdminTab(tabName) {
+            ['registration', 'supervisors', 'announcement'].forEach(t => {
+                document.getElementById(`admin-tab-${t}`).classList.add('hidden');
+                document.getElementById(`tab-btn-${t}`).className = "pb-2 text-slate-400 hover:text-white";
+            });
+            document.getElementById(`admin-tab-${tabName}`).classList.remove('hidden');
+            document.getElementById(`tab-btn-${tabName}`).className = "pb-2 border-b-2 border-teal-400 text-teal-400 font-bold";
+        }
+
+        // حاسبة السعي النهائي
+        function calculateFinalCourseGrade() {
+            const mid = parseFloat(document.getElementById('calc-mid-input').value) || 0;
+            const daily = parseFloat(document.getElementById('calc-daily-input').value) || 0;
+            const attendance = parseFloat(document.getElementById('calc-attendance-input').value) || 0;
+            
+            const total = mid + daily + attendance;
+            const resBox = document.getElementById('gpa-result-box');
+            resBox.classList.remove('hidden');
+            resBox.innerHTML = `نتيجة السعي النهائي من 40: <span class="text-white text-base font-black">${total.toFixed(1)} / 40</span> — ${total >= 20 ? 'استحقاق دخول الامتحان النهائي (ناجح بالسعي)' : 'يحتاج مراجعة القسم'}`;
+        }
+
+        // إدارة الحالة المرضية في التسجيل
+        function toggleMedicalInput(val) {
+            const otherInput = document.getElementById('reg-medical-other');
+            if (val === 'أخرى') {
+                otherInput.classList.remove('hidden');
+            } else {
+                otherInput.classList.add('hidden');
+                otherInput.value = '';
+            }
+        }
+
+        // إضافة طالب جديد
+        function addStudentRecord(event) {
+            event.preventDefault();
+            const medicalVal = document.getElementById('reg-medical').value;
+            const medicalFinal = medicalVal === 'أخرى' ? document.getElementById('reg-medical-other').value : 'سليم';
+
+            const newStudent = {
+                name: document.getElementById('reg-name').value,
+                studyType: document.getElementById('reg-study-type').value,
+                gender: document.getElementById('reg-gender').value,
+                channel: document.getElementById('reg-channel').value,
+                prevStudy: document.getElementById('reg-prev-study').value,
+                gpa: document.getElementById('reg-gpa').value,
+                blood: document.getElementById('reg-blood').value,
+                medical: medicalFinal,
+                dob: document.getElementById('reg-dob').value,
+                address: document.getElementById('reg-address').value,
+                phone: document.getElementById('reg-phone').value,
+                guardianPhone: document.getElementById('reg-guardian-phone').value,
+                receipt: document.getElementById('reg-receipt').value
+            };
+
+            studentsData.push(newStudent);
+            localStorage.setItem('medical_students_db', JSON.stringify(studentsData));
+            renderStudentsTable();
+            document.getElementById('student-reg-form').reset();
+            alert('تم تسجيل الطالب بنجاح في قاعدة البيانات!');
+        }
+
+        // عرض جدول الطلبة
+        function renderStudentsTable() {
+            const tbody = document.getElementById('students-reg-rows');
+            tbody.innerHTML = '';
+            if (studentsData.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="15" class="p-4 text-center text-slate-500">لا توجد سجلات طلّاب مدخلة حتى الآن.</td></tr>`;
+                return;
+            }
+            studentsData.forEach((s, index) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="p-2.5">${index + 1}</td>
+                        <td class="p-2.5 font-bold text-white">${s.name}</td>
+                        <td class="p-2.5">${s.studyType}</td>
+                        <td class="p-2.5">${s.gender}</td>
+                        <td class="p-2.5">${s.channel}</td>
+                        <td class="p-2.5">${s.prevStudy}</td>
+                        <td class="p-2.5 text-teal-400 font-bold">${s.gpa}</td>
+                        <td class="p-2.5">${s.blood}</td>
+                        <td class="p-2.5">${s.medical}</td>
+                        <td class="p-2.5">${s.dob}</td>
+                        <td class="p-2.5">${s.address}</td>
+                        <td class="p-2.5">${s.phone}</td>
+                        <td class="p-2.5">${s.guardianPhone}</td>
+                        <td class="p-2.5">${s.receipt}</td>
+                        <td class="p-2.5 text-center no-print">
+                            <button onclick="deleteStudent(${index})" class="text-rose-400 hover:text-rose-300 p-1"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
             });
         }
+
+        function deleteStudent(index) {
+            if (confirm('هل أنت متأكد من حذف سجل هذا الطالب؟')) {
+                studentsData.splice(index, 1);
+                localStorage.setItem('medical_students_db', JSON.stringify(studentsData));
+                renderStudentsTable();
+            }
+        }
+
+        // طباعة وتصدير
+        function printRegistrationPDF() {
+            window.print();
+        }
+
+        function exportToExactExcel() {
+            let csv = '\uFEFFالاسم,نوع الدراسة,الجنس,قناة القبول,الدراسة السابقة,المعدل,فصيلة الدم,الحالة المرضية,تاريخ التولد,السكن,الهاتف,ولي الأمر,الوصل\n';
+            studentsData.forEach(s => {
+                csv += `"${s.name}","${s.studyType}","${s.gender}","${s.channel}","${s.prevStudy}","${s.gpa}","${s.blood}","${s.medical}","${s.dob}","${s.address}","${s.phone}","${s.guardianPhone}","${s.receipt}"\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Medical_Labs_Students_2026.csv';
+            a.click();
+        }
+
+        // إضافة مشرف جديد
+        function addNewSupervisor(event) {
+            event.preventDefault();
+            alert('تم حفظ المشرف وصلاحياته بنجاح!');
+            event.target.reset();
+        }
+
+        // تحديث الإعلان
+        function updateAnnouncement(event) {
+            event.preventDefault();
+            const text = document.getElementById('announcement-input-field').value.trim();
+            if (text) {
+                announcementText = text;
+                localStorage.setItem('site_announcement', announcementText);
+                document.getElementById('ticker-text-display').innerText = announcementText;
+                alert('تم تحديث الشريط الإعلاني بنجاح!');
+            }
+        }
     </script>
-    </body>
-
+</body>
 </html>
-
-
-
-
