@@ -3,19 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المختبر الافتراضي السريري التفاعلي ثلاثي الأبعاد | قسم تقنيات المختبرات الطبية</title>
+    <title>المختبر الافتراضي السريري التفاعلي ثلاثي الأبعاد | تقنيات المختبرات الطبية</title>
     
-    <!-- Meta SEO & Open Graph -->
     <meta name="description" content="منصة علمية طبية رقمية متقدمة لتعليم محاكاة الفحوصات المختبرية، تشمل أبحاث صورة الدم CBC، الكيمياء السريرية، الأحياء المجهرية، وبنك الدم والتوافق.">
     <meta name="keywords" content="مختبر افتراضي, تقنيات المختبرات الطبية, فحص CBC, الكيمياء السريرية, تصبيغ جرام, بنك الدم, PCR, Medical Laboratory Science">
-    <meta name="author" content="Medical Laboratory Technologies Platform">
     
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="المختبر الافتراضي السريري التفاعلي ثلاثي الأبعاد">
-    <meta property="og:description" content="منصة تعليمية متكاملة لمحاكاة الأجهزة والأنابيب والعينات المختبرية بدقة علمية متناهية.">
-    
-    <!-- Schema.org Medical Web Page -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -25,16 +17,10 @@
       "audience": {
         "@type": "MedicalAudience",
         "audienceType": "Medical Laboratory Students"
-      },
-      "about": [
-        {"@type": "MedicalTest", "name": "Complete Blood Count (CBC)"},
-        {"@type": "MedicalTest", "name": "Clinical Biochemistry Assays"},
-        {"@type": "MedicalTest", "name": "Blood Grouping and Cross-Match"}
-      ]
+      }
     }
     </script>
 
-    <!-- Tailwind CSS & FontAwesome -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -71,7 +57,6 @@
 </head>
 <body class="min-h-screen p-3 md:p-6 selection:bg-cyan-500 selection:text-slate-950">
 
-    <!-- Header & Navigation Bar -->
     <header role="banner" class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between pb-5 mb-6 border-b border-slate-800 gap-4">
         <div class="flex items-center gap-3.5">
             <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-2xl font-bold shadow-[0_0_25px_rgba(53,213,242,0.2)]">
@@ -92,7 +77,6 @@
         </div>
     </header>
 
-    <!-- Department Selection Navigation Tabs -->
     <nav role="navigation" aria-label="أقسام المختبر" class="max-w-7xl mx-auto flex gap-2 overflow-x-auto pb-4 mb-6 text-xs font-bold scrollbar-thin">
         <button onclick="switchGlobalDepartment('hub')" id="dept-btn-hub" class="px-5 py-3 rounded-2xl bg-cyan-500 text-slate-950 shadow transition flex items-center gap-2 shrink-0 font-black">
             <i class="fa-solid fa-vr-cardboard text-sm" aria-hidden="true"></i> مختبر العرض الرئيسي (3D Hub)
@@ -114,18 +98,17 @@
         </button>
     </nav>
 
-    <!-- Main Workspace Container -->
     <main role="main" class="max-w-7xl mx-auto space-y-6">
 
-        <!-- ==================== 1. 3D LAB HUB & WORKSTATION ==================== -->
+        <!-- 1. 3D HUB -->
         <section id="dept-hub" class="space-y-4" aria-label="منظومة المختبر ثلاثي الأبعاد">
             <div class="glass-panel p-5 md:p-6 rounded-3xl relative overflow-hidden space-y-4">
                 <div class="flex flex-col md:flex-row items-center justify-between pb-4 border-b border-slate-800 gap-3">
                     <div>
                         <h2 class="text-sm font-bold text-cyan-400 flex items-center gap-2">
-                            <i class="fa-solid fa-cube" aria-hidden="true"></i> بيئة المختبر ثلاثية الأبعاد التفاعلية (Three.js PBR Rendering Engine)
+                            <i class="fa-solid fa-cube" aria-hidden="true"></i> بيئة المختبر ثلاثية الأبعاد التفاعلية (Optimized PBR Engine)
                         </h2>
-                        <p class="text-xs text-slate-400 mt-0.5">انقر على أي محطة عمل أو أنبوب عينة في المشهد لعرض بياناته الوصفية العلمية والتفاعل معه.</p>
+                        <p class="text-xs text-slate-400 mt-0.5">انقر على أي محطة عمل أو أنبوب عينة في المشهد لعرض بياناته الوصفية العلمية.</p>
                     </div>
                     <div class="flex gap-2 flex-wrap">
                         <button onclick="setCameraPreset('overview')" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 border border-slate-700 transition">نظرة عامة</button>
@@ -135,15 +118,13 @@
                     </div>
                 </div>
 
-                <!-- Three.js Canvas Container -->
                 <div id="canvas-container" class="relative w-full h-[480px] md:h-[580px] rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden flex items-center justify-center shadow-inner" role="region" aria-label="شاشة العرض ثلاثي الأبعاد للمختبر">
                     <div id="loading-3d" class="absolute inset-0 bg-slate-950/90 backdrop-blur flex flex-col items-center justify-center gap-3 z-10">
                         <div class="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin"></div>
-                        <span class="text-xs text-cyan-400 font-bold tracking-wider">جارٍ بناء المختبر الثلاثي الأبعاد وتحميل الخامات الفيزيائية (PBR)...</span>
+                        <span class="text-xs text-cyan-400 font-bold tracking-wider">جارٍ تحميل الخامات الفيزيائية والبيئة الرسومية...</span>
                     </div>
                 </div>
 
-                <!-- Interactive Object Metadata HUD Panel -->
                 <div id="metadata-hud" class="p-4 rounded-2xl glass-card text-xs flex flex-col md:flex-row items-center justify-between gap-4 border border-cyan-500/30">
                     <div class="flex items-center gap-3.5">
                         <div class="w-10 h-10 rounded-xl bg-cyan-500/20 flex items-center justify-center text-cyan-400 text-lg">
@@ -155,13 +136,13 @@
                         </div>
                     </div>
                     <div class="text-slate-300 max-w-xl text-right text-xs leading-relaxed" id="hud-description">
-                        تحتوي المحطة على حوامل أنابيب تفريغ مزودة بمانعات تخثر متعددة، وأجهزة تحليل بصري، ومجهر مركب عالي الدقة. انقر على أي عنصر داخل المشهد لعرض تفاصيله العلمية.
+                        تحتوي المحطة على حوامل أنابيب تفريغ، وأجهزة تحليل بصري، ومجهر مركب عالي الدقة. انقر على أي عنصر داخل المشهد لعرض تفاصيله.
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ==================== 2. HEMATOLOGY & CBC SIMULATION ==================== -->
+        <!-- 2. HEMATOLOGY & CBC -->
         <section id="dept-hematology" class="space-y-6 hidden" aria-label="قسم أبحاث الدم">
             <div class="glass-panel p-6 rounded-3xl space-y-4">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800 pb-3 gap-2">
@@ -190,7 +171,6 @@
                 </div>
             </div>
 
-            <!-- Progress Box -->
             <div id="cbc-progress" class="glass-panel p-6 rounded-3xl space-y-4 hidden">
                 <div class="flex items-center justify-between border-b border-slate-800 pb-3">
                     <h3 class="text-sm font-bold text-amber-400 flex items-center gap-2">
@@ -204,7 +184,6 @@
                 </div>
             </div>
 
-            <!-- Report Box -->
             <div id="cbc-report" class="glass-panel p-6 md:p-8 rounded-3xl space-y-6 hidden">
                 <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-800 pb-4 gap-4">
                     <div>
@@ -246,7 +225,7 @@
             </div>
         </section>
 
-        <!-- ==================== 3. BIOCHEMISTRY LAB ==================== -->
+        <!-- 3. BIOCHEMISTRY -->
         <section id="dept-biochem" class="space-y-6 hidden" aria-label="قسم الكيمياء السريرية">
             <div class="glass-panel p-6 rounded-3xl space-y-4">
                 <div class="border-b border-slate-800 pb-3">
@@ -274,7 +253,7 @@
             </div>
         </section>
 
-        <!-- ==================== 4. MICROBIOLOGY & GRAM STAIN ==================== -->
+        <!-- 4. MICROBIOLOGY -->
         <section id="dept-microbio" class="space-y-6 hidden" aria-label="قسم الأحياء المجهرية">
             <div class="glass-panel p-6 rounded-3xl space-y-4">
                 <div class="border-b border-slate-800 pb-3">
@@ -294,7 +273,7 @@
             </div>
         </section>
 
-        <!-- ==================== 5. BLOOD BANK & CROSS-MATCH ==================== -->
+        <!-- 5. BLOOD BANK -->
         <section id="dept-bloodbank" class="space-y-6 hidden" aria-label="قسم بنك الدم">
             <div class="glass-panel p-6 rounded-3xl space-y-4">
                 <div class="border-b border-slate-800 pb-3">
@@ -326,7 +305,7 @@
             </div>
         </section>
 
-        <!-- ==================== 6. MOLECULAR DIAGNOSTICS (PCR) ==================== -->
+        <!-- 6. MOLECULAR (PCR) -->
         <section id="dept-molecular" class="space-y-6 hidden" aria-label="قسم التشخيص الجزيئي">
             <div class="glass-panel p-6 rounded-3xl space-y-4">
                 <div class="border-b border-slate-800 pb-3">
@@ -354,15 +333,14 @@
 
     </main>
 
-    <!-- Footer -->
     <footer role="contentinfo" class="max-w-7xl mx-auto mt-12 pt-6 border-t border-slate-800 text-center text-xs text-slate-500 space-y-2">
         <p>© 2026 منصة تقنيات المختبرات الطبية الافتراضية. جميع الحقوق محفوظة.</p>
         <p>بيئة تعليمية محاكاة مخصصة لأغراض التدريب الأكاديمي والبحث العلمي السريري.</p>
     </footer>
 
-    <!-- Three.js & Scientific Simulation Engine Script -->
     <script>
-        // Global Department Switcher
+        let animationFrameId = null;
+
         function switchGlobalDepartment(deptId) {
             ['hub', 'hematology', 'biochem', 'microbio', 'bloodbank', 'molecular'].forEach(id => {
                 const sec = document.getElementById(`dept-${id}`);
@@ -373,8 +351,17 @@
             document.getElementById(`dept-${deptId}`).classList.remove('hidden');
             document.getElementById(`dept-btn-${deptId}`).className = "px-5 py-3 rounded-2xl bg-cyan-500 text-slate-950 shadow transition flex items-center gap-2 shrink-0 font-black";
 
-            if(deptId === 'hub' && !window.threeInitialized) {
-                initThreeJSLabHub();
+            // Manage Three.js render loop lifecycle to prevent memory leaks and background CPU usage
+            if(deptId === 'hub') {
+                if(!window.threeInitialized) {
+                    initThreeJSLabHub();
+                } else if(window.resumeThreeAnimation) {
+                    window.resumeThreeAnimation();
+                }
+            } else {
+                if(window.pauseThreeAnimation) {
+                    window.pauseThreeAnimation();
+                }
             }
         }
 
@@ -408,7 +395,8 @@
         function initThreeJSLabHub() {
             const container = document.getElementById('canvas-container');
             if(!container) return;
-            document.getElementById('loading-3d').style.display = 'none';
+            const loader = document.getElementById('loading-3d');
+            if(loader) loader.style.display = 'none';
             window.threeInitialized = true;
 
             scene = new THREE.Scene();
@@ -426,7 +414,6 @@
             renderer.shadowMap.type = THREE.PCFSoftShadowMap;
             container.appendChild(renderer.domElement);
 
-            // Lighting System
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.65);
             scene.add(ambientLight);
 
@@ -442,7 +429,6 @@
             const labGroup = new THREE.Group();
             scene.add(labGroup);
 
-            // 1. Modern Laboratory Worktable (Bench)
             const benchGeo = new THREE.BoxGeometry(8.5, 0.35, 3.5);
             const benchMat = new THREE.MeshStandardMaterial({ color: 0x0f1f38, roughness: 0.25, metalness: 0.8 });
             const bench = new THREE.Mesh(benchGeo, benchMat);
@@ -450,7 +436,6 @@
             bench.receiveShadow = true;
             labGroup.add(bench);
 
-            // 2. Automated Hematology Analyzer 3D Model
             const analyzerGroup = new THREE.Group();
             const bodyGeo = new THREE.BoxGeometry(2.0, 1.6, 1.5);
             const bodyMat = new THREE.MeshStandardMaterial({ color: 0x142842, roughness: 0.2, metalness: 0.6 });
@@ -469,7 +454,6 @@
             labGroup.add(analyzerGroup);
             interactiveObjects.push(analyzerGroup);
 
-            // 3. Compound Microscope 3D Model
             const micGroup = new THREE.Group();
             const baseGeo = new THREE.CylinderGeometry(0.7, 0.8, 0.2, 32);
             const metalMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.9, roughness: 0.1 });
@@ -491,7 +475,6 @@
             labGroup.add(micGroup);
             interactiveObjects.push(micGroup);
 
-            // 4. Specimen Tube Racks & Standard Collection Tubes
             const tubeDataList = [
                 { color: 0x9478F6, key: "lavender_tube", x: -0.4 },
                 { color: 0x3b82f6, key: "bluetube", x: -0.15 },
@@ -550,12 +533,26 @@
                 }
             });
 
+            let isRunning = true;
             function animate() {
-                requestAnimationFrame(animate);
+                if(!isRunning) return;
+                animationFrameId = requestAnimationFrame(animate);
                 labGroup.rotation.y += 0.0012;
                 renderer.render(scene, camera);
             }
             animate();
+
+            window.resumeThreeAnimation = function() {
+                if(!isRunning) {
+                    isRunning = true;
+                    animate();
+                }
+            };
+
+            window.pauseThreeAnimation = function() {
+                isRunning = false;
+                if(animationFrameId) cancelAnimationFrame(animationFrameId);
+            };
 
             window.addEventListener('resize', () => {
                 if(!container) return;
@@ -577,7 +574,7 @@
             setCameraPreset('overview');
         }
 
-        // ==================== CBC SIMULATION ENGINE ====================
+        // CBC SIMULATION
         function runCBCAnalysis() {
             const box = document.getElementById('cbc-progress');
             const report = document.getElementById('cbc-report');
@@ -683,7 +680,7 @@
             tbody.innerHTML = rows;
         }
 
-        // ==================== BIOCHEMISTRY ====================
+        // BIOCHEMISTRY
         function runBiochem() {
             const t = document.getElementById('bio-test').value;
             const abs = parseFloat(document.getElementById('bio-abs').value) || 0;
@@ -693,7 +690,7 @@
             res.innerText = `النتيجة المحسوبة عبر الامتصاص الضوئي: ${c.toFixed(1)} mg/dL — ${c > 140 ? 'مرتفع عن الحد الطبيعي' : 'ضمن الحدود الطبيعية'}`;
         }
 
-        // ==================== GRAM STAIN ====================
+        // GRAM STAIN
         function applyGramStep(step) {
             const text = document.getElementById('gram-text');
             if(step === 1) text.innerHTML = '<span class="text-purple-400 font-bold">1. إضافة Crystal Violet:</span> تلونت جميع الخلايا البكتيرية (موجبة وسالبة) باللون البنفسجي.';
@@ -702,7 +699,7 @@
             else if(step === 4) text.innerHTML = '<span class="text-rose-400 font-bold">4. الصبغة المعاكسة (Safranin):</span> تظهر بكتيريا سالب جرام باللون الوردي/الأحمر!';
         }
 
-        // ==================== BLOOD BANK ====================
+        // BLOOD BANK
         function checkBloodBankMatch() {
             const d = document.getElementById('bb-donor').value;
             const r = document.getElementById('bb-recipient').value;
@@ -729,7 +726,7 @@
             }
         }
 
-        // ==================== PCR SIMULATION ====================
+        // PCR SIMULATION
         function runPCRSimulation() {
             const icon = document.getElementById('pcr-status-icon');
             const title = document.getElementById('pcr-title');
