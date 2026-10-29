@@ -1,23 +1,8 @@
-const CACHE_NAME = 'medical-labs-v2026';
-const assetsToCache = [
-  './index.html',
-  './manifest.json',
-  'https://cdn.tailwindcss.com',
-  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
-];
-
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(assetsToCache);
-    })
-  );
+﻿const CACHE_NAME = 'anesthesia-portal-v1';
+const assets = ['./index.html', './student-portal.html', './virtual-lab.html', './style.css', './virtual-lab.css', './app.js', './virtual-lab.js', './manifest.json'];
+self.addEventListener('install', e => {
+  e.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(assets)));
 });
-
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request);
-    })
-  );
+self.addEventListener('fetch', e => {
+  e.respondWith(caches.match(e.request).then(response => response || fetch(e.request)));
 });

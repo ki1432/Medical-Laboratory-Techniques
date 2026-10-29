@@ -3,128 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>قسم تقنيات المختبرات الطبية | البوابة الأكاديمية وإدارة الطلبة</title>
-    <meta name="description" content="البوابة الرسمية لقسم تقنيات المختبرات الطبية، إدارة وتسجيل الطلبة، والمناهج الدراسية وفق المعايير الوزارية.">
+    <title>قسم تقنيات التخدير والعناية المركزة | البوابة الأكاديمية وإدارة الطلبة</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: { brand: { 900: '#07111F', 800: '#0B1728', 700: '#0B2933', 500: '#35D5F2', 400: '#68E7DA' } }
-                }
-            }
+            theme: { extend: { colors: { brand: { 900: '#07111F', 800: '#0B1728', 500: '#35D5F2', 400: '#68E7DA' } } } }
         }
     </script>
-    <style>
-        body { font-family: 'Cairo', system-ui, -apple-system, sans-serif; background-color: #07111F; color: #F5F8FC; }
-        .glass-panel { background: rgba(11, 23, 40, 0.9); backdrop-filter: blur(16px); border: 1px solid rgba(53, 213, 242, 0.2); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
-        .glass-card { background: rgba(15, 31, 54, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(53, 213, 242, 0.12); }
-    </style>
 </head>
-<body class="min-h-screen p-4 md:p-8 selection:bg-cyan-500 selection:text-slate-950">
-
-    <header role="banner" class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between pb-6 mb-8 border-b border-slate-800 gap-4">
+<body class="bg-[#07111F] text-slate-100 min-h-screen font-['Cairo'] selection:bg-cyan-500 selection:text-slate-950 p-4 md:p-8">
+    <header class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between pb-6 mb-8 border-b border-slate-800 gap-4">
         <div class="flex items-center gap-4">
-            <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-3xl font-bold">
-                <i class="fa-solid fa-microscope animate-pulse" aria-hidden="true"></i>
+            <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-3xl">
+                <i class="fa-solid fa-syringe animate-pulse"></i>
             </div>
             <div>
-                <h1 class="text-lg font-black text-white leading-tight">قسم تقنيات المختبرات الطبية</h1>
-                <span class="text-xs text-cyan-400 font-mono">Medical Laboratory Techniques Department - Academic Portal</span>
+                <h1 class="text-lg font-black text-white">قسم تقنيات التخدير والعناية المركزة</h1>
+                <span class="text-xs text-cyan-400 font-mono">Department of Anesthesia Techniques - Academic Portal</span>
             </div>
         </div>
-        <div class="flex items-center gap-3">
-            <a href="./virtual-lab.html" class="px-4 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs transition flex items-center gap-2 shadow">
-                <i class="fa-solid fa-flask-vial"></i> المختبر الافتراضي الشامل
+        <nav class="flex items-center gap-3">
+            <a href="student-portal.html" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs transition flex items-center gap-2">
+                <i class="fa-solid fa-graduation-cap"></i> بوابة الطالب والمناهج
             </a>
-        </div>
+            <a href="virtual-lab.html" class="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs transition flex items-center gap-2 shadow">
+                <i class="fa-solid fa-vr-cardboard"></i> محاكي أجهزة التخدير
+            </a>
+        </nav>
     </header>
 
-    <main role="main" class="max-w-7xl mx-auto space-y-8">
-        
-        <!-- قسم إدارة وتسجيل الطلبة للمختبرات الطبية -->
-        <section class="glass-panel p-6 md:p-8 rounded-3xl space-y-6 border border-cyan-500/30">
-            <div class="border-b border-slate-800 pb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+    <main class="max-w-7xl mx-auto space-y-8">
+        <section class="bg-slate-900/90 backdrop-blur border border-cyan-500/20 p-6 md:p-8 rounded-3xl space-y-3 shadow-xl">
+            <h2 class="text-lg font-black text-cyan-400 flex items-center gap-2">
+                <i class="fa-solid fa-eye"></i> رؤية ورسالة قسم تقنيات التخدير
+            </h2>
+            <p class="text-xs md:text-sm text-slate-300 leading-relaxed">
+                الريادة في إعداد كوادر تقنية طبية متخصصة في التخدير والعناية المركزة، قادرة على تشغيل ومراقبة أجهزة التخدير الحديثة والتعامل مع الحالات الحرجة بكفاءة تامة وفق المعايير الوزارية والبروتوكولات الصحية العالمية.
+            </p>
+        </section>
+
+        <section class="bg-slate-900/90 backdrop-blur border border-slate-800 p-6 md:p-8 rounded-3xl space-y-6 shadow-xl">
+            <div class="border-b border-slate-800 pb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                 <div>
-                    <h2 class="text-base md:text-lg font-black text-cyan-400 flex items-center gap-2.5">
-                        <i class="fa-solid fa-sliders"></i> لوحة إدارة القسم وتسجيل الطلبة (Medical Lab Management)
+                    <h2 class="text-lg font-black text-cyan-400 flex items-center gap-2">
+                        <i class="fa-solid fa-sliders"></i> لوحة الإدارة وتسجيل الطلبة (Anesthesia Management Suite)
                     </h2>
-                    <p class="text-xs text-slate-400 mt-1">نظام إدارة شؤون طلبة المختبرات الطبية، توزيع القاعات، والمختبرات التعليمية.</p>
+                    <p class="text-xs text-slate-400">إدارة سجلات وقبولات الطلبة بالمعايير الحصرية للقسم.</p>
                 </div>
                 <span class="px-3 py-1 bg-cyan-500/10 text-cyan-400 text-xs rounded-xl font-mono border border-cyan-500/25">العام الدراسي 2025-2026</span>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="glass-card p-5 rounded-2xl space-y-4 lg:col-span-1 border border-slate-800">
-                    <h3 class="text-sm font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
-                        <i class="fa-solid fa-user-plus text-cyan-400"></i> تسجيل طالب مختبرات جديد
-                    </h3>
-                    <form onsubmit="event.preventDefault(); alert('تم تسجيل الطالب في قسم تقنيات المختبرات الطبية بنجاح.');" class="space-y-3 text-xs">
-                        <div>
-                            <label class="block text-slate-300 font-bold mb-1">اسم الطالب الرباعي:</label>
-                            <input type="text" required placeholder="أدخل الاسم الكامل" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white outline-none focus:border-cyan-400">
-                        </div>
-                        <div>
-                            <label class="block text-slate-300 font-bold mb-1">المرحلة الدراسية:</label>
-                            <select class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white outline-none focus:border-cyan-400">
-                                <option value="1">المرحلة الأولى (First Stage)</option>
-                                <option value="2">المرحلة الثانية (Second Stage)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-slate-300 font-bold mb-1">الرقم الامتحاني / الكود:</label>
-                            <input type="text" required placeholder="LAB-2026-XXXX" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white outline-none focus:border-cyan-400 font-mono">
-                        </div>
-                        <button type="submit" class="w-full py-2.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black rounded-xl transition shadow">
-                            تأكيد التسجيل بقسم المختبرات
-                        </button>
-                    </form>
+            <form id="studentRegisterForm" class="bg-slate-950/60 p-5 rounded-2xl border border-slate-800 space-y-4 text-xs">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                    <i class="fa-solid fa-user-plus text-cyan-400"></i> استمارة تسجيل طالب تخدير جديد
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-slate-300 font-bold mb-1">اسم الطالب الرباعي:</label>
+                        <input type="text" id="regName" required placeholder="الاسم الكامل" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white outline-none focus:border-cyan-400">
+                    </div>
+                    <div>
+                        <label class="block text-slate-300 font-bold mb-1">عنوان السكن:</label>
+                        <input type="text" id="regAddress" required placeholder="المحافظة / الحي" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white outline-none focus:border-cyan-400">
+                    </div>
+                    <div>
+                        <label class="block text-slate-300 font-bold mb-1">تاريخ التولد:</label>
+                        <input type="date" id="regDob" required class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white outline-none focus:border-cyan-400">
+                    </div>
+                    <div>
+                        <label class="block text-slate-300 font-bold mb-1">الحالة المرضية:</label>
+                        <select id="regHealth" onchange="document.getElementById('regHealthOther').style.display = this.value === 'أخرى' ? 'block' : 'none';" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white outline-none focus:border-cyan-400 mb-1">
+                            <option value="سليم">سليم</option>
+                            <option value="أخرى">أخرى</option>
+                        </select>
+                        <input type="text" id="regHealthOther" placeholder="حدد الحالة..." style="display:none;" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-white outline-none focus:border-cyan-400">
+                    </div>
+                    <div>
+                        <label class="block text-slate-300 font-bold mb-1">فصيلة الدم:</label>
+                        <select id="regBlood" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white outline-none focus:border-cyan-400 font-mono">
+                            <option value="A+">A+</option><option value="A-">A-</option>
+                            <option value="B+">B+</option><option value="B-">B-</option>
+                            <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                            <option value="O+">O+</option><option value="O-">O-</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-slate-300 font-bold mb-1">المعدل:</label>
+                        <input type="number" step="0.01" id="regAvg" required placeholder="مثال: 88.5" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white outline-none focus:border-cyan-400 font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-slate-300 font-bold mb-1">الدراسة السابقة:</label>
+                        <select id="regPrevEdu" onchange="document.getElementById('regPrevEduOther').style.display = this.value === 'أخرى' ? 'block' : 'none';" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white outline-none focus:border-cyan-400 mb-1">
+                            <option value="لا يوجد">لا يوجد</option>
+                            <option value="أخرى">أخرى</option>
+                        </select>
+                        <input type="text" id="regPrevEduOther" placeholder="اذكر التفاصيل..." style="display:none;" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-white outline-none focus:border-cyan-400">
+                    </div>
+                    <div>
+                        <label class="block text-slate-300 font-bold mb-1">قناة القبول:</label>
+                        <select id="regChannel" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white outline-none focus:border-cyan-400">
+                            <option value="عامة">عامة</option>
+                            <option value="ذوي الشهداء">ذوي الشهداء</option>
+                            <option value="ذوي الإعاقة">ذوي الإعاقة</option>
+                            <option value="منحة">منحة</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-slate-300 font-bold mb-1">رقم الوصل:</label>
+                        <input type="text" id="regReceipt" required placeholder="REC-XXXXX" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white outline-none focus:border-cyan-400 font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-slate-300 font-bold mb-1">هاتف ولي الأمر:</label>
+                        <input type="tel" id="regParentPhone" required placeholder="07XXXXXXXXX" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white outline-none focus:border-cyan-400 font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-slate-300 font-bold mb-1">هاتف الطالب:</label>
+                        <input type="tel" id="regStudentPhone" required placeholder="07XXXXXXXXX" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white outline-none focus:border-cyan-400 font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-slate-300 font-bold mb-1">الجنس:</label>
+                        <select id="regGender" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white outline-none focus:border-cyan-400">
+                            <option value="ذكر">ذكر</option>
+                            <option value="أنثى">أنثى</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-slate-300 font-bold mb-1">نوع الدراسة:</label>
+                        <select id="regStudyType" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white outline-none focus:border-cyan-400">
+                            <option value="صباحي">صباحي</option>
+                            <option value="مسائي">مسائي</option>
+                        </select>
+                    </div>
                 </div>
+                <button type="submit" class="mt-4 px-6 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black rounded-xl transition shadow">
+                    تثبيت بيانات طالب التخدير
+                </button>
+            </form>
 
-                <div class="glass-card p-5 rounded-2xl space-y-4 lg:col-span-2 border border-slate-800 flex flex-col justify-between">
-                    <div class="space-y-3">
-                        <h3 class="text-sm font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
-                            <i class="fa-solid fa-users-gear text-cyan-400"></i> سجل طلبة تقنيات المختبرات الطبية المسجلين
-                        </h3>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-right text-xs">
-                                <thead>
-                                    <tr class="text-slate-400 border-b border-slate-800 bg-slate-900/40">
-                                        <th class="p-2.5">المعرف</th>
-                                        <th class="p-2.5">اسم الطالب</th>
-                                        <th class="p-2.5">المرحلة</th>
-                                        <th class="p-2.5">المختبر التعليمي</th>
-                                        <th class="p-2.5">الحالة</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-slate-800/60 text-slate-300">
-                                    <tr>
-                                        <td class="p-2.5 font-mono text-cyan-400">LAB-26-012</td>
-                                        <td class="p-2.5 font-bold text-white">علي حسن جاسم</td>
-                                        <td class="p-2.5">المرحلة الثانية</td>
-                                        <td class="p-2.5">مختبر الأحياء المجهرية</td>
-                                        <td class="p-2.5"><span class="px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 font-bold border border-emerald-500/20">مستوفٍ وزارياً</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-xs text-cyan-300 flex items-center gap-2">
-                        <i class="fa-solid fa-circle-check shrink-0"></i>
-                        <span>النظام الإداري يعمل بالتوافق التام مع متطلبات قسم تقنيات المختبرات الطبية.</span>
-                    </div>
-                </div>
+            <div class="overflow-x-auto border border-slate-800 rounded-2xl">
+                <table class="w-full text-right text-[11px] whitespace-nowrap">
+                    <thead>
+                        <tr class="text-slate-400 bg-slate-900/80 border-b border-slate-800 font-bold">
+                            <th class="p-2.5">ت</th>
+                            <th class="p-2.5">اسم الطالب</th>
+                            <th class="p-2.5">عنوان السكن</th>
+                            <th class="p-2.5">تاريخ التولد</th>
+                            <th class="p-2.5">الحالة المرضية</th>
+                            <th class="p-2.5">فصيلة الدم</th>
+                            <th class="p-2.5">المعدل</th>
+                            <th class="p-2.5">الدراسة السابقة</th>
+                            <th class="p-2.5">قناة القبول</th>
+                            <th class="p-2.5">رقم الوصل</th>
+                            <th class="p-2.5">هاتف ولي الامر</th>
+                            <th class="p-2.5">الهاتف</th>
+                            <th class="p-2.5">الجنس</th>
+                            <th class="p-2.5">نوع الدراسة</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/60 text-slate-300">
+                        <tr>
+                            <td class="p-2.5 font-mono">1</td>
+                            <td class="p-2.5 font-bold text-white">علي حسن جاسم</td>
+                            <td class="p-2.5">البصرة</td>
+                            <td class="p-2.5 font-mono">2004-05-12</td>
+                            <td class="p-2.5"><span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-bold">سليم</span></td>
+                            <td class="p-2.5 font-mono text-cyan-400 font-bold">O+</td>
+                            <td class="p-2.5 font-mono">91.4</td>
+                            <td class="p-2.5">لا يوجد</td>
+                            <td class="p-2.5">عامة</td>
+                            <td class="p-2.5 font-mono">REC-55412</td>
+                            <td class="p-2.5 font-mono">07812345678</td>
+                            <td class="p-2.5 font-mono">07712345678</td>
+                            <td class="p-2.5">ذكر</td>
+                            <td class="p-2.5">صباحي</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </section>
-
     </main>
 
-    <footer role="contentinfo" class="max-w-7xl mx-auto mt-12 pt-6 border-t border-slate-800 text-center text-xs text-slate-500 space-y-1">
-        <p>© 2026 قسم تقنيات المختبرات الطبية. جميع الحقوق محفوظة.</p>
-        <p>مرخصة وفق متطلبات لجان عمداء الكليات والمعاهد التقنية الطبية - وزارة التعليم العالي والبحث العلمي في العراق.</p>
+    <footer class="max-w-7xl mx-auto mt-12 pt-6 border-t border-slate-800 text-center text-xs text-slate-500 space-y-1">
+        <p>© 2026 قسم تقنيات التخدير والعناية المركزة. جميع الحقوق محفوظة.</p>
+        <p>مرخصة وفق متطلبات وزارة التعليم العالي والبحث العلمي في العراق.</p>
     </footer>
+    <script src="app.js"></script>
 </body>
 </html>

@@ -1,519 +1,70 @@
-﻿<!doctype html>
-<html lang="ar" dir="rtl">
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="بوابة طالب تقنيات المختبرات الطبية: المواد النظرية والعملية والرؤى والمحاور والمراجع التعليمية.">
-<title>بوابة الطالب | تقنيات المختبرات الطبية</title>
-<link rel="manifest" href="./manifest.json">
-<meta name="theme-color" content="#0f172a">
-<style>
-:root{--bg:#f3f7fa;--ink:#132f42;--muted:#526777;--line:#dce6ec;--brand:#087f8c;--card:#fff}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:Tahoma,Arial,sans-serif;line-height:1.85}
-a{color:#076b79;text-underline-offset:4px}
-button,input{font:inherit}
-button,a,input{touch-action:manipulation}
-button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #d38d14;outline-offset:4px}
-.wrap{width:min(1180px,92%);margin:auto}
-header{background:#102e42;color:white;padding:20px 0}
-.top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.brand{font-weight:bold;font-size:18px}
-.back{color:white;text-decoration:none;border:1px solid #668293;padding:8px 16px;border-radius:10px}
-.hero{padding:44px 0 25px}
-.eyebrow{color:var(--brand);font-weight:bold}
-h1{font-size:clamp(27px,5vw,44px);margin:8px 0;line-height:1.5}
-.lead{max-width:800px;color:var(--muted)}
-.stats{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
-.stat{background:white;border:1px solid var(--line);padding:9px 16px;border-radius:12px}
-.notice{background:#fff8e7;border:1px solid #e9d59c;padding:16px;border-radius:14px;font-size:14px}
-.toolbar{margin:24px 0;background:white;border:1px solid var(--line);padding:18px;border-radius:16px}
-.tabs,.filters{display:flex;gap:9px;flex-wrap:wrap}
-.tabs{margin-bottom:15px}
-button{cursor:pointer;border:1px solid var(--line);border-radius:10px;background:white;color:var(--ink);padding:9px 15px}
-button[aria-pressed="true"]{background:var(--brand);color:white;border-color:var(--brand)}
-.searchrow{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0}
-input{flex:1;min-width:190px;padding:12px;border:1px solid #aebfc9;border-radius:10px;background:#fbfdff}
-.summary{color:var(--muted);margin:18px 0}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:0 7px 25px #193c4f06}
-.badges{display:flex;gap:7px;flex-wrap:wrap}
-.badge{font-size:12px;background:#e7f5f4;color:#086467;padding:3px 10px;border-radius:20px}
-.badge.secondary{background:#edf1f7;color:#42556b}
-h2{font-size:21px;margin:12px 0 0;line-height:1.6}
-.english{font-size:14px;color:var(--muted);direction:ltr;text-align:right;margin:0 0 15px}
-h3{font-size:15px;margin:17px 0 5px;color:#087582}
-p{margin:6px 0}
-.card p,.card li{font-size:14px}
-ul{padding-right:21px;margin:6px 0}
-details{border-top:1px solid var(--line);margin-top:15px;padding-top:12px}
-summary{cursor:pointer;font-weight:bold}
-.source{display:block;margin:10px 0;padding:11px 13px;background:#f0f7fa;border:1px solid #dae9ef;border-radius:10px;text-decoration:none}
-.source small{display:block;color:var(--muted);font-size:11px}
-.limit{color:#79581e;background:#fff9eb;padding:10px;border-radius:8px}
-.empty{background:white;padding:35px;border-radius:16px;text-align:center}
-footer{margin-top:35px;padding:25px 0;color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
-@media(max-width:720px){.grid{grid-template-columns:1fr}.card{padding:19px}.hero{padding-top:28px}.tabs button{flex:1}}
-@media print{
-header,.toolbar,.notice,footer,.summary{display:none}
-body{background:white;color:black}
-.wrap{width:100%}
-.grid{display:block}
-.card{box-shadow:none;break-inside:avoid;margin:12px 0}
-details{display:block}
-details>summary{display:none}
-.source{border:0;padding:0}
-a{color:black}
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة الطالب والمقررات الدراسية | تقنيات التخدير</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 </head>
-<body>
-<header>
-<div class="wrap top">
-<div class="brand">تقنيات المختبرات الطبية</div>
-<a class="back" href="./index.html">العودة إلى الموقع</a>
-</div>
-</header>
+<body class="bg-[#07111F] text-slate-100 min-h-screen font-['Cairo'] p-4 md:p-8">
+    <header class="max-w-7xl mx-auto flex justify-between items-center pb-6 border-b border-slate-800 mb-8">
+        <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-2xl">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <div>
+                <h1 class="text-base font-black text-white">بوابة الطالب - مقررات ومصادر تقنيات التخدير</h1>
+                <p class="text-xs text-cyan-400">Student Portal & Academic Curricula</p>
+            </div>
+        </div>
+        <a href="index.html" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition">
+            <i class="fa-solid fa-arrow-right ml-1"></i> العودة للرئيسية
+        </a>
+    </header>
 
-<main class="wrap">
-<section class="hero">
-<div class="eyebrow">المكتبة الأكاديمية · 2026–2027</div>
-<h1>بوابة الطالب</h1>
-<p class="lead">موادك الدراسية في مكان واحد: تعرّف على رؤية كل مادة، وافصل محاورها النظرية والعملية، وافتح مصادرها التعليمية.</p>
-<div class="stats">
-<span class="stat">3 مراحل دراسية</span>
-<span class="stat">25 مادة بحسب المرحلة</span>
-<span class="stat">الفصل الدراسي الأول</span>
-</div>
-<div class="notice">
-<strong>عن المحتوى:</strong>
-أسماء المواد وتصنيفها مستخرجة من الجدول المرفق للصباحي والمسائي للفصل الأول 2026–2027.
-الرؤى والمحاور أدناه مقترحة وليست توصيفاً رسمياً معتمداً.
-المراجع مساندة ولا تضمن تغطية كل مفردات المنهج. بعض المراجع قديم ويحتاج استكمالاً بالمصادر الحالية وتوجيهات التدريسي.
-الإحصاء الحياتي مصنف نظرياً وعملياً بحسب لون الخانات في الجدول.
-</div>
-</section>
+    <main class="max-w-7xl mx-auto space-y-8">
+        <section class="bg-slate-900/90 border border-slate-800 p-6 md:p-8 rounded-3xl space-y-6">
+            <h2 class="text-base font-black text-cyan-400 flex items-center gap-2 border-b border-slate-800 pb-3">
+                <i class="fa-solid fa-book-medical"></i> مواد ومصادر المرحلة الثانية - تقنيات التخدير
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+                    <h3 class="font-bold text-white text-sm">أسس التخدير (Anesthesia Principles)[cite: 1]</h3>
+                    <p class="text-xs text-slate-300">دراسة مبادئ إعطاء التخدير وتقييم المريض قبل العمليات الجراحية[cite: 1].</p>
+                    <span class="block text-[11px] text-cyan-400 font-mono">المصدر: المنهج الوزاري المعتمد[cite: 1]</span>
+                </div>
+                <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+                    <h3 class="font-bold text-white text-sm">أجهزة التخدير (Anesthesia Machines)[cite: 1]</h3>
+                    <p class="text-xs text-slate-300">التعرف على أجهزة التخدير، التنفس الصناعي، وأنظمة توصيل الغازات الطبية[cite: 1].</p>
+                    <span class="block text-[11px] text-cyan-400 font-mono">المصدر: دليل معدات التخدير السريري[cite: 1]</span>
+                </div>
+                <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+                    <h3 class="font-bold text-white text-sm">العناية المركزة (ICU)[cite: 1]</h3>
+                    <p class="text-xs text-slate-300">إدارة مرضى الحالات الحرجة ودعم الحياة المتقدم[cite: 1].</p>
+                    <span class="block text-[11px] text-cyan-400 font-mono">المصدر: دليل وحدات العناية المركزة الوزاري[cite: 1]</span>
+                </div>
+            </div>
+        </section>
 
-<section class="toolbar" aria-label="البحث والتصفية">
-<div class="tabs" role="group" aria-label="المرحلة">
-<button type="button" data-stage="2" aria-pressed="true">المرحلة الثانية</button>
-<button type="button" data-stage="3" aria-pressed="false">المرحلة الثالثة</button>
-<button type="button" data-stage="4" aria-pressed="false">المرحلة الرابعة</button>
-</div>
-<div class="searchrow">
-<label for="search" class="eyebrow">ابحث عن مادة</label>
-<input id="search" type="search" placeholder="اسم المادة بالعربية أو الإنجليزية..." autocomplete="off">
-<button type="button" id="reset">مسح البحث</button>
-<button type="button" id="print">طباعة النتائج</button>
-</div>
-<div class="filters" role="group" aria-label="نوع المادة">
-<button type="button" data-kind="all" aria-pressed="true">جميع المواد</button>
-<button type="button" data-kind="both" aria-pressed="false">نظري وعملي</button>
-<button type="button" data-kind="theory" aria-pressed="false">نظري فقط</button>
-</div>
-</section>
-
-<p id="summary" class="summary" role="status" aria-live="polite"></p>
-<section id="cards" class="grid" aria-label="المواد الدراسية"></section>
-<noscript>فعّل JavaScript لعرض المواد والبحث فيها.</noscript>
-</main>
-
-<footer>
-<div class="wrap">
-المصادر تفتح في مواقع الجهات الناشرة. «صفحة تنزيل PDF» تعني أن التنزيل يتم من داخل الصفحة.
-أدلة البرامج والمراجع العامة ليست بديلاً عن مفردات المقرر أو تعليمات المختبر المعتمدة.
-</div>
-</footer>
-
-<script>
-"use strict";
-
-const refs = {
-histo:{
-title:"Histology Laboratory Manual — Columbia University",
-url:"https://histologylab.ctl.columbia.edu/HistologyLabManual.pdf",
-type:"PDF مباشر · دليل عملي للأنسجة"
-},
-physio:{
-title:"Anatomy & Physiology — OpenStax",
-url:"https://openstax.org/subjects/anatomy-and-physiology",
-type:"صفحة الكتاب وتنزيل PDF · مرجع تأسيسي"
-},
-bio:{
-title:"Biochemistry Free For All — Oregon State University",
-url:"https://open.oregonstate.education/biochemfreeforall/",
-type:"صفحة الكتاب وتنزيل PDF · كيمياء حياتية"
-},
-micro:{
-title:"Microbiology — OpenStax",
-url:"https://openstax.org/books/microbiology/pages/preface",
-type:"صفحة الكتاب · انتقل إلى صفحة الكتاب للتنزيل بصيغة PDF"
-},
-basic:{
-title:"Manual of Basic Techniques for a Health Laboratory — WHO",
-url:"https://www.who.int/publications/i/item/9241545305",
-type:"صفحة تنزيل PDF · إجراءات مختبرية أساسية"
-},
-computer:{
-title:"Getting Started Guide — LibreOffice",
-url:"https://documentation.libreoffice.org/en/english-documentation/getting-started-guide/",
-type:"صفحة تنزيل PDF · تطبيقات مكتبية"
-},
-stats:{
-title:"Introductory Statistics 2e — OpenStax",
-url:"https://assets.openstax.org/oscms-prodcms/media/documents/Introductory_Statistics_2e_-_WEB.pdf",
-type:"PDF مباشر · إحصاء عام"
-},
-arabic:{
-title:"محاضرات اللغة العربية — المرحلة الثانية",
-url:"https://sa-uc.edu.iq/uploads/curriculum/1756472853.pdf",
-type:"PDF مباشر · مصدر جامعي عراقي"
-},
-baath:{
-title:"منهج جرائم حزب البعث — جامعة تكريت",
-url:"https://cedt.tu.edu.iq/images/madt_jraym_hzb_albth.pdf",
-type:"PDF مباشر · تُراجع مطابقته لمنهج القسم"
-},
-immune:{
-title:"Immunology Whitebook — Dalhousie University",
-url:"https://cdn.dal.ca/content/dam/dalhousie/pdf/faculty/medicine/departments/department-sites/microbiology/2015%20Immunology%20Whitebook%20pdf.pdf",
-type:"PDF مباشر · أساس نظري للمناعة · 2015"
-},
-quality:{
-title:"Laboratory Quality Management System Handbook — WHO",
-url:"https://iris.who.int/bitstream/handle/10665/44665/9789241548274_eng.pdf?sequence=1",
-type:"PDF مباشر · إدارة الجودة المختبرية"
-},
-hema:{
-title:"Hematology for Medical Laboratory Students — Carter Center",
-url:"https://www.cartercenter.org/resources/pdfs/health/ephti/library/lecture_notes/med_lab_tech_students/ln_hematology_mlt_final.pdf",
-type:"PDF مباشر · مرجع تعليمي لعلم الدم"
-},
-histopath:{
-title:"Basic Histopathology and Anatomical Pathology Services — WHO",
-url:"https://applications.emro.who.int/dsaf/dsa204.pdf",
-type:"PDF مباشر · تقنيات الأنسجة المرضية"
-},
-bacterio:{
-title:"Basic Laboratory Procedures in Clinical Bacteriology — WHO",
-url:"https://www.who.int/publications-detail-redirect/9241545453",
-type:"صفحة تنزيل PDF · بكتريا تشخيصية"
-},
-blood:{
-title:"Blood Group Serology — WHO",
-url:"https://cdn.who.int/media/docs/default-source/blood-transfusion-safety/guidelines-and-principles-for-safe-blood-transfusion-practice-module-3-.pdf?sfvrsn=e942e4c9_1",
-type:"PDF مباشر · مصليات فصائل الدم"
-},
-path:{
-title:"General Pathology — Carter Center",
-url:"https://www.cartercenter.org/resources/pdfs/health/ephti/library/lecture_notes/health_extension_trainees/GeneralPathology.pdf",
-type:"PDF مباشر · علم أمراض تأسيسي"
-},
-research:{
-title:"A Practical Guide for Health Researchers — WHO",
-url:"https://applications.emro.who.int/dsaf/dsa237.pdf",
-type:"PDF مباشر · منهجية البحث الصحي"
-},
-ethics:{
-title:"Code of Ethics — IFBLS · إصدار 2010",
-url:"https://www.ifbls.org/images/IFBLS_Documents/Code_of_Ethics.pdf",
-type:"PDF مباشر · مدونة مهنية مختصرة، إصدار قديم"
-},
-ethicsNew:{
-title:"صفحة مدونة IFBLS الرسمية والمراجعة الأحدث",
-url:"https://www.ifbls.org/index.php/statements/code-of-ethics",
-type:"صفحة رسمية · مراجعة مايو 2026"
-}
-};
-
-/*
-كل سجل:
-المرحلة، الاسم العربي، الاسم الإنجليزي، التصنيف،
-الرؤية، محاور النظري، محاور العملي، مفاتيح المصادر، حدود التغطية.
-التصنيف both = نظري وعملي، theory = نظري فقط.
-*/
-const rows = [
-[2,"علم الأنسجة","Histology","both",
-"تمكين الطالب من تمييز الأنسجة الطبيعية وربط تركيبها بوظيفتها.",
-"الخلية؛ الأنسجة الطلائية والضامة والعضلية والعصبية؛ أنسجة الأعضاء.",
-"استخدام المجهر؛ قراءة الشرائح؛ التعرف على العلامات النسيجية.",
-["histo"],
-"الدليل مخصص للجانب العملي ويحتاج مكملاً نظرياً ومطابقة مع مفردات القسم."],
-
-[2,"علم وظائف الأعضاء","Physiology","both",
-"فهم وظائف أجهزة الجسم وآليات الاتزان الداخلي وعلاقتها بالقياسات المختبرية.",
-"النقل الخلوي؛ الأعصاب والعضلات؛ الدوران والتنفس؛ الكلى والهضم والغدد.",
-"القياسات الوظيفية؛ تسجيل النتائج وتحليلها وفق مفردات القسم.",
-["physio"],
-"الكتاب مرجع عام للتشريح والوظائف ولا يحدد التجارب العملية المعتمدة في القسم."],
-
-[2,"الكيمياء الحياتية","Biochemistry","both",
-"بناء فهم للجزيئات الحيوية والتفاعلات الأيضية كأساس للتحليل المختبري.",
-"البروتينات والكربوهيدرات والدهون؛ الإنزيمات؛ الطاقة والأيض.",
-"تحضير المحاليل؛ القياس اللوني والطيفي؛ المنحنى القياسي؛ حساب التراكيز.",
-["bio"],
-"مرجع واسع للكيمياء الحياتية، وتُستكمل الإجراءات العملية بدليل المختبر."],
-
-[2,"البكتريا الطبية","Medical Bacteriology","both",
-"فهم البكتريا الممرضة وخصائصها وأسس التعرف عليها مختبرياً.",
-"التركيب والتصنيف؛ النمو؛ الإمراضية؛ البكتريا ذات الأهمية الطبية.",
-"السلامة والتعقيم؛ الصبغات؛ الأوساط الزرعية؛ الفحوص التعريفية الأساسية.",
-["micro","bacterio"],
-"تُطابق الفصول مع المقرر وتُراجع الإجراءات وفق تعليمات المختبر الحالية."],
-
-[2,"علم الطفيليات","Parasitology","both",
-"التعرف على الطفيليات الطبية ودورات حياتها وأطوارها التشخيصية.",
-"الأوالي والديدان؛ العوائل؛ طرق الانتقال؛ الإمراضية.",
-"التعرف على الأكياس والبيوض واليرقات والطفيليات الدموية؛ تحضير العينات.",
-["basic"],
-"المصدر عملي تأسيسي ولا يغطي وحده جميع نظرية الطفيليات."],
-
-[2,"الحاسوب","Computer","both",
-"إكساب الطالب مهارات رقمية لتنظيم الدراسة والبيانات والتقارير المختبرية.",
-"الملفات والبيانات؛ أساسيات الأمن الرقمي؛ مبادئ التطبيقات المكتبية.",
-"معالجة النصوص؛ الجداول والحسابات والرسوم؛ العروض التقديمية.",
-["computer"],
-"المحاور مقترحة. دليل LibreOffice لا يعني أنه البرنامج المعتمد في القسم."],
-
-[2,"الإحصاء الحياتي","Biostatistics","both",
-"تمكين الطالب من وصف البيانات الصحية وتحليلها وتفسير النتائج إحصائياً.",
-"أنواع البيانات؛ النزعة المركزية والتشتت؛ الاحتمالات والعينات؛ فترات الثقة والاختبارات.",
-"إنشاء الجداول والرسوم؛ حل المسائل؛ تحليل بيانات نموذجية.",
-["stats"],
-"مرجع إحصائي عام. العملي مثبت بحسب لون الخانة في الجدول، رغم انعقاده في قاعة."],
-
-[2,"اللغة العربية","Arabic Language","theory",
-"تنمية سلامة التعبير والكتابة الأكاديمية والإدارية باللغة العربية.",
-"النحو والإملاء؛ علامات الترقيم؛ الأخطاء الشائعة؛ صياغة التقارير والمخاطبات.",
-"",
-["arabic"],
-"تحتاج المحاضرات إلى مطابقة مع مفردات اللغة العربية المعتمدة في القسم."],
-
-[2,"جرائم حزب البعث","Baath Party Crimes","theory",
-"تعزيز الوعي بحقوق الإنسان وفهم الانتهاكات التاريخية في إطار علمي وقانوني.",
-"مفاهيم الجريمة؛ الحقوق والحريات؛ الانتهاكات؛ الآثار المجتمعية والتوثيق.",
-"",
-["baath"],
-"المرجع النهائي هو المنهج الذي تعتمده المؤسسة للمادة."],
-
-[3,"علم المناعة","Immunology","both",
-"فهم الاستجابة المناعية وتطبيق مبادئها في الفحوص المختبرية.",
-"المناعة الفطرية والمكتسبة؛ الخلايا المناعية؛ الأجسام المضادة؛ المتممة والسيتوكينات.",
-"تفاعلات المستضد والضد؛ مبادئ الاختبارات المصلية؛ الضوابط.",
-["immune"],
-"مرجع نظري يحتاج دليلاً عملياً مكملاً وتعليمات حديثة للفحوص."],
-
-[3,"علم الفيروسات","Virology","both",
-"فهم خصائص الفيروسات وعلاقة تكاثرها وإمراضيتها بالتشخيص المختبري.",
-"التركيب والتصنيف؛ التكاثر؛ الانتقال؛ الاستجابة المناعية.",
-"مبادئ جمع العينات ونقلها؛ الكشف المستضدي والمصلي والجزيئي؛ ضبط الجودة.",
-["micro"],
-"تُستخدم فصول الفيروسات والتشخيص؛ الكتاب ليس مرجعاً متخصصاً شاملاً للفيروسات."],
-
-[3,"التقنيات المختبرية المتقدمة","Advanced Laboratory Techniques","both",
-"تطوير القدرة على فهم التقنيات الحديثة واختيارها وتقييم جودة نتائجها.",
-"القياس الطيفي؛ الفصل الكهربائي والكروماتوغرافي؛ التقنيات المناعية والجزيئية.",
-"المعايرة؛ الضبط؛ التحقق من الأداء؛ تفسير النتائج وفق الأجهزة المتاحة.",
-["basic","quality"],
-"المرجعان داعمان للأساسيات والجودة ولا يغطيان وحدهما التقنيات المتقدمة. المحاور تحتاج تأكيداً من توصيف المقرر."],
-
-[3,"علم الوراثة","Genetics","both",
-"فهم انتقال الصفات والتغيرات الجينية وربطها بأسس التشخيص الجزيئي.",
-"DNA وRNA؛ الوراثة المندلية؛ التعبير الجيني؛ الطفرات والصبغيات.",
-"مسائل الوراثة؛ شجرات النسب؛ الأنماط الصبغية؛ مبادئ استخلاص DNA وPCR.",
-["bio"],
-"الفصول الجزيئية مرجع مساعد وتحتاج مكملاً متخصصاً في الوراثة الطبية."],
-
-[3,"علم الدم","Hematology","both",
-"إكساب الطالب أساساً علمياً ومهارياً لدراسة خلايا الدم واضطراباتها.",
-"تكوّن الدم؛ الهيموغلوبين؛ فقر الدم؛ اضطرابات الكريات والصفائح والتخثر.",
-"CBC؛ اللطاخة الدموية؛ العد التفريقي؛ المؤشرات؛ الفحوص الأساسية للتخثر.",
-["hema"],
-"مرجع تعليمي قديم نسبياً ويُستكمل بالممارسات الحالية وتعليمات التدريسي."],
-
-[3,"علم الغدد الصماء","Endocrinology","both",
-"ربط تنظيم الهرمونات ووظائف الغدد بأسس قياسها وتفسير نتائجها.",
-"النخامية والدرقية والكظرية؛ البنكرياس؛ الغدد التناسلية؛ التغذية الراجعة.",
-"توقيت العينات؛ مبادئ القياس المناعي؛ التداخلات التحليلية؛ ضبط الجودة.",
-["physio"],
-"المصدر للتأسيس الفسيولوجي ولا يكفي وحده لفحوص الهرمونات السريرية."],
-
-[3,"الأنسجة المرضية","Histopathology","both",
-"فهم معالجة العينات النسيجية وربط التغيرات المجهرية بالمرض.",
-"التثبيت؛ معالجة الأنسجة؛ التقطيع؛ الصبغات؛ الأخطاء الفنية.",
-"استلام العينات؛ تحضير المقاطع وصبغها؛ تقييم الجودة؛ التعرف على التغيرات الأساسية.",
-["histopath"],
-"مرجع تقني تأسيسي تُستكمل تفاصيله بدليل المختبر ومفردات المقرر."],
-
-[3,"الحاسوب","Computer","both",
-"تطوير توظيف البرامج الرقمية في معالجة البيانات وإعداد التقارير العلمية.",
-"تنظيم البيانات؛ صيغ الملفات؛ الخصوصية؛ التطبيقات الأكاديمية.",
-"الجداول والمعادلات؛ الرسوم؛ التقارير والعروض العلمية.",
-["computer"],
-"النظري والعملي مثبتان في الجدول. المستوى والبرامج يحتاجان توصيف مقرر المرحلة الثالثة."],
-
-[4,"البكتريا التشخيصية","Diagnostic Bacteriology","both",
-"تنمية القدرة على التعرف المختبري على البكتريا الممرضة وتقييم موثوقية التشخيص.",
-"اختيار الفحص بحسب العينة؛ البكتريا السريرية؛ تفسير النتائج وحدود الفحص.",
-"استلام العينات؛ الزرع والعزل؛ التعريف؛ اختبار الحساسية؛ ضبط الجودة.",
-["bacterio"],
-"مرجع تأسيسي قديم. تُستخدم معايير الحساسية والإجراءات الحالية المعتمدة في المختبر."],
-
-[4,"الطفيليات التشخيصية","Diagnostic Parasitology","both",
-"تطوير مهارات اختيار طرق كشف الطفيليات والتمييز بين أطوارها التشخيصية.",
-"ربط الأعراض والعينات بدورة الحياة؛ حدود الفحوص؛ التشخيص التفريقي.",
-"فحوص البراز والدم؛ التحضير والتركيز والصبغ؛ تمييز الأطوار ومسببات الالتباس.",
-["basic"],
-"مرجع عملي تأسيسي يحتاج مصدراً متخصصاً مكملاً للطفيليات التشخيصية."],
-
-[4,"المناعة السريرية","Clinical Immunology","both",
-"ربط الاضطرابات المناعية بنتائج الفحوص واختيار الاختبار المناسب.",
-"المناعة الذاتية؛ فرط التحسس؛ نقص المناعة؛ مناعة الزرع.",
-"مبادئ قياس الأجسام المضادة والمتممة؛ الاختبارات المناعية؛ التداخلات وتقييم النتائج.",
-["immune"],
-"المصدر أساس نظري ويحتاج دليلاً عملياً سريرياً مكملاً."],
-
-[4,"علم الإنزيمات","Enzymology","both",
-"فهم حركية الإنزيمات وتنظيمها وأهميتها في التحاليل السريرية.",
-"التصنيف؛ الحركية والتثبيط؛ العوامل المؤثرة؛ الإنزيمات المتناظرة؛ الدلالات السريرية.",
-"قياس النشاط الإنزيمي؛ تأثير الحرارة وpH والركيزة؛ حساب النتائج.",
-["bio"],
-"المصدر أساس كيميائي حيوي ويحتاج استكمالاً في القياس والدلالات السريرية."],
-
-[4,"نقل الدم","Blood Transfusion","both",
-"فهم أسس التوافق المناعي وسلامة الفحوص المتعلقة بنقل الدم.",
-"الفصائل؛ الأجسام المضادة؛ مكونات الدم؛ التفاعلات المرتبطة بالنقل.",
-"ABO وRh؛ التوافق؛ اختبارات مضاد الغلوبولين؛ التوثيق؛ ضبط الجودة.",
-["blood"],
-"المرجع متخصص في مصليات الفصائل ولا يمثل جميع جوانب نقل الدم أو إجراءاته الحالية."],
-
-[4,"علم الأمراض","Pathology","both",
-"فهم آليات المرض والتغيرات الخلوية والنسيجية وربطها بالمشاهدات المختبرية.",
-"أذية الخلية؛ الالتهاب والإصلاح؛ اضطرابات الدوران؛ الأورام.",
-"قراءة الشرائح والعينات؛ التعرف على الأنماط المرضية الأساسية.",
-["path","histopath"],
-"المراجع تأسيسية ولا تستبدل أطلس الشرائح ومفردات المقرر."],
-
-[4,"طرائق البحث","Research Methods","theory",
-"تمكين الطالب من إعداد بحث علمي منظم وقابل للتقييم في مجال المختبرات الطبية.",
-"مشكلة البحث؛ مراجعة الأدبيات؛ الأهداف والفرضيات؛ التصميم والعينة؛ جمع البيانات والتحليل؛ الأخلاقيات؛ كتابة التقرير.",
-"",
-["research"],
-"مرجع لمنهجية البحث الصحي ويُطابق مع متطلبات مشروع التخرج في القسم."],
-
-[4,"أخلاقيات المهنة","Professional Ethics","theory",
-"ترسيخ الدقة والنزاهة والسرية والمسؤولية في الممارسة المختبرية.",
-"حقوق المريض؛ سرية البيانات؛ النزاهة؛ حدود الكفاءة؛ التعامل مع الأخطاء؛ تضارب المصالح؛ المسؤولية المهنية.",
-"",
-["ethicsNew","ethics"],
-"ملف PDF إصدار 2010 قديم. توجد مراجعة في مايو 2026 على الصفحة الرسمية. المدونة مختصرة وليست كتاب مقرر شاملاً."]
-];
-
-const stageNames = {2:"الثانية",3:"الثالثة",4:"الرابعة"};
-const state = {stage:2,kind:"all",query:""};
-const cards = document.getElementById("cards");
-
-function node(tag,text,className){
-  const el=document.createElement(tag);
-  if(text!==undefined) el.textContent=text;
-  if(className) el.className=className;
-  return el;
-}
-function normalize(text){
-  return text.toLowerCase()
-    .replace(/[\u064B-\u065F\u0670]/g,"")
-    .replace(/[أإآ]/g,"ا")
-    .replace(/ى/g,"ي");
-}
-function section(parent,title,content){
-  parent.appendChild(node("h3",title));
-  const list=node("ul");
-  content.split("؛").map(x=>x.trim()).filter(Boolean)
-    .forEach(text=>list.appendChild(node("li",text)));
-  parent.appendChild(list);
-}
-function render(){
-  const q=normalize(state.query.trim());
-  const selected=rows.filter(r=>
-    r[0]===state.stage &&
-    (state.kind==="all" || r[3]===state.kind) &&
-    (!q || normalize(r[1]+" "+r[2]).includes(q))
-  );
-  cards.replaceChildren();
-  document.getElementById("summary").textContent=
-    "المرحلة "+stageNames[state.stage]+" · "+selected.length+
-    " مادة معروضة من أصل "+rows.filter(r=>r[0]===state.stage).length;
-
-  if(!selected.length){
-    cards.appendChild(node("p","لا توجد مواد تطابق البحث والتصفية.","empty"));
-    return;
-  }
-  selected.forEach(r=>{
-    const card=node("article",undefined,"card");
-    const badges=node("div",undefined,"badges");
-    badges.appendChild(node("span","المرحلة "+stageNames[r[0]],"badge secondary"));
-    badges.appendChild(node("span",r[3]==="both"?"نظري + عملي":"نظري فقط","badge"));
-    card.appendChild(badges);
-    card.appendChild(node("h2",r[1]));
-    const en=node("p",r[2],"english");
-    en.lang="en";
-    card.appendChild(en);
-    card.appendChild(node("h3","رؤية مقترحة للمادة"));
-    card.appendChild(node("p",r[4]));
-
-    const detail=node("details");
-    detail.open=true;
-    detail.appendChild(node("summary","المحاور والمصادر التعليمية"));
-    section(detail,"المحاور النظرية المقترحة",r[5]);
-    if(r[3]==="both"){
-      section(detail,"المحاور العملية المقترحة",r[6]);
-    }else{
-      detail.appendChild(node("p","لا يوجد جانب عملي مستقل ظاهر لهذه المادة في الجدول."));
-    }
-    detail.appendChild(node("h3","المراجع"));
-    r[7].forEach(key=>{
-      const ref=refs[key];
-      const link=node("a",undefined,"source");
-      link.href=ref.url;
-      link.target="_blank";
-      link.rel="noopener noreferrer";
-      link.appendChild(node("span",ref.title));
-      link.appendChild(node("small",ref.type+" · يفتح في نافذة جديدة"));
-      detail.appendChild(link);
-    });
-    detail.appendChild(node("p",r[8],"limit"));
-    card.appendChild(detail);
-    cards.appendChild(card);
-  });
-}
-document.querySelectorAll("[data-stage]").forEach(button=>{
-  button.addEventListener("click",()=>{
-    state.stage=Number(button.dataset.stage);
-    document.querySelectorAll("[data-stage]").forEach(b=>
-      b.setAttribute("aria-pressed",String(b===button)));
-    render();
-  });
-});
-document.querySelectorAll("[data-kind]").forEach(button=>{
-  button.addEventListener("click",()=>{
-    state.kind=button.dataset.kind;
-    document.querySelectorAll("[data-kind]").forEach(b=>
-      b.setAttribute("aria-pressed",String(b===button)));
-    render();
-  });
-});
-document.getElementById("search").addEventListener("input",event=>{
-  state.query=event.target.value;
-  render();
-});
-document.getElementById("reset").addEventListener("click",()=>{
-  state.query="";
-  document.getElementById("search").value="";
-  render();
-  document.getElementById("search").focus();
-});
-document.getElementById("print").addEventListener("click",()=>window.print());
-render();
-</script>
+        <section class="bg-slate-900/90 border border-slate-800 p-6 md:p-8 rounded-3xl space-y-6">
+            <h2 class="text-base font-black text-cyan-400 flex items-center gap-2 border-b border-slate-800 pb-3">
+                <i class="fa-solid fa-book"></i> مواد ومصادر المرحلة الأولى - تقنيات التخدير[cite: 2]
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+                    <h3 class="font-bold text-white text-sm">التشريح (Anatomy)[cite: 2]</h3>
+                    <p class="text-xs text-slate-300">دراسة تفصيلية لبنية أعضاء وأجهزة جسم الإنسان[cite: 2].</p>
+                    <span class="block text-[11px] text-cyan-400 font-mono">المصدر: المنهج الوزاري للتشريح البشري[cite: 2]</span>
+                </div>
+                <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+                    <h3 class="font-bold text-white text-sm">الفسلجة (Physiology)[cite: 1, 2]</h3>
+                    <p class="text-xs text-slate-300">دراسة وظائف الأعضاء وتأثير الأدوية عليها[cite: 1, 2].</p>
+                    <span class="block text-[11px] text-cyan-400 font-mono">المصدر: فسلجة غايتون الطبية المعتمدة[cite: 1, 2]</span>
+                </div>
+            </div>
+        </section>
+    </main>
 </body>
-
+</html>

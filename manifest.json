@@ -1,25 +1,9 @@
-{
-  "name": "قسم تقنيات المختبرات الطبية",
-  "short_name": "تقنيات المختبرات",
-  "description": "المنصة التعليمية والمختبرية الافتراضية المتقدمة",
+﻿{
+  "name": "قسم تقنيات التخدير",
+  "short_name": "تخدير",
   "start_url": "./index.html",
-  "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#020617",
-  "theme_color": "#0f172a",
-  "icons": [
-    {
-      "src": "./icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "./icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ]
+  "background_color": "#07111F",
+  "theme_color": "#35D5F2",
+  "icons": []
 }
