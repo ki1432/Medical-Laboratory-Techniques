@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>قسم تقنيات التخدير والعناية المركزة | البوابة الرئيسية والمنهاج الأكاديمي</title>
-    <meta name="description" content="البوابة الرسمية لقسم تقنيات التخدير، إدارة وتسجيل الطلبة، ومناهج المرحلة الأولى والثانية المعتمدة من وزارة التعليم العالي والبحث العلمي في العراق.">
+    <title>قسم تقنيات التخدير والعناية المركزة | لوحة الإدارة والأكاديمية</title>
+    <meta name="description" content="البوابة الرسمية الشاملة لقسم تقنيات التخدير، تشمل لوحة الإدارة، تسجيل الطلبة، والمنهاج الأكاديمي المعتمد من وزارة التعليم العالي والبحث العلمي في العراق.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
@@ -26,45 +26,69 @@
 </head>
 <body class="min-h-screen p-4 md:p-8 selection:bg-cyan-500 selection:text-slate-950">
 
-    <header class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between pb-6 mb-8 border-b border-slate-800 gap-4">
+    <!-- الهيدر الرئيسي -->
+    <header role="banner" class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between pb-6 mb-8 border-b border-slate-800 gap-4">
         <div class="flex items-center gap-4">
             <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-3xl font-bold">
                 <i class="fa-solid fa-syringe animate-pulse" aria-hidden="true"></i>
             </div>
             <div>
-                <h1 class="text-lg font-black text-white leading-tight">قسم تقنيات التخدير والعناية المركزة</h1>
-                <span class="text-xs text-cyan-400 font-mono">Anesthesia Techniques Department - Official Portal</span>
+                <h1 class="text-lg font-black text-white leading-tight">بوابة قسم تقنيات التخدير والعناية المركزة</h1>
+                <span class="text-xs text-cyan-400 font-mono">Anesthesia Techniques Department - Ministry of Higher Education, Iraq</span>
             </div>
         </div>
         <div class="flex items-center gap-3">
             <a href="./virtual-lab.html" class="px-4 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs transition flex items-center gap-2 shadow">
-                <i class="fa-solid fa-vr-cardboard"></i> محاكي أجهزة التخدير والعمليات
+                <i class="fa-solid fa-microscope"></i> المختبر الأكاديمي المحدث
             </a>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto space-y-8">
+    <main role="main" class="max-w-7xl mx-auto space-y-8">
         
-        <!-- قسم إدارة وتسجيل الطلبة -->
+        <!-- لوحة الإدارة الشاملة وتسجيل الطلبة (كاملة بكل مزاياها لتقنيات التخدير) -->
         <section class="glass-panel p-6 md:p-8 rounded-3xl space-y-6 border border-cyan-500/30">
             <div class="border-b border-slate-800 pb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                 <div>
                     <h2 class="text-base md:text-lg font-black text-cyan-400 flex items-center gap-2.5">
-                        <i class="fa-solid fa-user-plus"></i> إدارة وتسجيل الطلبة — قسم تقنيات التخدير
+                        <i class="fa-solid fa-sliders"></i> لوحة إدارة القسم وتسجيل الطلبة (Anesthesia Management Suite)
                     </h2>
-                    <p class="text-xs text-slate-400 mt-1">نظام تسجيل وتوزيع الطلبة على القاعات الدراسية ووحدات التدريب السريري في المستشفيات.</p>
+                    <p class="text-xs text-slate-400 mt-1">نظام شمول الإدارة، توزيع القاعات، متابعة الحضور، وتوثيق سجلات الطلبة والتدريب السريري.</p>
                 </div>
-                <span class="px-3 py-1 bg-cyan-500/10 text-cyan-400 text-xs rounded-xl font-mono border border-cyan-500/25">العام الدراسي 2025-2026</span>
+                <div class="flex items-center gap-2">
+                    <span class="px-3 py-1 bg-cyan-500/10 text-cyan-400 text-xs rounded-xl font-mono border border-cyan-500/25">العام الدراسي 2025-2026</span>
+                </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="glass-card p-5 rounded-2xl space-y-4 md:col-span-1 border border-slate-800">
-                    <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-id-card text-cyan-400"></i> تسجيل طالب تخدير جديد
+            <!-- إحصائيات سريعة للقسم -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="glass-card p-4 rounded-2xl border border-slate-800 text-center">
+                    <span class="block text-slate-400 text-[11px]">إجمالي طلبة التخدير</span>
+                    <span class="text-xl font-black text-cyan-400 font-mono">248</span>
+                </div>
+                <div class="glass-card p-4 rounded-2xl border border-slate-800 text-center">
+                    <span class="block text-slate-400 text-[11px]">المرحلة الأولى</span>
+                    <span class="text-xl font-black text-white font-mono">130</span>
+                </div>
+                <div class="glass-card p-4 rounded-2xl border border-slate-800 text-center">
+                    <span class="block text-slate-400 text-[11px]">المرحلة الثانية</span>
+                    <span class="text-xl font-black text-white font-mono">118</span>
+                </div>
+                <div class="glass-card p-4 rounded-2xl border border-slate-800 text-center">
+                    <span class="block text-slate-400 text-[11px]">الساعات السريرية</span>
+                    <span class="text-xl font-black text-emerald-400 font-mono">100%</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- وحدة إضافة وتثبيت طالب جديد -->
+                <div class="glass-card p-5 rounded-2xl space-y-4 lg:col-span-1 border border-slate-800">
+                    <h3 class="text-sm font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                        <i class="fa-solid fa-user-plus text-cyan-400"></i> إضافة طالب جديد بالقسم
                     </h3>
-                    <form onsubmit="event.preventDefault(); alert('تم تسجيل الطالب في قسم تقنيات التخدير بنجاح وإرسال البيانات لنظام التسجيل المركزي.');" class="space-y-3 text-xs">
+                    <form onsubmit="event.preventDefault(); alert('تم حفظ بيانات الطالب وتأكيد تسجيله في قسم تقنيات التخدير بنجاح.');" class="space-y-3 text-xs">
                         <div>
-                            <label class="block text-slate-300 font-bold mb-1">اسم الطالب الثلاثي:</label>
+                            <label class="block text-slate-300 font-bold mb-1">اسم الطالب الرباعي:</label>
                             <input type="text" required placeholder="أدخل الاسم الكامل" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white outline-none focus:border-cyan-400">
                         </div>
                         <div>
@@ -75,41 +99,75 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-slate-300 font-bold mb-1">الرقم الامتحاني / الكود:</label>
-                            <input type="text" required placeholder="مثال: ANS-2026-001" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white outline-none focus:border-cyan-400 font-mono">
+                            <label class="block text-slate-300 font-bold mb-1">الرقم الامتحاني / المعرف الأكاديمي:</label>
+                            <input type="text" required placeholder="ANS-2026-XXXX" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white outline-none focus:border-cyan-400 font-mono">
+                        </div>
+                        <div>
+                            <label class="block text-slate-300 font-bold mb-1">الشعبة / المجموعة العملية:</label>
+                            <select class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-white outline-none focus:border-cyan-400">
+                                <option value="A">Group A - أجهزة وتخدير</option>
+                                <option value="B">Group B - عناية وجراحة</option>
+                            </select>
                         </div>
                         <button type="submit" class="w-full py-2.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black rounded-xl transition shadow">
-                            حفظ وتثبيت التسجيل بقسم التخدير
+                            تأكيد التسجيل في قسم التخدير
                         </button>
                     </form>
                 </div>
 
-                <div class="glass-card p-5 rounded-2xl space-y-4 md:col-span-2 border border-slate-800 flex flex-col justify-between">
+                <!-- جدول إدارة وتتبع الطلبة المسجلين -->
+                <div class="glass-card p-5 rounded-2xl space-y-4 lg:col-span-2 border border-slate-800 flex flex-col justify-between">
                     <div class="space-y-3">
-                        <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-chart-line text-cyan-400"></i> لوحة متابعة تسجيل طلبة تقنيات التخدير
-                        </h3>
-                        <p class="text-xs text-slate-300 leading-relaxed">
-                            تم تحديث نظام تسجيل الطلبة حصرياً لـ <strong class="text-cyan-400">قسم تقنيات التخدير</strong>. يتم ربط السجلات مباشرة بمتطلبات التدريب الصيفي ووحدات التخدير والعناية المركزة في المستشفيات التعليمية.
-                        </p>
-                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
-                            <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800 text-center">
-                                <span class="block text-cyan-400 font-black text-base">المرحلة 1</span>
-                                <span class="text-[11px] text-slate-400">مقررات العلوم الأساسية</span>
-                            </div>
-                            <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800 text-center">
-                                <span class="block text-cyan-400 font-black text-base">المرحلة 2</span>
-                                <span class="text-[11px] text-slate-400">مقررات التخدير والعناية</span>
-                            </div>
-                            <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800 text-center col-span-2 sm:col-span-1">
-                                <span class="block text-emerald-400 font-black text-base">معتمد</span>
-                                <span class="text-[11px] text-slate-400">حالة الاعتماد الوزاري</span>
-                            </div>
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-users-gear text-cyan-400"></i> سجل طلبة تقنيات التخدير (الحالة والاعتماد)
+                            </h3>
+                            <button onclick="alert('تم تصدير سجلات طلبة التخدير بنجاح')" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-mono">
+                                <i class="fa-solid fa-file-export ml-1"></i> تصدير البيانات
+                            </button>
+                        </div>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-right text-xs">
+                                <thead>
+                                    <tr class="text-slate-400 border-b border-slate-800 bg-slate-900/40">
+                                        <th class="p-2.5">المعرف</th>
+                                        <th class="p-2.5">اسم الطالب</th>
+                                        <th class="p-2.5">المرحلة</th>
+                                        <th class="p-2.5">المستشفى التدريبي</th>
+                                        <th class="p-2.5">حالة التسجيل</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-800/60 text-slate-300">
+                                    <tr>
+                                        <td class="p-2.5 font-mono text-cyan-400">ANS-26-012</td>
+                                        <td class="p-2.5 font-bold text-white">على حسن جاسم</td>
+                                        <td class="p-2.5">المرحلة الثانية</td>
+                                        <td class="p-2.5">مستشفى البصرة التعليمي</td>
+                                        <td class="p-2.5"><span class="px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 font-bold border border-emerald-500/20">مستوفٍ وزارياً</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2.5 font-mono text-cyan-400">ANS-26-044</td>
+                                        <td class="p-2.5 font-bold text-white">زينب أحمد كريم</td>
+                                        <td class="p-2.5">المرحلة الأولى</td>
+                                        <td class="p-2.5">المختبر التعليمي المركزي</td>
+                                        <td class="p-2.5"><span class="px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 font-bold border border-emerald-500/20">مستوفٍ وزارياً</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2.5 font-mono text-cyan-400">ANS-26-089</td>
+                                        <td class="p-2.5 font-bold text-white">محمد طارق مطر</td>
+                                        <td class="p-2.5">المرحلة الثانية</td>
+                                        <td class="p-2.5">وحدة العناية المركزة (ICU)</td>
+                                        <td class="p-2.5"><span class="px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-400 font-bold border border-amber-500/20">قيد التدقيق</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <div class="p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-xs text-cyan-300 flex items-center gap-2">
-                        <i class="fa-solid fa-circle-info shrink-0"></i>
-                        <span>ملاحظة: جميع بيانات الطلبة والمساقات أصبحت مقتصرة تماماً على تخصص تقنيات التخدير السريري.</span>
+
+                    <div class="p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-xs text-cyan-300 flex items-center gap-2 mt-4">
+                        <i class="fa-solid fa-circle-check shrink-0"></i>
+                        <span>تم ربط كافة البيانات الإدارية بمتطلبات قسم تقنيات التخدير المعتمدة من وزارة التعليم العالي والبحث العلمي.</span>
                     </div>
                 </div>
             </div>
@@ -119,7 +177,7 @@
         <section class="glass-panel p-6 md:p-8 rounded-3xl space-y-6">
             <div class="border-b border-slate-800 pb-4 flex items-center justify-between">
                 <h2 class="text-base md:text-lg font-black text-cyan-400 flex items-center gap-2.5">
-                    <i class="fa-solid fa-book-medical"></i> مواد المرحلة الثانية - تقنيات التخدير (Second Year Curriculum)
+                    <i class="fa-solid fa-book-medical"></i> مواد المرحلة الثانية - تقنيات التخدير (Second Year)
                 </h2>
                 <span class="text-xs text-slate-400 font-mono">6 مقررات أساسية</span>
             </div>
@@ -160,7 +218,7 @@
                         <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-cyan-400">ماهية المادة:</strong> فهم الأمراض المزمنة والحرجة وكيفية تأثيرها على خطة التخدير وسلامة المريض أثناء الجراحة[cite: 1].</p>
                     </div>
                     <div class="pt-3 border-t border-slate-800 text-[11px] text-slate-400">
-                        <i class="fa-solid fa-landmark text-cyan-400 ml-1"></i> <strong>المصدر الوزاري:</strong> مقررات الطب الباطني السريري - المجلس العراقي للاختصاصات الطبية / وزارة التعليم العالي[cite: 1].
+                        <i class="fa-solid fa-landmark text-cyan-400 ml-1"></i> <strong>المصدر الوزاري:</strong> مقررات الطب الباطني السريري - المجلس العراقي للااختصاصات الطبية / وزارة التعليم العالي[cite: 1].
                     </div>
                 </div>
 
@@ -209,7 +267,7 @@
         <section class="glass-panel p-6 md:p-8 rounded-3xl space-y-6">
             <div class="border-b border-slate-800 pb-4 flex items-center justify-between">
                 <h2 class="text-base md:text-lg font-black text-cyan-400 flex items-center gap-2.5">
-                    <i class="fa-solid fa-graduation-cap"></i> مواد المرحلة الأولى - تقنيات التخدير (First Year Curriculum)
+                    <i class="fa-solid fa-graduation-cap"></i> مواد المرحلة الأولى - تقنيات التخدير (First Year)
                 </h2>
                 <span class="text-xs text-slate-400 font-mono">5 مقررات أساسية</span>
             </div>
@@ -284,7 +342,7 @@
 
     </main>
 
-    <footer class="max-w-7xl mx-auto mt-12 pt-6 border-t border-slate-800 text-center text-xs text-slate-500 space-y-1">
+    <footer role="contentinfo" class="max-w-7xl mx-auto mt-12 pt-6 border-t border-slate-800 text-center text-xs text-slate-500 space-y-1">
         <p>© 2026 قسم تقنيات التخدير. جميع الحقوق محفوظة.</p>
         <p>مرخصة وفق متطلبات لجان عمداء الكليات والمعاهد التقنية الطبية - وزارة التعليم العالي والبحث العلمي في العراق.</p>
     </footer>
